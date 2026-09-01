@@ -1,0 +1,54 @@
+/* Lightweight native versions of the supplied MetaBalls, PixelBlast and DepthText interactions. */
+.meta-balls,
+.click-ripples {
+  inset: 0;
+  height: 100%;
+  pointer-events: none;
+  position: fixed;
+  width: 100%;
+}
+
+.meta-balls {
+  mix-blend-mode: screen;
+  opacity: .76;
+  z-index: -3;
+}
+
+.click-ripples {
+  mix-blend-mode: screen;
+  z-index: -2;
+}
+
+.home-art-copy {
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+}
+
+.title-art-window {
+  --title-rotate-x: 0deg;
+  --title-rotate-y: 0deg;
+  transform: rotateX(var(--title-rotate-x)) rotateY(var(--title-rotate-y));
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.home-title-art {
+  transform: translateY(-2%) translateZ(30px);
+  transform-style: preserve-3d;
+}
+
+body[data-language="en"] .home-title-english {
+  transform: translateZ(30px);
+  transform-style: preserve-3d;
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .meta-balls {
+    display: none;
+  }
+
+  .title-art-window {
+    transform: none;
+    will-change: auto;
+  }
+}

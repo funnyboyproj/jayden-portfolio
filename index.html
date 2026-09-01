@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="陈冠宇｜三维角色设计、三维动画个人作品集" />
+    <title>Funnyboy Portfolio</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./enhancements.css" />
+    <link rel="stylesheet" href="./polish.css" />
+    <link rel="stylesheet" href="./polish-v2.css" />
+    <link rel="stylesheet" href="./polish-v3.css" />
+    <link rel="stylesheet" href="./polish-v4.css" />
+    <link rel="stylesheet" href="./polish-v5.css" />
+    <link rel="stylesheet" href="./polish-v6.css" />
+    <link rel="stylesheet" href="./polish-v7.css" />
+    <link rel="stylesheet" href="./polish-v8.css" />
+    <link rel="stylesheet" href="./polish-v9.css" />
+    <link rel="stylesheet" href="./polish-v10.css" />
+    <link rel="stylesheet" href="./polish-v11.css" />
+    <link rel="stylesheet" href="./polish-v12.css" />
+    <link rel="stylesheet" href="./polish-v13.css" />
+    <link rel="stylesheet" href="./polish-v14.css" />
+  </head>
+  <body data-language="zh">
+    <div class="site-shell">
+      <div class="motion-lines asset-lines reveal-lines" aria-hidden="true">
+        <img class="line-art line-1" src="./assets/background/线条素材1.png" alt="" />
+        <img class="line-art line-2" src="./assets/background/线条素材2.png" alt="" />
+        <img class="line-art line-3" src="./assets/background/线条素材3.png" alt="" />
+        <img class="line-art line-4" src="./assets/background/线条素材4.png" alt="" />
+      </div>
+      <canvas class="meta-balls" id="metaBalls" aria-hidden="true"></canvas>
+      <canvas class="click-ripples" id="clickRipples" aria-hidden="true"></canvas>
+      <canvas class="particle-fog" id="particleFog" aria-hidden="true"></canvas>
+      <canvas class="cursor-ribbons" id="cursorRibbons" aria-hidden="true"></canvas>
+
+      <header class="site-header">
+        <div class="nav-control" id="navControl">
+          <button class="gear asset-gear" id="menuToggle" type="button" aria-label="展开或收起模块入口" aria-expanded="false" aria-controls="primaryNav">
+            <img src="./assets/background/齿轮图标.png" alt="" />
+          </button>
+          <nav class="primary-nav hover-nav" id="primaryNav" aria-label="作品集模块">
+            <button type="button" data-target="home"><span data-i18n="nav.home">主页</span></button>
+            <button type="button" data-target="profile"><span data-i18n="nav.profile">个人简介</span></button>
+            <button type="button" data-target="collab"><span data-i18n="nav.collab">大三联创</span></button>
+            <button type="button" data-target="projects"><span data-i18n="nav.projects">参与项目</span></button>
+            <button type="button" data-target="ip"><span data-i18n="nav.ip">原创IP</span></button>
+            <button type="button" data-target="works"><span data-i18n="nav.works">个人作品</span></button>
+            <button type="button" data-target="contact"><span data-i18n="nav.contact">联系我</span></button>
+          </nav>
+        </div>
+        <button class="language-toggle" id="languageToggle" type="button" aria-label="切换中文和英文">EN</button>
+      </header>
+
+      <main>
+        <section class="screen home active" data-screen="home" aria-labelledby="homeTitle">
+          <div class="home-copy home-art-copy">
+            <div id="homeTitle" class="title-art-window" role="img" aria-label="作品集 PORTFOLIO，陈冠宇 CHIN GUAN YUE，三维角色设计 · 三维动画">
+              <img class="home-title-art" src="./assets/background/作品集 标题.png" alt="" />
+            </div>
+          </div>
+        </section>
+
+        <section class="screen profile" data-screen="profile" aria-labelledby="profileTitle" aria-hidden="true">
+          <div class="page-title reveal"><span>01</span><h2 id="profileTitle" data-i18n="nav.profile">个人简介</h2></div>
+          <div class="profile-layout depth-group">
+            <div class="portrait reveal asset-portrait depth-surface profile-preview-trigger" data-profile-preview="portrait" tabindex="0" role="button" aria-label="查看完整照片">
+              <img src="./assets/self-intro/我的头像照片.jpg" alt="陈冠宇在夜景前的照片" />
+            </div>
+            <article class="bio reveal depth-surface profile-preview-trigger" data-profile-preview="bio" tabindex="0" role="button" aria-label="查看完整基本信息">
+              <i class="bio-line" aria-hidden="true"></i>
+              <p data-i18n="bio.identity">陈冠宇　CHIN GUAN YUE　2004年04月　22岁</p>
+              <p data-i18n="bio.school">中国传媒大学　23级三维动画设计专业</p>
+              <p data-i18n="bio.nationality">马来西亚籍华裔</p>
+              <p data-i18n="bio.language">精通中文、英文、马来文　沟通无任何障碍</p>
+              <hr />
+              <h3 data-i18n="bio.experience">项目经历</h3>
+              <ul>
+                <li data-i18n="bio.exp1">大三联合创作：导演、分镜、建模、绑定、动画、后期剪辑</li>
+                <li data-i18n="bio.exp2">参与 2026 费纳奇北京动画周比赛</li>
+                <li data-i18n="bio.exp3">为餐饮品牌 Niko Niko Onigiri 设计 IP 盲盒</li>
+                <li data-i18n="bio.exp4">参与 2025 第23届 24 HOURS Animation Contest for Students</li>
+              </ul>
+              <div class="bio-contacts" aria-label="联系方式">
+                <a href="tel:13121425198"><span data-i18n="bio.phone">微信手机号</span><strong>13121425198</strong></a>
+                <a href="mailto:guanyue0413@gmail.com"><span data-i18n="bio.email">邮箱</span><strong>guanyue0413@gmail.com</strong></a>
+              </div>
+              <p class="bio-intro" data-i18n="bio.intro">接下来是我在校内校外的项目经验、个人开发设计的原创IP、以及个人作品集展示。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="screen gallery-screen" data-screen="collab" aria-labelledby="collabTitle" aria-hidden="true">
+          <div class="page-title reveal"><span>02</span><h2 id="collabTitle" data-i18n="nav.collab">大三联创</h2><small class="production-tag" data-i18n="tag.collab">BLENDER &amp; MAYA 制作</small></div>
+          <div class="gallery-heading reveal"><p class="collab-project-title">《剪纸惊魂》</p><small class="collab-project-role" id="collabText">担任导演、分镜、建模、绑定、动画、后期剪辑</small></div>
+          <div class="gallery reveal" data-description-target="collabText">
+            <button class="card warm media-card" type="button" style="--art:url('./assets/collab/片头logo.png')" data-media-type="video" data-media-src="./assets/collab/《剪纸惊魂》 成片.mp4" data-title-zh="《剪纸惊魂》成片" data-title-en="《剪纸惊魂》成片" data-description-zh="《剪纸惊魂》成片：傍晚姐弟二人闲来剪纸，不慎触犯民俗禁忌，纸人鬼怪幻化实体将姐姐卷入诡异剪纸异世界。胆小的弟弟鼓足勇气踏入险境救人，冒险途中得到神秘红纸人相助，最终姐弟携手挣脱幻境重回现实。此番奇遇过后，任性的姐姐懂得心存敬畏，怯懦的弟弟也变得勇敢坚毅。" data-description-en="《剪纸惊魂》成片：傍晚姐弟二人闲来剪纸，不慎触犯民俗禁忌，纸人鬼怪幻化实体将姐姐卷入诡异剪纸异世界。胆小的弟弟鼓足勇气踏入险境救人，冒险途中得到神秘红纸人相助，最终姐弟携手挣脱幻境重回现实。此番奇遇过后，任性的姐姐懂得心存敬畏，怯懦的弟弟也变得勇敢坚毅。" data-tone="warm"><i>01</i><b>《剪纸惊魂》成片</b></button>
+            <button class="card violet media-card" type="button" style="--art:url('./assets/collab/海报.jpg')" data-media-type="image" data-media-src="./assets/collab/海报.jpg" data-title-zh="海报" data-title-en="海报" data-description-zh="海报：海报。" data-description-en="海报：海报。" data-tone="violet"><i>02</i><b>海报</b></button>
+            <button class="card blue media-card" type="button" style="--art:url('./assets/collab/人物三视图.png')" data-media-type="image" data-media-src="./assets/collab/人物三视图.png" data-title-zh="人物三视图" data-title-en="人物三视图" data-description-zh="人物三视图：从上往下是 弟弟人物建模、姐姐人物建模、红色纸人战士人物建模。" data-description-en="人物三视图：从上往下是 弟弟人物建模、姐姐人物建模、红色纸人战士人物建模。" data-tone="blue"><i>03</i><b>人物三视图</b></button>
+            <button class="card mint media-card" type="button" style="--art:url('./assets/collab/场景图1.png')" data-media-type="image" data-media-src="./assets/collab/场景图1.png" data-title-zh="场景图1" data-title-en="场景图1" data-description-zh="场景图1：剪纸世界场景建模1." data-description-en="场景图1：剪纸世界场景建模1." data-tone="mint"><i>04</i><b>场景图1</b></button>
+            <button class="card warm media-card" type="button" style="--art:url('./assets/collab/场景图2.png')" data-media-type="image" data-media-src="./assets/collab/场景图2.png" data-title-zh="场景图2" data-title-en="场景图2" data-description-zh="场景图2：剪纸世界场景建模2." data-description-en="场景图2：剪纸世界场景建模2." data-tone="warm"><i>05</i><b>场景图2</b></button>
+          </div>
+        </section>
+
+        <section class="screen gallery-screen" data-screen="projects" aria-labelledby="projectsTitle" aria-hidden="true">
+          <div class="page-title reveal"><span>03</span><h2 id="projectsTitle" data-i18n="nav.projects">参与项目</h2></div>
+          <div class="gallery-heading reveal"><p id="projectsHeadline" data-i18n="projects.headline">Niko Niko Onigiri</p><small id="projectsText" data-i18n="projects.hint">学校作品与甲方模型项目将在这里展开。</small></div>
+          <div class="gallery reveal" data-description-target="projectsText" data-title-target="projectsHeadline">
+            <button class="card warm route-card" type="button" style="--art:url('./assets/niko/project-cover.png')" data-route="niko" data-title-zh="Niko Niko Onigiri" data-title-en="Niko Niko Onigiri" data-description-zh="餐饮品牌 Niko Niko Onigiri 的IP盲盒设计项目。点击进入项目详情。" data-description-en="An IP blind-box design project for Niko Niko Onigiri. Click to enter the project." data-tone="warm"><i>01</i><b>Niko Niko Onigiri</b><small data-i18n="projects.enter">点击进入</small></button>
+            <button class="card blue route-card" type="button" style="--art:url('./assets/hours/比赛组员海报.png')" data-route="hours" data-title-zh="24小时动画挑战赛" data-title-en="24 HOURS Animation Contest" data-description-zh="第23届 24小时动画挑战赛参赛项目。点击进入项目详情。" data-description-en="A project for the 24 HOURS Animation Contest. Click to enter the project." data-tone="blue"><i>02</i><b data-i18n="projects.hoursTitle">24小时动画挑战赛</b><small data-i18n="projects.enter">点击进入</small></button>
+          </div>
+        </section>
+
+        <section class="screen gallery-screen project-detail-screen" data-screen="niko" aria-labelledby="nikoTitle" aria-hidden="true">
+          <div class="page-title reveal"><span>03.1</span><h2 id="nikoTitle">Niko Niko Onigiri</h2><small class="production-tag" data-i18n="tag.blender">BLENDER 制作</small></div>
+          <div class="gallery-heading reveal"><p data-i18n="niko.headline">Niko Niko Onigiri 餐饮品牌 IP盲盒&amp;门头 模型设计</p><small id="nikoText" data-i18n="niko.hint">停留在任一内容上，展开它的完整画幅。</small></div>
+          <div class="gallery reveal" data-description-target="nikoText">
+            <button class="card warm media-card" type="button" style="--art:url('./assets/niko/饭团 1.png')" data-media-type="image" data-media-srcs="./assets/niko/饭团 1.png|./assets/niko/饭团 2.png|./assets/niko/饭团 3.png" data-title-zh="饭团系列" data-title-en="Onigiri Series" data-description-zh="饭团 1、2、3。" data-description-en="Onigiri 1, 2 and 3." data-tone="warm"><i>01</i><b data-i18n="niko.card1">饭团系列</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card blue media-card" type="button" style="--art:url('./assets/niko/鱼吃饭团 1.png')" data-media-type="image" data-media-srcs="./assets/niko/鱼吃饭团 1.png|./assets/niko/鱼吃饭团 2.png|./assets/niko/鱼吃饭团 3.png" data-title-zh="鱼吃饭团系列" data-title-en="Fish Eating Onigiri Series" data-description-zh="鱼吃饭团 1、2、3。" data-description-en="Fish Eating Onigiri 1, 2 and 3." data-tone="blue"><i>02</i><b data-i18n="niko.card2">鱼吃饭团系列</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card violet media-card" type="button" style="--art:url('./assets/niko/蛋卷饭团 1.png')" data-media-type="image" data-media-srcs="./assets/niko/蛋卷饭团 1.png|./assets/niko/蛋卷饭团 2.png|./assets/niko/蛋卷饭团 3.png" data-title-zh="蛋卷饭团系列" data-title-en="Omelette Onigiri Series" data-description-zh="蛋卷饭团 1、2、3。" data-description-en="Omelette Onigiri 1, 2 and 3." data-tone="violet"><i>03</i><b data-i18n="niko.card3">蛋卷饭团系列</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card mint media-card" type="button" style="--art:url('./assets/niko/天妇罗饭团 1.png')" data-media-type="image" data-media-srcs="./assets/niko/天妇罗饭团 1.png|./assets/niko/天妇罗饭团 2.png|./assets/niko/天妇罗饭团 3.png" data-title-zh="天妇罗饭团系列" data-title-en="Tempura Onigiri Series" data-description-zh="天妇罗饭团 1、2、3。" data-description-en="Tempura Onigiri 1, 2 and 3." data-tone="mint"><i>04</i><b data-i18n="niko.card4">天妇罗饭团系列</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card blue media-card" type="button" style="--art:url('./assets/niko/门头 1.png')" data-media-type="image" data-media-srcs="./assets/niko/门头 1.png|./assets/niko/门头 2.png|./assets/niko/门头 3.png" data-title-zh="门头系列" data-title-en="Storefront Series" data-description-zh="门头 1、2、3。" data-description-en="Storefront 1, 2 and 3." data-tone="blue"><i>05</i><b data-i18n="niko.card5">门头系列</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card warm media-card" type="button" style="--art:url('./assets/niko/实体店面照片/实体店面门头.webp')" data-media-type="image" data-media-srcs="./assets/niko/实体店面照片/实体店面门头.webp|./assets/niko/实体店面照片/实体店面图1.webp|./assets/niko/实体店面照片/实体店面图2.webp" data-title-zh="实体店面照片" data-title-en="Storefront Photos" data-description-zh="地址：36, Jalan Puteri 5/1, Bandar Puteri, 47100 Selangor, Malaysia。电话号码：+60 11-1650 3688。营业时间：周日、周一、周三至周六 9 am–8:30 pm；周二 5–8:30 pm。Google 链接：https://share.google/2zQesJtaG3l3KU2Vp" data-description-en="Address: 36, Jalan Puteri 5/1, Bandar Puteri, 47100 Selangor, Malaysia. Phone: +60 11-1650 3688. Hours: Sunday, Monday, Wednesday–Saturday 9 am–8:30 pm; Tuesday 5–8:30 pm. Google link: https://share.google/2zQesJtaG3l3KU2Vp" data-tone="warm"><i>06</i><b data-i18n="niko.card6">实体店面照片</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+          </div>
+          <div class="project-pager" aria-label="参与项目分页"><button class="project-dot active" type="button" data-project-target="niko" aria-label="Niko Niko Onigiri"></button><button class="project-dot" type="button" data-project-target="hours" aria-label="24 HOURS Animation Contest for Students"></button></div>
+        </section>
+
+        <section class="screen gallery-screen project-detail-screen" data-screen="hours" aria-labelledby="hoursTitle" aria-hidden="true">
+          <div class="page-title reveal"><span>03.2</span><h2 id="hoursTitle" data-i18n="hours.pageTitle">24小时动画挑战赛</h2><small class="production-tag" data-i18n="tag.blender">BLENDER 制作</small></div>
+          <div class="gallery-heading reveal"><p data-i18n="hours.headline">24小时动画挑战赛</p><small id="hoursText" data-i18n="hours.hint">停留在任一内容上，展开它的完整画幅。</small></div>
+          <div class="gallery reveal" data-description-target="hoursText">
+            <button class="card blue media-card" type="button" style="--art:url('./assets/hours/比赛组员海报.png')" data-media-type="image" data-media-src="./assets/hours/比赛组员海报.png" data-title-zh="比赛组员海报" data-title-en="Team Poster" data-description-zh="担任分镜设计、三维场景建模、镜头渲染。油管链接：https://www.youtube.com/@okOkayokei" data-description-en="Storyboard Design · 3D Environment Modeling · Shot Rendering. YouTube link: https://www.youtube.com/@okOkayokei" data-tone="blue"><i>01</i><b data-i18n="hours.card1">比赛组员海报</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card violet media-card" type="button" style="--art:url('./assets/hours/比赛组员海报.png')" data-media-type="video" data-media-src="./assets/hours/比赛成片.mp4" data-title-zh="比赛成片" data-title-en="Final Film" data-description-zh="比赛成片。" data-description-en="Final Film." data-tone="violet"><i>02</i><b data-i18n="hours.card2">比赛成片</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card warm media-card" type="button" style="--art:url('./assets/hours/比赛成绩（组别名字是okokayokei）.png')" data-media-type="image" data-media-src="./assets/hours/比赛成绩（组别名字是okokayokei）.png" data-title-zh="比赛成绩" data-title-en="Competition Result" data-description-zh="比赛成绩（组别名字是okokayokei）。" data-description-en="Competition result (team name: okokayokei)." data-tone="warm"><i>03</i><b data-i18n="hours.card3">比赛成绩</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card mint media-card" type="button" style="--art:url('./assets/hours/比赛组员海报.png')" data-media-type="video" data-media-src="./assets/hours/比赛幕后影片.mp4" data-title-zh="幕后影片" data-title-en="Behind-the-Scenes Film" data-description-zh="幕后影片。" data-description-en="Behind-the-scenes film." data-tone="mint"><i>04</i><b data-i18n="hours.card4">幕后影片</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+          </div>
+          <div class="project-pager" aria-label="参与项目分页"><button class="project-dot" type="button" data-project-target="niko" aria-label="Niko Niko Onigiri"></button><button class="project-dot active" type="button" data-project-target="hours" aria-label="24 HOURS Animation Contest for Students"></button></div>
+        </section>
+
+        <section class="screen gallery-screen" data-screen="ip" aria-labelledby="ipTitle" aria-hidden="true">
+          <div class="page-title reveal"><span>04</span><h2 id="ipTitle" data-i18n="nav.ip">原创IP</h2><small class="production-tag" data-i18n="tag.blender">BLENDER 制作</small></div>
+          <div class="gallery-heading reveal"><p data-i18n="ip.headline">BOBB 原创 IP</p><small id="ipText" data-i18n="ip.hint">点击进入完整项目。</small></div>
+          <div class="gallery reveal ip-project-gallery" data-description-target="ipText">
+            <button class="card violet route-card" type="button" style="--art:url('./assets/bobb/IP 大封面.png')" data-route="bobb" data-title-zh="BOBB 原创 IP" data-title-en="BOBB Original IP" data-description-zh="BOBB 原创 IP 项目。点击进入完整项目。" data-description-en="BOBB original IP project. Click to enter the full project." data-tone="violet"><i>01</i><b>BOBB</b><small data-i18n="ip.enter">点击进入</small></button>
+          </div>
+        </section>
+
+        <section class="screen gallery-screen project-detail-screen" data-screen="bobb" aria-labelledby="bobbTitle" aria-hidden="true">
+          <div class="page-title reveal"><span>04.1</span><h2 id="bobbTitle">BOBB</h2></div>
+          <div class="gallery-heading reveal"><p data-i18n="bobb.headline">BOBB 原创 IP</p><small id="bobbText" data-i18n="bobb.hint">停留在任一内容上，展开它的完整画幅。</small></div>
+          <div class="gallery reveal" data-description-target="bobbText">
+            <button class="card violet media-card" type="button" style="--art:url('./assets/bobb/BOBB 海报.png')" data-media-type="image" data-media-src="./assets/bobb/BOBB 海报.png" data-title-zh="BOBB 海报" data-title-en="BOBB Poster" data-description-zh="BOBB 原创 IP 海报。" data-description-en="BOBB original IP poster." data-tone="violet"><i>01</i><b data-i18n="bobb.card1">海报</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card blue media-card" type="button" style="--art:url('./assets/bobb/第一集 《陌生星球》 成片/BOBB《陌生星球》-封面.jpg')" data-media-type="video" data-media-src="./assets/bobb/第一集 《陌生星球》 成片/BOBB《陌生星球》成片.mp4" data-title-zh="第一集《陌生星球》成片" data-title-en="Episode 1: Oddland" data-description-zh="一颗充满奇迹的陌生星球，在平静的某个瞬间，迎来了一位陌生的客人。这个客人并非自愿到来，且选择了最张扬的方式迫降。看来一时半会是离不开这个陌生的星球了。" data-description-en="A miraculous planet receives an unexpected visitor, forced into a dramatic landing. For now, this stranger is not leaving the planet any time soon." data-tone="blue"><i>02</i><b data-i18n="bobb.card2">第一集《陌生星球》成片</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card mint media-card" type="button" style="--art:url('./assets/bobb/BOBB/BOBB.png')" data-media-type="image" data-media-srcs="./assets/bobb/BOBB/BOBB.png|./assets/bobb/MARTY no.4/MARTY no.4.png|./assets/bobb/ANGELA/ANGELA.png|./assets/bobb/DAMON/DAMON.png|./assets/bobb/FISH/FISH.png|./assets/bobb/ISON/ISON.png|./assets/bobb/KING RETRIEVER/KING RETRIEVER.png|./assets/bobb/LIL TREE/LIL TREE.png|./assets/bobb/LILY/LILY.png|./assets/bobb/MEEP/MEEP.png|./assets/bobb/RP/RP.png" data-title-zh="角色展示" data-title-en="Character Showcase" data-description-zh="依序展示 BOBB、MARTY no.4、ANGELA、DAMON、FISH、ISON、KING RETRIEVER、LIL TREE、LILY、MEEP 与 RP。" data-description-en="Featuring BOBB, MARTY no.4, ANGELA, DAMON, FISH, ISON, KING RETRIEVER, LIL TREE, LILY, MEEP and RP in sequence." data-tone="mint"><i>03</i><b data-i18n="bobb.card3">角色展示</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+          </div>
+        </section>
+
+        <section class="screen gallery-screen" data-screen="works" aria-labelledby="worksTitle" aria-hidden="true">
+          <div class="page-title reveal"><span>05</span><h2 id="worksTitle" data-i18n="nav.works">个人作品</h2><small class="production-tag" data-i18n="tag.works">大部分 BLENDER，部分 MAYA 和 AI</small></div>
+          <div class="gallery-heading reveal"><p data-i18n="works.headline">把练习、热爱与成长，整理成可以被看见的作品。</p><small id="worksText" data-i18n="works.hint">点击展开后，将以全屏查看高清图片或视频。</small></div>
+          <div class="gallery reveal" data-description-target="worksText">
+            <button class="card blue media-card" type="button" style="--art:url('./assets/practice/单帧渲染练习/RAMPAGE RALLY 单帧渲染.png')" data-media-type="video" data-media-src="./assets/practice/第11届世界渲染大赛 RAMPAGE RALLY 成片.mp4" data-title-zh="第11届世界渲染大赛 RAMPAGE RALLY 成片" data-title-en="11th World Rendering Competition: RAMPAGE RALLY" data-description-zh="第11届世界渲染大赛 RAMPAGE RALLY 成片。" data-description-en="Final film for the 11th World Rendering Competition: RAMPAGE RALLY." data-tone="blue"><i>01</i><b data-i18n="works.card1">RAMPAGE RALLY 成片</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card warm media-card" type="button" style="--art:url('./assets/practice/11 Second Club比赛/陈冠宇_比赛作品页面截图.jpg.png')" data-media-types="image|video" data-media-srcs="./assets/practice/11 Second Club比赛/陈冠宇_比赛作品页面截图.jpg.png|./assets/practice/11 Second Club比赛/2025年6月 11SecClub_Competition 对白动画短片.mp4" data-title-zh="11 Second Club 比赛" data-title-en="11 Second Club Competition" data-description-zh="2025年6月 11SecClub Competition 对白动画短片。" data-description-en="June 2025 11SecClub Competition dialogue animation short." data-tone="warm"><i>02</i><b data-i18n="works.card2">11 Second Club 比赛</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card mint media-card" type="button" data-media-type="video" data-media-src="./assets/practice/预告片练习.mp4" data-title-zh="预告片动画练习" data-title-en="Trailer Animation Exercise" data-description-zh="预告片动画练习。" data-description-en="Trailer animation exercise." data-tone="mint"><i>03</i><b data-i18n="works.card3">预告片动画练习</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card violet media-card" type="button" style="--art:url('./assets/practice/AI 生成练习/河边的小鸭.png')" data-media-type="image" data-media-srcs="./assets/practice/AI 生成练习/河边的小鸭.png|./assets/practice/AI 生成练习/集市追逐.png" data-title-zh="AI 生成练习" data-title-en="AI Generation Exercises" data-description-zh="河边的小鸭、集市追逐。" data-description-en="Duck by the River; Market Chase." data-tone="violet"><i>04</i><b data-i18n="works.card4">AI 生成练习</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card blue media-card" type="button" data-media-type="video" data-media-srcs="./assets/practice/MAYA 动画练习/异兽动画练习.mov|./assets/practice/MAYA 动画练习/漂浮生物动画练习.mp4|./assets/practice/MAYA 动画练习/立定跳远动画练习.mp4" data-title-zh="MAYA 动画练习" data-title-en="MAYA Animation Exercises" data-description-zh="异兽动画练习、漂浮生物动画练习、立定跳远动画练习。" data-description-en="Creature animation, floating creature animation, and standing long-jump animation exercises." data-tone="blue"><i>05</i><b data-i18n="works.card5">MAYA 动画练习</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card warm media-card" type="button" style="--art:url('./assets/practice/一分钟故事短片《心动一分钟》/心动一分钟海报.png')" data-media-types="image|video" data-media-srcs="./assets/practice/一分钟故事短片《心动一分钟》/心动一分钟海报.png|./assets/practice/一分钟故事短片《心动一分钟》/《心动一分钟》 故事短片.mp4" data-title-zh="一分钟故事短片《心动一分钟》" data-title-en="One-Minute Story: Heartbeat in a Minute" data-description-zh="《心动一分钟》故事短片与海报。" data-description-en="HeartBeat in a Minute short film and poster." data-tone="warm"><i>06</i><b data-i18n="works.card6">《心动一分钟》</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card mint media-card" type="button" style="--art:url('./assets/practice/人物绑定练习/photo 1.png')" data-media-types="image|image|image|video|video" data-media-srcs="./assets/practice/人物绑定练习/photo 1.png|./assets/practice/人物绑定练习/photo 2.png|./assets/practice/人物绑定练习/photo 3.png|./assets/practice/人物绑定练习/人物运动练习.mkv|./assets/practice/人物绑定练习/角色介绍视频.mp4" data-title-zh="人物绑定练习" data-title-en="Character Rigging Exercises" data-description-zh="人物绑定练习：三张设定图片、人物运动练习与角色介绍视频。" data-description-en="Character rigging exercises: three stills, a movement exercise, and a character introduction video." data-tone="mint"><i>07</i><b data-i18n="works.card7">人物绑定练习</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card violet media-card" type="button" style="--art:url('./assets/practice/动画作业/单帧渲染 1.png')" data-media-types="video|image|image" data-media-srcs="./assets/practice/动画作业/《消失的BOBB》（vanishing of BOBB）.mkv|./assets/practice/动画作业/单帧渲染 1.png|./assets/practice/动画作业/单帧渲染 2.png" data-title-zh="动画作业" data-title-en="Animation Assignment" data-description-zh="《消失的BOBB》与单帧渲染作品。" data-description-en="Vanishing of BOBB and single-frame renders." data-tone="violet"><i>08</i><b data-i18n="works.card8">动画作业</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card blue media-card" type="button" data-media-types="video|video|video|video|video|video" data-media-srcs="./assets/practice/动画练习/bobby cat.mkv|./assets/practice/动画练习/Bobby kick something.mp4|./assets/practice/动画练习/bobby sword music.mp4|./assets/practice/动画练习/bounce ball with music.mp4|./assets/practice/动画练习/clockwise with music.mp4|./assets/practice/动画练习/pick up things with music.mp4" data-title-zh="动画练习" data-title-en="Animation Exercises" data-description-zh="bobby cat、Bobby kick something、bobby sword music、bounce ball、clockwise、pick up things。" data-description-en="bobby cat, Bobby kick something, bobby sword music, bounce ball, clockwise, and pick up things." data-tone="blue"><i>09</i><b data-i18n="works.card9">动画练习</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+            <button class="card warm media-card" type="button" style="--art:url('./assets/practice/单帧渲染练习/RAMPAGE RALLY 单帧渲染.png')" data-media-type="image" data-media-srcs="./assets/practice/单帧渲染练习/RAMPAGE RALLY 单帧渲染.png|./assets/practice/单帧渲染练习/八二年可乐--焦距渲染.jpg|./assets/practice/单帧渲染练习/壁纸 1.png|./assets/practice/单帧渲染练习/头像 1.jpg|./assets/practice/单帧渲染练习/游戏房.png|./assets/practice/单帧渲染练习/登月.png|./assets/practice/单帧渲染练习/花园.png" data-title-zh="单帧渲染练习" data-title-en="Single-Frame Rendering Exercises" data-description-zh="RAMPAGE RALLY、八二年可乐、壁纸、头像、游戏房、登月、花园。" data-description-en="RAMPAGE RALLY, 82 Cola, wallpaper, portrait, game room, moon landing, and garden." data-tone="warm"><i>10</i><b data-i18n="works.card10">单帧渲染练习</b><small data-i18n="card.hint">悬停 / 点击</small></button>
+          </div>
+        </section>
+
+        <section class="screen contact-screen" data-screen="contact" aria-label="联系我" aria-hidden="true">
+          <div class="contact-stage reveal depth-single depth-surface">
+            <div class="contact-detail"><span data-i18n="contact.phone" data-split-text>微信手机号</span><a href="tel:13121425198" data-split-text>13121425198</a></div>
+            <div class="contact-detail"><span data-i18n="contact.email" data-split-text>邮箱</span><a href="mailto:guanyue0413@gmail.com" data-split-text>guanyue0413@gmail.com</a></div>
+          </div>
+        </section>
+      </main>
+
+      <button class="next-button" id="nextButton" type="button"><small>NEXT MODULE</small><span id="nextText">点击此处前往个人简介</span><b>↗</b></button>
+      <p class="site-signature" data-i18n="signature">PERSONAL PORTFOLIO　个人作品集网站</p>
+    </div>
+
+    <dialog id="workModal" class="work-modal" aria-labelledby="modalTitle">
+      <button class="close" type="button" id="closeModal" aria-label="关闭作品预览">×</button>
+      <div class="modal-art" id="modalArt">
+        <div class="modal-media" id="modalMedia"></div>
+        <button class="modal-nav modal-prev" id="modalPrev" type="button" aria-label="查看上一件作品">‹</button>
+        <span data-i18n="modal.preview">高清预览</span>
+        <button class="modal-nav modal-next" id="modalNext" type="button" aria-label="查看下一件作品">›</button>
+      </div>
+      <div class="modal-copy" tabindex="0" aria-label="作品说明"><small id="modalIndex">作品 / 01</small><h2 id="modalTitle">项目标题</h2><p id="modalDescription">这里将显示作品说明。</p><em data-i18n="modal.note">素材加入后，此区域将播放高清图片或视频。</em></div>
+    </dialog>
+    <script src="./app-v2.js"></script>
+  </body>
+</html>

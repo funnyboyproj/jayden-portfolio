@@ -1,0 +1,164 @@
+/* Navigation overflow and lower-screen safe space. */
+.site-header {
+  gap: clamp(10px, 1.5vw, 26px);
+}
+
+.nav-control {
+  flex: 1 1 auto;
+  max-width: none;
+  min-width: 0;
+}
+
+.hover-nav {
+  -ms-overflow-style: none;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  gap: clamp(8px, 1vw, 18px);
+  max-width: none;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 18px 17px 4px;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  touch-action: pan-x;
+
+  /* A vertical fade keeps the menu veil light at its lower edge. */
+  background: linear-gradient(180deg,
+    rgba(0, 0, 0, .98) 0%,
+    rgba(0, 0, 0, .94) 42%,
+    rgba(1, 2, 7, .73) 67%,
+    rgba(1, 2, 7, .30) 86%,
+    rgba(1, 2, 7, 0) 100%);
+  border-radius: 0 0 38px 0;
+  box-shadow: 0 22px 44px rgba(0, 0, 0, .38);
+}
+
+.hover-nav::-webkit-scrollbar { display: none; }
+
+.primary-nav button {
+  flex: none;
+  min-width: max-content !important;
+  width: max-content !important;
+}
+
+.primary-nav button span {
+  display: block;
+  white-space: nowrap;
+}
+
+body[data-language="en"] .primary-nav button,
+body[data-language="en"] .primary-nav button span {
+  font-size: clamp(11px, 1vw, 18px);
+  letter-spacing: .055em;
+}
+
+body[data-language="en"] .primary-nav button {
+  padding-inline: clamp(15px, 1.6vw, 30px);
+}
+
+/* Chinese uses the original, more spacious fixed-width menu rhythm. */
+body[data-language="zh"] .hover-nav {
+  gap: clamp(6px, .65vw, 12px);
+}
+
+body[data-language="zh"] .primary-nav button {
+  min-width: 0 !important;
+  width: clamp(84px, 8.3vw, 160px) !important;
+}
+
+/* The profile panel sits above the fixed navigation and remains internally readable. */
+.profile {
+  padding-bottom: clamp(185px, 20vh, 235px) !important;
+  padding-top: clamp(108px, 12vh, 148px) !important;
+}
+
+.profile .profile-layout {
+  height: min(clamp(560px, 67vh, 750px), calc(100svh - 205px));
+  margin-top: 0;
+}
+
+.profile .portrait,
+.profile .bio {
+  height: 100%;
+  min-height: 0;
+}
+
+.profile .asset-portrait img {
+  min-height: 0;
+  object-position: center;
+}
+
+.profile .bio {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(23px, 2.5vw, 46px);
+  scrollbar-color: #75d9ff #17143c;
+  scrollbar-width: thin;
+}
+
+.profile .bio::-webkit-scrollbar { width: 7px; }
+.profile .bio::-webkit-scrollbar-track { background: #17143c66; }
+.profile .bio::-webkit-scrollbar-thumb { background: linear-gradient(#8054ff, #6ddaf0); border-radius: 99px; }
+
+.profile .bio > p {
+  font-size: clamp(15px, 1.35vw, 26px);
+  line-height: 1.34;
+}
+
+.profile .bio h3 {
+  font-size: clamp(17px, 1.45vw, 27px);
+  margin-top: clamp(14px, 1.7vh, 23px);
+}
+
+.profile .bio ul {
+  font-size: clamp(12px, .92vw, 17px);
+  line-height: 1.5;
+}
+
+.profile .bio .bio-intro { margin-top: clamp(18px, 2vh, 27px); }
+
+.profile-preview-trigger {
+  cursor: zoom-in;
+}
+
+.profile-preview-trigger:focus-visible,
+.profile-preview-trigger:hover {
+  box-shadow: 0 0 0 2px #74d9ff77, 0 0 30px #815dff55;
+  outline: 0;
+}
+
+.work-modal.profile-photo-preview { max-height: 92svh; max-width: min(780px, 92vw); width: min(700px, 90vw); }
+.work-modal.profile-photo-preview .modal-art { height: min(84svh, 900px); }
+.work-modal.profile-photo-preview .modal-copy { display: none; }
+.work-modal.profile-info-preview .modal-art { display: none; }
+.work-modal.profile-info-preview .modal-copy { max-height: 80svh; }
+.work-modal.profile-info-preview .modal-copy p { white-space: pre-line; }
+
+@media (max-width: 920px) {
+  .hover-nav { padding-bottom: 13px; }
+
+  body[data-language="en"] .primary-nav button,
+  body[data-language="en"] .primary-nav button span {
+    font-size: 11px;
+  }
+
+  body[data-language="en"] .primary-nav button {
+    padding-inline: 14px;
+  }
+
+  .profile {
+    padding-bottom: 170px !important;
+    padding-top: 98px !important;
+  }
+
+  .profile .profile-layout {
+    height: auto;
+    margin-top: 28px;
+    max-height: none;
+  }
+
+  .profile .portrait { min-height: 360px; }
+  .profile .bio { max-height: none; overflow: visible; }
+}

@@ -1,0 +1,12 @@
+dist/
+_site-scaffold/
+.openai/
+.publish-push*.log
+
+# Original motion media stays on this computer and is published through
+# Cloudflare R2. GitHub keeps the site code and lightweight visual assets.
+assets/**/*.mp4
+assets/**/*.mkv
+assets/**/*.mov
+assets/**/*.avi
+assets/**/*.webm

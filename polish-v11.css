@@ -1,0 +1,29 @@
+/* The BOBB archive holds many high-resolution character artworks. */
+.dense-gallery {
+  contain: layout paint;
+}
+
+.dense-gallery .card {
+  backface-visibility: hidden;
+  transition: flex .42s cubic-bezier(.22, .75, .22, 1), filter .28s ease, opacity .28s ease !important;
+}
+
+.dense-gallery .card::before {
+  transition: none;
+}
+
+.dense-gallery.depth-group.has-depth-focus .card:not(.depth-active) {
+  filter: brightness(.62) saturate(.72) !important;
+  opacity: .84;
+  transform: scale(.988) !important;
+}
+
+.dense-gallery.depth-group.has-depth-focus .card.depth-active {
+  box-shadow: 0 18px 38px #0009;
+  filter: brightness(1.04) saturate(1.04) !important;
+  transform: none !important;
+}
+
+.dense-gallery .panel-edge-glow {
+  display: none !important;
+}

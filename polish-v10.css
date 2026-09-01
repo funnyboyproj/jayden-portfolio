@@ -1,0 +1,28 @@
+/* Project-entry covers: preserve the supplied compositions instead of cropping them. */
+.screen[data-screen="projects"] .gallery,
+.screen[data-screen="ip"] .gallery {
+  flex: 0 0 clamp(250px, 40vh, 450px);
+  max-width: min(1320px, 88vw);
+  margin-inline: auto;
+}
+
+.screen[data-screen="projects"] .route-card::before,
+.screen[data-screen="ip"] .route-card::before {
+  background-color: #070a16;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  background-size: 100% 100%, contain;
+}
+
+.screen[data-screen="projects"] .route-card.expanded::before,
+.screen[data-screen="ip"] .route-card.expanded::before {
+  transform: scale(1);
+}
+
+@media (max-width: 920px) {
+  .screen[data-screen="projects"] .gallery,
+  .screen[data-screen="ip"] .gallery {
+    flex-basis: clamp(225px, 39svh, 360px);
+    max-width: 100%;
+  }
+}

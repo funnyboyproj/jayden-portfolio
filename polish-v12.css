@@ -1,0 +1,47 @@
+/* Production-credit labels and the single BOBB project entrance. */
+.page-title .production-tag {
+  color: #8dcbff;
+  font-family: var(--text);
+  font-size: clamp(10px, .82vw, 15px);
+  font-weight: 800;
+  letter-spacing: .12em;
+  line-height: 1.2;
+  max-width: min(24vw, 340px);
+  text-shadow: 0 0 16px #559cff66;
+  text-transform: uppercase;
+}
+
+.ip-project-gallery {
+  align-items:stretch;
+  justify-content:center;
+}
+
+.ip-project-gallery .route-card {
+  flex: 0 1 min(860px, 74vw);
+  max-width: min(860px, 74vw);
+}
+
+.ip-project-gallery .route-card::before {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media (max-width: 920px) {
+  .page-title {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 5px 12px;
+  }
+
+  .page-title .production-tag {
+    flex-basis: 100%;
+    margin-left: 38px;
+    max-width: calc(100vw - 138px);
+  }
+
+  .ip-project-gallery .route-card {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,69 @@
+/* Menu pass: a compact console-style control strip that unfolds from the gear. */
+.hover-nav {
+  align-items: stretch;
+  background: linear-gradient(90deg, #000 0%, #02030aee 68%, #02030a99 88%, transparent 100%);
+  border-radius: 0 22px 22px 0;
+  box-shadow: 0 18px 34px #000a, inset 0 -1px #5ebeff22;
+  padding: clamp(11px, 1.05vw, 18px) clamp(13px, 1.25vw, 22px) clamp(13px, 1.2vw, 20px);
+}
+
+.primary-nav button,
+.primary-nav button:hover,
+.primary-nav button:focus-visible,
+.primary-nav button:active,
+.primary-nav button.current {
+  align-items: center;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  display: flex;
+  filter: none !important;
+  flex-direction: column;
+  gap: clamp(7px, .6vw, 11px);
+  height: clamp(62px, 5.8vw, 94px);
+  justify-content: flex-start;
+  padding: 0 !important;
+  text-shadow: none !important;
+  transform: none !important;
+  transition: filter .28s ease, transform .28s ease;
+}
+
+.primary-nav button::before {
+  background: linear-gradient(90deg, #7b4dff, #778bff 48%, #70ddef);
+  border-radius: 999px;
+  box-shadow: 0 0 0 #61cfff00;
+  content: "";
+  flex: 0 0 auto;
+  height: clamp(6px, .48vw, 9px);
+  transition: box-shadow .28s ease, filter .28s ease, transform .28s ease;
+  width: 100%;
+}
+
+.primary-nav button span {
+  color: #f5f9ff;
+  font-family: var(--display);
+  font-size: clamp(11px, .85vw, 16px) !important;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 3px 14px #64bfff44;
+}
+
+.primary-nav button:hover,
+.primary-nav button:focus-visible,
+.primary-nav button.current { transform: translateY(-3px) !important; }
+
+.primary-nav button:hover::before,
+.primary-nav button:focus-visible::before,
+.primary-nav button.current::before {
+  box-shadow: 0 0 13px #61d8ff, 0 0 26px #865dff99;
+  filter: brightness(1.22);
+  transform: scaleX(1.04);
+}
+
+.primary-nav button:focus-visible { outline: 1px solid #7fddff88 !important; outline-offset: 6px; }
+
+@media (max-width: 920px) {
+  .hover-nav { padding: 9px 11px 12px; }
+  .primary-nav button { height: 58px; }
+}

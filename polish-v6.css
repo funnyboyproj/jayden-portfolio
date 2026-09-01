@@ -1,0 +1,29 @@
+/* Keep the profile composition higher and make the shared lower-screen controls persistent. */
+.profile {
+  padding-bottom: clamp(165px, 17vh, 220px) !important;
+  padding-top: clamp(115px, 13vh, 165px) !important;
+}
+
+.profile .profile-layout { margin-top: clamp(8px, 1vh, 18px); }
+
+.next-button,
+.site-signature { position: fixed !important; z-index: 20 !important; }
+
+.next-button {
+  bottom: calc(clamp(58px, 6.2vh, 82px) + env(safe-area-inset-bottom)) !important;
+  left: clamp(16px, 2vw, 36px) !important;
+  right: auto !important;
+}
+
+.site-signature {
+  bottom: calc(clamp(16px, 2.2vh, 28px) + env(safe-area-inset-bottom)) !important;
+  left: clamp(16px, 2vw, 36px) !important;
+  right: auto !important;
+}
+
+@media (max-width: 700px) {
+  .profile { padding-bottom: 170px !important; padding-top: 100px !important; }
+  .profile .profile-layout { margin-top: 0; }
+  .next-button { bottom: calc(60px + env(safe-area-inset-bottom)) !important; left: 16px !important; width: min(290px, calc(100vw - 32px)) !important; }
+  .site-signature { bottom: calc(18px + env(safe-area-inset-bottom)) !important; left: 16px !important; max-width: calc(100vw - 32px); }
+}
