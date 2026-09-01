@@ -15,9 +15,6 @@ const modalPreviewLabel = modalArt.querySelector("[data-i18n='modal.preview']");
 const modalPrev = document.querySelector("#modalPrev");
 const modalNext = document.querySelector("#modalNext");
 const movingLines = document.querySelector(".asset-lines");
-const cursorRibbons = document.querySelector("#cursorRibbons");
-const particleFog = document.querySelector("#particleFog");
-const metaBalls = document.querySelector("#metaBalls");
 const clickRipples = document.querySelector("#clickRipples");
 
 let triggerNavigationRipple = () => {};
@@ -366,7 +363,6 @@ function startClickRipples() {
   const context = clickRipples.getContext("2d");
   if (!context) return;
 
-  const pointer = { x: window.innerWidth * .5, y: window.innerHeight * .5 };
   const ripples = [];
   let width = 0;
   let height = 0;
@@ -413,7 +409,7 @@ function startClickRipples() {
     else frame = 0;
   };
 
-  const createRipple = (x = pointer.x, y = pointer.y) => {
+  const createRipple = (x = window.innerWidth * .5, y = window.innerHeight * .5) => {
     const start = performance.now();
     const previous = ripples[ripples.length - 1];
     if (previous && start - previous.start < 70 && Math.hypot(previous.x - x, previous.y - y) < 30) return;
@@ -423,11 +419,6 @@ function startClickRipples() {
     if (!frame) frame = requestAnimationFrame(draw);
   };
 
-  triggerNavigationRipple = (x, y) => createRipple(x, y);
-  window.addEventListener("pointermove", (event) => {
-    pointer.x = event.clientX;
-    pointer.y = event.clientY;
-  }, { passive: true });
   document.addEventListener("click", (event) => {
     if (event.detail === 0) return;
     createRipple(event.clientX, event.clientY);
@@ -749,7 +740,8 @@ function openProfilePreview(type) {
     const image = document.createElement("img");
     image.className = "modal-media-item";
     image.alt = language === "zh" ? "陈冠宇个人照片" : "Portrait of Chin Guan Yue";
-    image.src = "./assets/self-intro/我的头像照片.jpg";
+    image.decoding = "async";
+    image.src = "./web-images/image-064.webp";
     image.addEventListener("load", () => {
       if (image.isConnected && image.naturalHeight > image.naturalWidth) modal.classList.add("portrait-preview");
     }, { once: true });
@@ -981,13 +973,7 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowRight") showModalCard(modalCardIndex + 1);
 });
 prepareDeferredArtwork();
-setupDepthInteractions();
-setupPanelGlow();
-startMetaBalls();
 startClickRipples();
-startParticleFog();
-startCursorRibbons();
-startHomeTitleDepth();
 setupProfilePreviews();
 setupNavigationScroll();
 setNext(current);

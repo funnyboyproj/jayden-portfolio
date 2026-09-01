@@ -10,4 +10,8 @@ assets/**/*.mkv
 assets/**/*.mov
 assets/**/*.avi
 assets/**/*.webm
+assets/**/*.png
+assets/**/*.jpg
+assets/**/*.jpeg
+assets/**/*.webp
 web-media/
