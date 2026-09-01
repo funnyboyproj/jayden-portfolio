@@ -142,6 +142,35 @@ let modalCards = [];
 let modalItems = [];
 let modalCardIndex = 0;
 
+const publicMediaBase = "https://pub-4ccac1ee9e26469e80d086bf24ae96d7.r2.dev";
+const publicMediaFiles = new Map([
+  ["./assets/collab/《剪纸惊魂》 成片.mp4", "《剪纸惊魂》成片1080P版.mp4"],
+  ["./assets/hours/比赛成片.mp4", "比赛成片.mp4"],
+  ["./assets/hours/比赛幕后影片.mp4", "比赛幕后影片.mp4"],
+  ["./assets/bobb/第一集 《陌生星球》 成片/BOBB《陌生星球》成片.mp4", "BOBB《陌生星球》成片.mp4"],
+  ["./assets/practice/第11届世界渲染大赛 RAMPAGE RALLY 成片.mp4", "第11届世界渲染大赛 RAMPAGE RALLY 成片.mp4"],
+  ["./assets/practice/11 Second Club比赛/2025年6月 11SecClub_Competition 对白动画短片.mp4", "2025年6月 11SecClub_Competition 对白动画短片.mp4"],
+  ["./assets/practice/预告片练习.mp4", "预告片练习.mp4"],
+  ["./assets/practice/MAYA 动画练习/异兽动画练习.mov", "异兽动画练习.mov"],
+  ["./assets/practice/MAYA 动画练习/漂浮生物动画练习.mp4", "漂浮生物动画练习.mp4"],
+  ["./assets/practice/MAYA 动画练习/立定跳远动画练习.mp4", "立定跳远动画练习.mp4"],
+  ["./assets/practice/一分钟故事短片《心动一分钟》/《心动一分钟》 故事短片.mp4", "《心动一分钟》 故事短片.mp4"],
+  ["./assets/practice/人物绑定练习/人物运动练习.mkv", "人物运动练习.mkv"],
+  ["./assets/practice/人物绑定练习/角色介绍视频.mp4", "角色介绍视频.mp4"],
+  ["./assets/practice/动画作业/《消失的BOBB》（vanishing of BOBB）.mkv", "《消失的BOBB》（vanishing of BOBB）.mkv"],
+  ["./assets/practice/动画练习/bobby cat.mkv", "bobby cat.mkv"],
+  ["./assets/practice/动画练习/Bobby kick something.mp4", "Bobby kick something.mp4"],
+  ["./assets/practice/动画练习/bobby sword music.mp4", "bobby sword music.mp4"],
+  ["./assets/practice/动画练习/bounce ball with music.mp4", "bounce ball with music.mp4"],
+  ["./assets/practice/动画练习/clockwise with music.mp4", "clockwise with music.mp4"],
+  ["./assets/practice/动画练习/pick up things with music.mp4", "pick up things with music.mp4"]
+]);
+
+function publicMediaSource(source) {
+  const filename = publicMediaFiles.get(source);
+  return filename ? `${publicMediaBase}/${encodeURIComponent(filename)}` : source;
+}
+
 function cardValue(card, key) {
   return card.dataset[key + (language === "zh" ? "Zh" : "En")];
 }
@@ -694,12 +723,15 @@ function createModalItems(cards) {
   return cards.flatMap((card) => {
     const sources = (card.dataset.mediaSrcs || card.dataset.mediaSrc || "").split("|").filter(Boolean);
     const mediaTypes = (card.dataset.mediaTypes || card.dataset.mediaType || "image").split("|");
-    return (sources.length ? sources : [""]).map((source, index) => ({
-      card,
-      source,
-      mediaType: mediaTypes[index] || mediaTypes[mediaTypes.length - 1] || "image",
-      sourceIndex: index
-    }));
+    return (sources.length ? sources : [""]).map((source, index) => {
+      const mediaType = mediaTypes[index] || mediaTypes[mediaTypes.length - 1] || "image";
+      return {
+        card,
+        source: mediaType === "video" ? publicMediaSource(source) : source,
+        mediaType,
+        sourceIndex: index
+      };
+    });
   });
 }
 
