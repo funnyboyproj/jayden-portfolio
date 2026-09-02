@@ -1,7 +1,941 @@
 {
   "version": 1,
-  "translations": {},
-  "cards": {},
+  "translations": {
+    "nav.home": {
+      "zh": "主页",
+      "en": "HOME"
+    },
+    "nav.profile": {
+      "zh": "个人简介",
+      "en": "ABOUT ME"
+    },
+    "nav.collab": {
+      "zh": "大三联创",
+      "en": "COLLABORATION"
+    },
+    "nav.projects": {
+      "zh": "参与项目",
+      "en": "PROJECTS"
+    },
+    "nav.ip": {
+      "zh": "原创IP",
+      "en": "ORIGINAL IP"
+    },
+    "nav.works": {
+      "zh": "个人作品&练习",
+      "en": "PERSONAL WORKS & PRACTICE"
+    },
+    "nav.contact": {
+      "zh": "联系我",
+      "en": "CONTACT ME"
+    },
+    "signature": {
+      "zh": "PERSONAL PORTFOLIO　个人作品集网站",
+      "en": "PERSONAL PORTFOLIO　PERSONAL WEBSITE"
+    },
+    "bio.identity": {
+      "zh": "陈冠宇　CHIN GUAN YUE　2004年04月　22岁",
+      "en": "CHIN GUAN YUE　APRIL 2004　22 YEARS OLD"
+    },
+    "bio.school": {
+      "zh": "中国传媒大学　23级三维动画设计专业",
+      "en": "COMMUNICATION UNIVERSITY OF CHINA　3D ANIMATION DESIGN, CLASS OF 2023"
+    },
+    "bio.nationality": {
+      "zh": "马来西亚籍华裔",
+      "en": "MALAYSIAN CHINESE"
+    },
+    "bio.language": {
+      "zh": "精通中文、英文、马来文　沟通无任何障碍",
+      "en": "FLUENT IN CHINESE, ENGLISH AND MALAY"
+    },
+    "bio.phone": {
+      "zh": "微信手机号",
+      "en": "WECHAT / MOBILE"
+    },
+    "bio.email": {
+      "zh": "邮箱",
+      "en": "EMAIL"
+    },
+    "bio.experience": {
+      "zh": "项目经历",
+      "en": "PROJECT EXPERIENCE"
+    },
+    "bio.exp1": {
+      "zh": "大三联合创作：导演、分镜、建模、绑定、动画、后期剪辑",
+      "en": "Third-year collaboration: director, storyboarding, modeling, rigging, animation and post-production."
+    },
+    "bio.exp2": {
+      "zh": "参与 2026 费纳奇北京动画周比赛",
+      "en": "Participant, 2026 Feinaki Beijing Animation Week competition."
+    },
+    "bio.exp3": {
+      "zh": "为餐饮品牌 Niko Niko Onigiri 设计 IP 盲盒",
+      "en": "Designed an IP blind box for Niko Niko Onigiri."
+    },
+    "bio.exp4": {
+      "zh": "参与 2025 第23届 24 HOURS Animation Contest for Students",
+      "en": "Participant, 2025 23rd 24 HOURS Animation Contest for Students."
+    },
+    "bio.intro": {
+      "zh": "接下来是我在校内校外的项目经验、个人开发设计的原创IP、以及个人作品集展示。",
+      "en": "Explore my campus and client projects, original IP development, and personal works."
+    },
+    "collab.headline": {
+      "zh": "以笔为媒，绘就热爱与专业。",
+      "en": "Make passion and craft visible through every frame."
+    },
+    "collab.hint": {
+      "zh": "停留在任一项目上，展开它的完整画幅。",
+      "en": "Hover over any work to expand it into its full frame."
+    },
+    "tag.collab": {
+      "zh": "BLENDER & MAYA 制作",
+      "en": "MADE WITH BLENDER & MAYA"
+    },
+    "tag.blender": {
+      "zh": "BLENDER 制作",
+      "en": "MADE WITH BLENDER"
+    },
+    "tag.works": {
+      "zh": "大部分 BLENDER，部分 MAYA 和 AI",
+      "en": "MOSTLY BLENDER, SOME MAYA & AI"
+    },
+    "collab.card1": {
+      "zh": "叙事世界",
+      "en": "Narrative World"
+    },
+    "collab.card2": {
+      "zh": "角色实验",
+      "en": "Character Lab"
+    },
+    "collab.card3": {
+      "zh": "镜头片段",
+      "en": "Shot Studies"
+    },
+    "collab.card4": {
+      "zh": "动态叙事",
+      "en": "Motion Narrative"
+    },
+    "projects.headline": {
+      "zh": "Niko Niko Onigiri",
+      "en": "Niko Niko Onigiri"
+    },
+    "projects.hint": {
+      "zh": "选择一个项目，进入完整项目页。",
+      "en": "Choose a project to enter its full project page."
+    },
+    "projects.enter": {
+      "zh": "点击进入",
+      "en": "ENTER PROJECT"
+    },
+    "projects.hoursTitle": {
+      "zh": "24小时动画挑战赛",
+      "en": "24 HOURS Animation Contest"
+    },
+    "niko.headline": {
+      "zh": "Niko Niko Onigiri 餐饮品牌 IP盲盒&门头 模型设计",
+      "en": "Niko Niko Onigiri Food Brand IP Blind Box & Storefront Model Design"
+    },
+    "niko.hint": {
+      "zh": "停留在任一内容上，展开它的完整画幅。",
+      "en": "Hover over any work to expand it into its full frame."
+    },
+    "niko.card1": {
+      "zh": "饭团系列",
+      "en": "Onigiri Series"
+    },
+    "niko.card2": {
+      "zh": "鱼吃饭团系列",
+      "en": "Fish Eating Onigiri Series"
+    },
+    "niko.card3": {
+      "zh": "蛋卷饭团系列",
+      "en": "Omelette Onigiri Series"
+    },
+    "niko.card4": {
+      "zh": "天妇罗饭团系列",
+      "en": "Tempura Onigiri Series"
+    },
+    "niko.card5": {
+      "zh": "门头系列",
+      "en": "Storefront Series"
+    },
+    "niko.card6": {
+      "zh": "实体店面照片",
+      "en": "Storefront Photos"
+    },
+    "hours.headline": {
+      "zh": "24小时动画挑战赛",
+      "en": "24 HOURS Animation Contest"
+    },
+    "hours.pageTitle": {
+      "zh": "24小时动画挑战赛",
+      "en": "24 HOURS Animation Contest"
+    },
+    "hours.hint": {
+      "zh": "停留在任一内容上，展开它的完整画幅。",
+      "en": "Hover over any work to expand it into its full frame."
+    },
+    "hours.card1": {
+      "zh": "比赛组员海报",
+      "en": "Team Poster"
+    },
+    "hours.card2": {
+      "zh": "比赛成片",
+      "en": "Final Film"
+    },
+    "hours.card3": {
+      "zh": "比赛成绩",
+      "en": "Competition Result"
+    },
+    "hours.card4": {
+      "zh": "幕后影片",
+      "en": "Behind-the-Scenes Film"
+    },
+    "ip.headline": {
+      "zh": "BOBB 原创 IP",
+      "en": "BOBB Original IP"
+    },
+    "ip.hint": {
+      "zh": "点击进入完整项目。",
+      "en": "Click to enter the full project."
+    },
+    "ip.enter": {
+      "zh": "点击进入",
+      "en": "ENTER PROJECT"
+    },
+    "bobb.headline": {
+      "zh": "BOBB 原创 IP",
+      "en": "BOBB Original IP"
+    },
+    "bobb.hint": {
+      "zh": "停留在任一内容上，展开它的完整画幅。",
+      "en": "Hover over any work to expand it into its full frame."
+    },
+    "bobb.card1": {
+      "zh": "海报",
+      "en": "Poster"
+    },
+    "bobb.card2": {
+      "zh": "第一集《陌生星球》成片",
+      "en": "Episode 1: Oddland"
+    },
+    "bobb.card3": {
+      "zh": "角色展示",
+      "en": "Character Showcase"
+    },
+    "works.headline": {
+      "zh": "作品集&练习展示",
+      "en": "PORTFOLIO & PRACTICE SHOWCASE"
+    },
+    "works.hint": {
+      "zh": "点击展开后，将以全屏查看高清图片或视频。",
+      "en": "Click an expanded work to view high-resolution images or video."
+    },
+    "works.card1": {
+      "zh": "RAMPAGE RALLY 成片",
+      "en": "RAMPAGE RALLY Final Film"
+    },
+    "works.card2": {
+      "zh": "11 Second Club 比赛",
+      "en": "11 Second Club Competition"
+    },
+    "works.card3": {
+      "zh": "预告片动画练习",
+      "en": "Trailer Animation Exercise"
+    },
+    "works.card4": {
+      "zh": "AI 生成练习",
+      "en": "AI Generation Exercises"
+    },
+    "works.card5": {
+      "zh": "MAYA 动画练习",
+      "en": "MAYA Animation Exercises"
+    },
+    "works.card6": {
+      "zh": "《心动一分钟》",
+      "en": "Heartbeat in a Minute"
+    },
+    "works.card7": {
+      "zh": "人物绑定练习",
+      "en": "Character Rigging Exercises"
+    },
+    "works.card8": {
+      "zh": "动画作业",
+      "en": "Animation Assignment"
+    },
+    "works.card9": {
+      "zh": "动画练习",
+      "en": "Animation Exercises"
+    },
+    "works.card10": {
+      "zh": "单帧渲染练习",
+      "en": "Single-Frame Rendering Exercises"
+    },
+    "card.hint": {
+      "zh": "悬停 / 点击",
+      "en": "HOVER / CLICK"
+    },
+    "contact.phone": {
+      "zh": "微信手机号",
+      "en": "WECHAT / MOBILE"
+    },
+    "contact.email": {
+      "zh": "邮箱",
+      "en": "EMAIL"
+    },
+    "modal.preview": {
+      "zh": "高清预览",
+      "en": "HIGH-RES PREVIEW"
+    },
+    "modal.note": {
+      "zh": "素材加入后，此区域将播放高清图片或视频。",
+      "en": "High-resolution images or videos will play here once materials are added."
+    }
+  },
+  "cards": {
+    "collab-01": {
+      "id": "collab-01",
+      "titleZh": "《剪纸惊魂》成片",
+      "titleEn": "《剪纸惊魂》成片",
+      "descriptionZh": "《剪纸惊魂》成片：傍晚姐弟二人闲来剪纸，不慎触犯民俗禁忌，纸人鬼怪幻化实体将姐姐卷入诡异剪纸异世界。胆小的弟弟鼓足勇气踏入险境救人，冒险途中得到神秘红纸人相助，最终姐弟携手挣脱幻境重回现实。此番奇遇过后，任性的姐姐懂得心存敬畏，怯懦的弟弟也变得勇敢坚毅。",
+      "descriptionEn": "《剪纸惊魂》成片：傍晚姐弟二人闲来剪纸，不慎触犯民俗禁忌，纸人鬼怪幻化实体将姐姐卷入诡异剪纸异世界。胆小的弟弟鼓足勇气踏入险境救人，冒险途中得到神秘红纸人相助，最终姐弟携手挣脱幻境重回现实。此番奇遇过后，任性的姐姐懂得心存敬畏，怯懦的弟弟也变得勇敢坚毅。",
+      "artwork": "./web-images/image-026.webp",
+      "mediaType": "video",
+      "mediaTypes": [
+        "video"
+      ],
+      "mediaSources": [
+        "./assets/collab/《剪纸惊魂》 成片.mp4"
+      ],
+      "tone": "warm",
+      "route": "",
+      "hidden": false,
+      "moduleId": "collab"
+    },
+    "collab-02": {
+      "id": "collab-02",
+      "titleZh": "海报",
+      "titleEn": "海报",
+      "descriptionZh": "海报：海报。",
+      "descriptionEn": "海报：海报。",
+      "artwork": "./web-images/image-025.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-025.webp"
+      ],
+      "tone": "violet",
+      "route": "",
+      "hidden": false,
+      "moduleId": "collab"
+    },
+    "collab-03": {
+      "id": "collab-03",
+      "titleZh": "人物三视图",
+      "titleEn": "人物三视图",
+      "descriptionZh": "人物三视图：从上往下是 弟弟人物建模、姐姐人物建模、红色纸人战士人物建模。",
+      "descriptionEn": "人物三视图：从上往下是 弟弟人物建模、姐姐人物建模、红色纸人战士人物建模。",
+      "artwork": "./web-images/image-022.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-022.webp"
+      ],
+      "tone": "blue",
+      "route": "",
+      "hidden": false,
+      "moduleId": "collab"
+    },
+    "collab-04": {
+      "id": "collab-04",
+      "titleZh": "场景图1",
+      "titleEn": "场景图1",
+      "descriptionZh": "场景图1：剪纸世界场景建模1.",
+      "descriptionEn": "场景图1：剪纸世界场景建模1.",
+      "artwork": "./web-images/image-023.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-023.webp"
+      ],
+      "tone": "mint",
+      "route": "",
+      "hidden": false,
+      "moduleId": "collab"
+    },
+    "collab-05": {
+      "id": "collab-05",
+      "titleZh": "场景图2",
+      "titleEn": "场景图2",
+      "descriptionZh": "场景图2：剪纸世界场景建模2.",
+      "descriptionEn": "场景图2：剪纸世界场景建模2.",
+      "artwork": "./web-images/image-024.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-024.webp"
+      ],
+      "tone": "warm",
+      "route": "",
+      "hidden": false,
+      "moduleId": "collab"
+    },
+    "projects-01": {
+      "id": "projects-01",
+      "titleZh": "Niko Niko Onigiri",
+      "titleEn": "Niko Niko Onigiri",
+      "descriptionZh": "餐饮品牌 Niko Niko Onigiri 的IP盲盒设计项目。点击进入项目详情。",
+      "descriptionEn": "An IP blind-box design project for Niko Niko Onigiri. Click to enter the project.",
+      "artwork": "./web-images/image-029.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [],
+      "tone": "warm",
+      "route": "niko",
+      "hidden": false,
+      "moduleId": "projects"
+    },
+    "projects-02": {
+      "id": "projects-02",
+      "titleZh": "24小时动画挑战赛",
+      "titleEn": "24 HOURS Animation Contest",
+      "descriptionZh": "第23届 24小时动画挑战赛参赛项目。点击进入项目详情。",
+      "descriptionEn": "A project for the 24 HOURS Animation Contest. Click to enter the project.",
+      "artwork": "./web-images/image-028.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [],
+      "tone": "blue",
+      "route": "hours",
+      "hidden": false,
+      "moduleId": "projects"
+    },
+    "niko-01": {
+      "id": "niko-01",
+      "titleZh": "饭团系列",
+      "titleEn": "Onigiri Series",
+      "descriptionZh": "饭团 1、2、3。",
+      "descriptionEn": "Onigiri 1, 2 and 3.",
+      "artwork": "./web-images/image-042.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-042.webp",
+        "./web-images/image-043.webp",
+        "./web-images/image-044.webp"
+      ],
+      "tone": "warm",
+      "route": "",
+      "hidden": false,
+      "moduleId": "niko"
+    },
+    "niko-02": {
+      "id": "niko-02",
+      "titleZh": "鱼吃饭团系列",
+      "titleEn": "Fish Eating Onigiri Series",
+      "descriptionZh": "鱼吃饭团 1、2、3。",
+      "descriptionEn": "Fish Eating Onigiri 1, 2 and 3.",
+      "artwork": "./web-images/image-045.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-045.webp",
+        "./web-images/image-046.webp",
+        "./web-images/image-047.webp"
+      ],
+      "tone": "blue",
+      "route": "",
+      "hidden": false,
+      "moduleId": "niko"
+    },
+    "niko-03": {
+      "id": "niko-03",
+      "titleZh": "蛋卷饭团系列",
+      "titleEn": "Omelette Onigiri Series",
+      "descriptionZh": "蛋卷饭团 1、2、3。",
+      "descriptionEn": "Omelette Onigiri 1, 2 and 3.",
+      "artwork": "./web-images/image-036.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-036.webp",
+        "./web-images/image-037.webp",
+        "./web-images/image-038.webp"
+      ],
+      "tone": "violet",
+      "route": "",
+      "hidden": false,
+      "moduleId": "niko"
+    },
+    "niko-04": {
+      "id": "niko-04",
+      "titleZh": "天妇罗饭团系列",
+      "titleEn": "Tempura Onigiri Series",
+      "descriptionZh": "天妇罗饭团 1、2、3。",
+      "descriptionEn": "Tempura Onigiri 1, 2 and 3.",
+      "artwork": "./web-images/image-030.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-030.webp",
+        "./web-images/image-031.webp",
+        "./web-images/image-032.webp"
+      ],
+      "tone": "mint",
+      "route": "",
+      "hidden": false,
+      "moduleId": "niko"
+    },
+    "niko-05": {
+      "id": "niko-05",
+      "titleZh": "门头系列",
+      "titleEn": "Storefront Series",
+      "descriptionZh": "门头 1、2、3。",
+      "descriptionEn": "Storefront 1, 2 and 3.",
+      "artwork": "./web-images/image-039.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-039.webp",
+        "./web-images/image-040.webp",
+        "./web-images/image-041.webp"
+      ],
+      "tone": "blue",
+      "route": "",
+      "hidden": false,
+      "moduleId": "niko"
+    },
+    "niko-06": {
+      "id": "niko-06",
+      "titleZh": "实体店面照片",
+      "titleEn": "Storefront Photos",
+      "descriptionZh": "地址：36, Jalan Puteri 5/1, Bandar Puteri, 47100 Selangor, Malaysia。电话号码：+60 11-1650 3688。营业时间：周日、周一、周三至周六 9 am–8:30 pm；周二 5–8:30 pm。Google 链接：https://share.google/2zQesJtaG3l3KU2Vp",
+      "descriptionEn": "Address: 36, Jalan Puteri 5/1, Bandar Puteri, 47100 Selangor, Malaysia. Phone: +60 11-1650 3688. Hours: Sunday, Monday, Wednesday–Saturday 9 am–8:30 pm; Tuesday 5–8:30 pm. Google link: https://share.google/2zQesJtaG3l3KU2Vp",
+      "artwork": "./web-images/image-035.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-035.webp",
+        "./web-images/image-033.webp",
+        "./web-images/image-034.webp"
+      ],
+      "tone": "warm",
+      "route": "",
+      "hidden": false,
+      "moduleId": "niko"
+    },
+    "hours-01": {
+      "id": "hours-01",
+      "titleZh": "比赛组员海报",
+      "titleEn": "Team Poster",
+      "descriptionZh": "担任分镜设计、三维场景建模、镜头渲染。油管链接：https://www.youtube.com/@okOkayokei",
+      "descriptionEn": "Storyboard Design · 3D Environment Modeling · Shot Rendering. YouTube link: https://www.youtube.com/@okOkayokei",
+      "artwork": "./web-images/image-028.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-028.webp"
+      ],
+      "tone": "blue",
+      "route": "",
+      "hidden": false,
+      "moduleId": "hours"
+    },
+    "hours-02": {
+      "id": "hours-02",
+      "titleZh": "比赛成片",
+      "titleEn": "Final Film",
+      "descriptionZh": "比赛成片。",
+      "descriptionEn": "Final Film.",
+      "artwork": "./web-images/image-028.webp",
+      "mediaType": "video",
+      "mediaTypes": [
+        "video"
+      ],
+      "mediaSources": [
+        "./assets/hours/比赛成片.mp4"
+      ],
+      "tone": "violet",
+      "route": "",
+      "hidden": false,
+      "moduleId": "hours"
+    },
+    "hours-03": {
+      "id": "hours-03",
+      "titleZh": "比赛成绩",
+      "titleEn": "Competition Result",
+      "descriptionZh": "比赛成绩（组别名字是okokayokei）。",
+      "descriptionEn": "Competition result (team name: okokayokei).",
+      "artwork": "./web-images/image-027.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-027.webp"
+      ],
+      "tone": "warm",
+      "route": "",
+      "hidden": false,
+      "moduleId": "hours"
+    },
+    "hours-04": {
+      "id": "hours-04",
+      "titleZh": "幕后影片",
+      "titleEn": "Behind-the-Scenes Film",
+      "descriptionZh": "幕后影片。",
+      "descriptionEn": "Behind-the-scenes film.",
+      "artwork": "./web-images/image-028.webp",
+      "mediaType": "video",
+      "mediaTypes": [
+        "video"
+      ],
+      "mediaSources": [
+        "./assets/hours/比赛幕后影片.mp4"
+      ],
+      "tone": "mint",
+      "route": "",
+      "hidden": false,
+      "moduleId": "hours"
+    },
+    "ip-01": {
+      "id": "ip-01",
+      "titleZh": "BOBB 原创 IP",
+      "titleEn": "BOBB Original IP",
+      "descriptionZh": "BOBB 原创 IP 项目。点击进入完整项目。",
+      "descriptionEn": "BOBB original IP project. Click to enter the full project.",
+      "artwork": "./web-images/image-013.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [],
+      "tone": "violet",
+      "route": "bobb",
+      "hidden": false,
+      "moduleId": "ip"
+    },
+    "bobb-01": {
+      "id": "bobb-01",
+      "titleZh": "BOBB 海报",
+      "titleEn": "BOBB Poster",
+      "descriptionZh": "BOBB 原创 IP 海报。",
+      "descriptionEn": "BOBB original IP poster.",
+      "artwork": "./web-images/image-009.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-009.webp"
+      ],
+      "tone": "violet",
+      "route": "",
+      "hidden": false,
+      "moduleId": "bobb"
+    },
+    "bobb-02": {
+      "id": "bobb-02",
+      "titleZh": "第一集《陌生星球》成片",
+      "titleEn": "Episode 1: Oddland",
+      "descriptionZh": "一颗充满奇迹的陌生星球，在平静的某个瞬间，迎来了一位陌生的客人。这个客人并非自愿到来，且选择了最张扬的方式迫降。看来一时半会是离不开这个陌生的星球了。",
+      "descriptionEn": "A miraculous planet receives an unexpected visitor, forced into a dramatic landing. For now, this stranger is not leaving the planet any time soon.",
+      "artwork": "./web-images/image-021.webp",
+      "mediaType": "video",
+      "mediaTypes": [
+        "video"
+      ],
+      "mediaSources": [
+        "./assets/bobb/第一集 《陌生星球》 成片/BOBB《陌生星球》成片.mp4"
+      ],
+      "tone": "blue",
+      "route": "",
+      "hidden": false,
+      "moduleId": "bobb"
+    },
+    "bobb-03": {
+      "id": "bobb-03",
+      "titleZh": "角色展示",
+      "titleEn": "Character Showcase",
+      "descriptionZh": "依序展示 BOBB、MARTY no.4、ANGELA、DAMON、FISH、ISON、KING RETRIEVER、LIL TREE、LILY、MEEP 与 RP。",
+      "descriptionEn": "Featuring BOBB, MARTY no.4, ANGELA, DAMON, FISH, ISON, KING RETRIEVER, LIL TREE, LILY, MEEP and RP in sequence.",
+      "artwork": "./web-images/image-010.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-010.webp",
+        "./web-images/image-018.webp",
+        "./web-images/image-008.webp",
+        "./web-images/image-011.webp",
+        "./web-images/image-012.webp",
+        "./web-images/image-014.webp",
+        "./web-images/image-015.webp",
+        "./web-images/image-016.webp",
+        "./web-images/image-017.webp",
+        "./web-images/image-019.webp",
+        "./web-images/image-020.webp"
+      ],
+      "tone": "mint",
+      "route": "",
+      "hidden": false,
+      "moduleId": "bobb"
+    },
+    "works-01": {
+      "id": "works-01",
+      "titleZh": "第11届世界渲染大赛 RAMPAGE RALLY 成片",
+      "titleEn": "11th World Rendering Competition: RAMPAGE RALLY",
+      "descriptionZh": "第11届世界渲染大赛 RAMPAGE RALLY 成片。",
+      "descriptionEn": "Final film for the 11th World Rendering Competition: RAMPAGE RALLY.",
+      "artwork": "./web-images/image-057.webp",
+      "mediaType": "video",
+      "mediaTypes": [
+        "video"
+      ],
+      "mediaSources": [
+        "./assets/practice/第11届世界渲染大赛 RAMPAGE RALLY 成片.mp4"
+      ],
+      "tone": "blue",
+      "route": "",
+      "hidden": false,
+      "moduleId": "works"
+    },
+    "works-02": {
+      "id": "works-02",
+      "titleZh": "11 Second Club 比赛",
+      "titleEn": "11 Second Club Competition",
+      "descriptionZh": "2025年6月 11SecClub Competition 对白动画短片。",
+      "descriptionEn": "June 2025 11SecClub Competition dialogue animation short.",
+      "artwork": "./web-images/image-048.webp",
+      "mediaType": "video",
+      "mediaTypes": [
+        "image",
+        "video"
+      ],
+      "mediaSources": [
+        "./web-images/image-048.webp",
+        "./assets/practice/11 Second Club比赛/2025年6月 11SecClub_Competition 对白动画短片.mp4"
+      ],
+      "tone": "warm",
+      "route": "",
+      "hidden": false,
+      "moduleId": "works"
+    },
+    "works-03": {
+      "id": "works-03",
+      "titleZh": "预告片动画练习",
+      "titleEn": "Trailer Animation Exercise",
+      "descriptionZh": "预告片动画练习。",
+      "descriptionEn": "Trailer animation exercise.",
+      "artwork": "",
+      "mediaType": "video",
+      "mediaTypes": [
+        "video"
+      ],
+      "mediaSources": [
+        "./assets/practice/预告片练习.mp4"
+      ],
+      "tone": "mint",
+      "route": "",
+      "hidden": false,
+      "moduleId": "works"
+    },
+    "works-04": {
+      "id": "works-04",
+      "titleZh": "AI 生成练习",
+      "titleEn": "AI Generation Exercises",
+      "descriptionZh": "河边的小鸭、集市追逐。",
+      "descriptionEn": "Duck by the River; Market Chase.",
+      "artwork": "./web-images/image-049.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-049.webp",
+        "./web-images/image-050.webp"
+      ],
+      "tone": "violet",
+      "route": "",
+      "hidden": false,
+      "moduleId": "works"
+    },
+    "works-05": {
+      "id": "works-05",
+      "titleZh": "MAYA 动画练习",
+      "titleEn": "MAYA Animation Exercises",
+      "descriptionZh": "异兽动画练习、漂浮生物动画练习、立定跳远动画练习。",
+      "descriptionEn": "Creature animation, floating creature animation, and standing long-jump animation exercises.",
+      "artwork": "",
+      "mediaType": "video",
+      "mediaTypes": [
+        "video"
+      ],
+      "mediaSources": [
+        "./assets/practice/MAYA 动画练习/异兽动画练习.mov",
+        "./assets/practice/MAYA 动画练习/漂浮生物动画练习.mp4",
+        "./assets/practice/MAYA 动画练习/立定跳远动画练习.mp4"
+      ],
+      "tone": "blue",
+      "route": "",
+      "hidden": false,
+      "moduleId": "works"
+    },
+    "works-06": {
+      "id": "works-06",
+      "titleZh": "一分钟故事短片《心动一分钟》",
+      "titleEn": "One-Minute Story: Heartbeat in a Minute",
+      "descriptionZh": "《心动一分钟》故事短片与海报。",
+      "descriptionEn": "HeartBeat in a Minute short film and poster.",
+      "artwork": "./web-images/image-051.webp",
+      "mediaType": "video",
+      "mediaTypes": [
+        "image",
+        "video"
+      ],
+      "mediaSources": [
+        "./web-images/image-051.webp",
+        "./assets/practice/一分钟故事短片《心动一分钟》/《心动一分钟》 故事短片.mp4"
+      ],
+      "tone": "warm",
+      "route": "",
+      "hidden": false,
+      "moduleId": "works"
+    },
+    "works-07": {
+      "id": "works-07",
+      "titleZh": "人物绑定练习",
+      "titleEn": "Character Rigging Exercises",
+      "descriptionZh": "人物绑定练习：三张设定图片、人物运动练习与角色介绍视频。",
+      "descriptionEn": "Character rigging exercises: three stills, a movement exercise, and a character introduction video.",
+      "artwork": "./web-images/image-052.webp",
+      "mediaType": "video",
+      "mediaTypes": [
+        "image",
+        "image",
+        "image",
+        "video",
+        "video"
+      ],
+      "mediaSources": [
+        "./web-images/image-052.webp",
+        "./web-images/image-053.webp",
+        "./web-images/image-054.webp",
+        "./assets/practice/人物绑定练习/人物运动练习.mkv",
+        "./assets/practice/人物绑定练习/角色介绍视频.mp4"
+      ],
+      "tone": "mint",
+      "route": "",
+      "hidden": false,
+      "moduleId": "works"
+    },
+    "works-08": {
+      "id": "works-08",
+      "titleZh": "动画作业",
+      "titleEn": "Animation Assignment",
+      "descriptionZh": "《消失的BOBB》与单帧渲染作品。",
+      "descriptionEn": "Vanishing of BOBB and single-frame renders.",
+      "artwork": "./web-images/image-055.webp",
+      "mediaType": "video",
+      "mediaTypes": [
+        "video",
+        "image",
+        "image"
+      ],
+      "mediaSources": [
+        "./assets/practice/动画作业/《消失的BOBB》（vanishing of BOBB）.mkv",
+        "./web-images/image-055.webp",
+        "./web-images/image-056.webp"
+      ],
+      "tone": "violet",
+      "route": "",
+      "hidden": false,
+      "moduleId": "works"
+    },
+    "works-09": {
+      "id": "works-09",
+      "titleZh": "动画练习",
+      "titleEn": "Animation Exercises",
+      "descriptionZh": "bobby cat、Bobby kick something、bobby sword music、bounce ball、clockwise、pick up things。",
+      "descriptionEn": "bobby cat, Bobby kick something, bobby sword music, bounce ball, clockwise, and pick up things.",
+      "artwork": "",
+      "mediaType": "video",
+      "mediaTypes": [
+        "video",
+        "video",
+        "video",
+        "video",
+        "video",
+        "video"
+      ],
+      "mediaSources": [
+        "./assets/practice/动画练习/bobby cat.mkv",
+        "./assets/practice/动画练习/Bobby kick something.mp4",
+        "./assets/practice/动画练习/bobby sword music.mp4",
+        "./assets/practice/动画练习/bounce ball with music.mp4",
+        "./assets/practice/动画练习/clockwise with music.mp4",
+        "./assets/practice/动画练习/pick up things with music.mp4"
+      ],
+      "tone": "blue",
+      "route": "",
+      "hidden": false,
+      "moduleId": "works"
+    },
+    "works-10": {
+      "id": "works-10",
+      "titleZh": "单帧渲染练习",
+      "titleEn": "Single-Frame Rendering Exercises",
+      "descriptionZh": "RAMPAGE RALLY、八二年可乐、壁纸、头像、游戏房、登月、花园。",
+      "descriptionEn": "RAMPAGE RALLY, 82 Cola, wallpaper, portrait, game room, moon landing, and garden.",
+      "artwork": "./web-images/image-057.webp",
+      "mediaType": "image",
+      "mediaTypes": [
+        "image"
+      ],
+      "mediaSources": [
+        "./web-images/image-057.webp",
+        "./web-images/image-058.webp",
+        "./web-images/image-059.webp",
+        "./web-images/image-060.webp",
+        "./web-images/image-061.webp",
+        "./web-images/image-062.webp",
+        "./web-images/image-063.webp"
+      ],
+      "tone": "warm",
+      "route": "",
+      "hidden": false,
+      "moduleId": "works"
+    }
+  },
   "customModules": [],
   "hiddenModules": []
 }
