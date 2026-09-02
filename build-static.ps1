@@ -9,7 +9,7 @@ if (Test-Path -LiteralPath $hostingOutput) { Remove-Item -LiteralPath $hostingOu
 New-Item -ItemType Directory -Force -Path $clientOutput, $serverOutput | Out-Null
 Copy-Item -LiteralPath (Join-Path $projectRoot 'index.html') -Destination $clientOutput -Force
 Copy-Item -LiteralPath (Join-Path $projectRoot 'app-v2.js') -Destination $clientOutput -Force
-Get-ChildItem -LiteralPath $projectRoot -Filter '*.css' -File | Copy-Item -Destination $clientOutput -Force
+Copy-Item -LiteralPath (Join-Path $projectRoot 'site.css') -Destination $clientOutput -Force
 Copy-Item -LiteralPath (Join-Path $projectRoot 'content-overrides.json') -Destination $clientOutput -Force
 Copy-Item -LiteralPath (Join-Path $projectRoot 'web-images') -Destination (Join-Path $clientOutput 'web-images') -Recurse -Force
 Copy-Item -LiteralPath (Join-Path $projectRoot 'static-worker.js') -Destination (Join-Path $serverOutput 'index.js') -Force
