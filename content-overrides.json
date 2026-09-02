@@ -294,6 +294,11 @@
       "en": "High-resolution images or videos will play here once materials are added."
     }
   },
+  "profile": {
+    "photo": "./web-images/image-064.webp",
+    "phone": "13121425198",
+    "email": "guanyue0413@gmail.com"
+  },
   "cards": {
     "collab-01": {
       "id": "collab-01",
