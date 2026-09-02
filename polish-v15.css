@@ -1,0 +1,307 @@
+/* Visual refinement: quiet black canvas and blue-violet glass information cards. */
+:root {
+  --glass-violet: rgba(114, 79, 255, .31);
+  --glass-blue: rgba(58, 160, 255, .22);
+  --glass-edge: rgba(153, 188, 255, .38);
+}
+
+html,
+body,
+.site-shell {
+  background: #070711 !important;
+}
+
+/* The previous flowing line artwork is intentionally removed from the visual layer. */
+.asset-lines {
+  display: none !important;
+}
+
+.site-shell::before {
+  background:
+    radial-gradient(ellipse 58% 54% at 84% -8%, rgba(104, 77, 221, .38) 0%, rgba(53, 64, 166, .19) 36%, transparent 72%),
+    radial-gradient(ellipse 44% 46% at 5% 83%, rgba(45, 94, 192, .17) 0%, transparent 71%),
+    radial-gradient(ellipse 36% 40% at 70% 71%, rgba(47, 119, 210, .12) 0%, transparent 70%),
+    linear-gradient(132deg, #050509 0%, #0a0a19 42%, #17153f 100%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: -2;
+}
+
+.page-title h2,
+.gallery-heading p,
+.production-tag {
+  text-shadow: 0 8px 28px rgba(83, 110, 255, .24) !important;
+}
+
+/* Glass surfaces keep the information hierarchy, without adding new artwork. */
+.portrait,
+.bio {
+  background:
+    linear-gradient(127deg, rgba(76, 47, 164, .48), rgba(45, 88, 169, .37) 55%, rgba(51, 166, 205, .25)) padding-box,
+    linear-gradient(128deg, rgba(152, 112, 255, .82), rgba(121, 205, 255, .58) 48%, rgba(255, 255, 255, .16)) border-box !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .58), inset 0 1px 0 rgba(255, 255, 255, .18) !important;
+  backdrop-filter: blur(20px) saturate(118%);
+}
+
+/* Contact is intentionally typography-led rather than another large card. */
+.contact-stage {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  max-width: min(920px, 82vw) !important;
+  padding: clamp(28px, 4vw, 68px) clamp(18px, 3vw, 44px) !important;
+  position: relative;
+  width: 100%;
+}
+
+.contact-stage::before,
+.contact-stage::after {
+  background: linear-gradient(90deg, transparent, rgba(125, 83, 255, .76), rgba(110, 211, 255, .78), transparent);
+  content: "";
+  height: 1px;
+  left: 8%;
+  position: absolute;
+  right: 8%;
+}
+
+.contact-stage::before { top: 0; }
+.contact-stage::after { bottom: 0; }
+
+.contact-detail {
+  align-items: baseline !important;
+  border-bottom: 1px solid rgba(160, 183, 255, .16);
+  display: grid !important;
+  gap: clamp(18px, 4vw, 64px) !important;
+  grid-template-columns: minmax(150px, .72fr) 1.28fr;
+  justify-content: stretch !important;
+  margin: 0 !important;
+  padding: clamp(22px, 2.5vw, 34px) clamp(6px, .8vw, 16px);
+  text-align: left;
+}
+
+.contact-detail:last-child { border-bottom: 0; }
+
+.contact-detail > span {
+  color: #8abdfd;
+  font-family: var(--display);
+  font-size: clamp(12px, 1.15vw, 18px);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.contact-detail a {
+  color: #f7faff !important;
+  font-family: var(--display) !important;
+  font-size: clamp(25px, 3.2vw, 54px) !important;
+  font-style: normal !important;
+  letter-spacing: .025em;
+  line-height: 1;
+  text-shadow: 0 8px 24px rgba(91, 117, 255, .3);
+}
+
+.contact-detail a:hover {
+  color: #b8eaff !important;
+  text-shadow: 0 0 24px rgba(123, 99, 255, .68) !important;
+}
+
+.portrait {
+  padding: clamp(10px, 1.1vw, 19px) !important;
+}
+
+.asset-portrait img {
+  filter: saturate(.92) contrast(1.03);
+}
+
+.bio-line {
+  border-color: rgba(160, 181, 255, .12) !important;
+}
+
+/* Work cards display the original material, with a restrained translucent title label. */
+.gallery {
+  gap: clamp(10px, .85vw, 18px) !important;
+}
+
+.card {
+  background: #080911 !important;
+  border: 1px solid rgba(154, 175, 255, .24) !important;
+  border-radius: clamp(18px, 1.7vw, 28px) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .42), inset 0 1px 0 rgba(255, 255, 255, .09) !important;
+  isolation: isolate;
+  transition: flex .72s cubic-bezier(.22, .75, .22, 1), filter .38s ease, transform .38s ease, box-shadow .38s ease !important;
+}
+
+.card::before {
+  background:
+    linear-gradient(180deg, rgba(6, 7, 14, .05) 0%, rgba(6, 7, 14, .12) 48%, rgba(3, 4, 10, .84) 100%),
+    var(--art) center / cover no-repeat !important;
+  transform: none !important;
+}
+
+.card::after {
+  background: linear-gradient(135deg, rgba(135, 93, 255, .13), transparent 43%, rgba(91, 208, 255, .08)) !important;
+  border: 0 !important;
+  border-radius: inherit !important;
+  box-shadow: none !important;
+  inset: 0 !important;
+  opacity: 1 !important;
+  pointer-events: none;
+}
+
+.card i {
+  color: rgba(231, 242, 255, .92) !important;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, .84) !important;
+}
+
+.card b {
+  background: linear-gradient(112deg, rgba(110, 71, 218, .82), rgba(66, 114, 209, .66) 58%, rgba(77, 183, 226, .56)) !important;
+  border: 1px solid rgba(220, 236, 255, .22);
+  border-radius: 13px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 10px 24px rgba(0, 0, 0, .29);
+  color: #fff !important;
+  max-width: 100%;
+  padding: .34em .52em;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .55) !important;
+}
+
+.card small {
+  background: rgba(5, 7, 18, .68) !important;
+  border: 1px solid rgba(170, 196, 255, .25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+
+.card:hover,
+.card:focus-visible,
+.card.expanded {
+  box-shadow: 0 22px 52px rgba(0, 0, 0, .58), 0 0 0 1px rgba(143, 173, 255, .28), inset 0 1px 0 rgba(255, 255, 255, .16) !important;
+}
+
+.card.expanded::before {
+  transform: scale(1.025) !important;
+}
+
+.gallery.expanded .card:not(.expanded) {
+  filter: brightness(.44) saturate(.68) !important;
+}
+
+/* The line only lights up when a pointer reaches a panel edge. */
+.edge-glow-panel > .panel-edge-glow {
+  padding: 1px !important;
+  z-index: 7 !important;
+}
+
+/* Full preview prioritises the original ratio. Portrait media receives more vertical room. */
+.work-modal {
+  background:
+    linear-gradient(128deg, rgba(29, 19, 70, .94), rgba(20, 47, 93, .92) 58%, rgba(24, 84, 106, .9)) padding-box,
+    linear-gradient(128deg, rgba(145, 102, 255, .86), rgba(95, 196, 255, .74), rgba(255, 255, 255, .2)) border-box !important;
+  border: 1px solid transparent !important;
+  border-radius: clamp(22px, 2vw, 34px) !important;
+  max-height: 92svh !important;
+  max-width: min(1440px, 94vw) !important;
+  overflow: hidden !important;
+  width: min(1320px, 94vw) !important;
+}
+
+.modal-art {
+  background: #000 !important;
+  height: min(66svh, 720px) !important;
+  min-height: 0;
+}
+
+.modal-art.has-media {
+  background: #000 !important;
+}
+
+.modal-media-item {
+  background: #000;
+  object-fit: contain !important;
+}
+
+.modal-copy {
+  background: linear-gradient(112deg, rgba(44, 27, 113, .95), rgba(43, 88, 151, .94) 61%, rgba(45, 122, 142, .92)) !important;
+  max-height: 25svh;
+  overflow-y: auto;
+  padding: clamp(18px, 2.3vw, 34px) clamp(24px, 4.1vw, 64px) !important;
+}
+
+.modal-copy h2 {
+  font-size: clamp(28px, 3.2vw, 54px) !important;
+  margin: 4px 0 10px !important;
+}
+
+.modal-copy p {
+  font-size: clamp(14px, 1.25vw, 20px) !important;
+  line-height: 1.62 !important;
+}
+
+.work-modal.portrait-preview {
+  max-width: min(940px, 92vw) !important;
+  width: min(880px, 92vw) !important;
+}
+
+.work-modal.portrait-preview .modal-art {
+  height: min(74svh, 820px) !important;
+}
+
+.work-modal.portrait-preview .modal-copy {
+  max-height: 15svh;
+  padding-block: clamp(12px, 1.4vw, 20px) !important;
+}
+
+.work-modal.portrait-preview .modal-copy h2 {
+  font-size: clamp(21px, 2.1vw, 32px) !important;
+}
+
+.work-modal.portrait-preview .modal-copy p,
+.work-modal.portrait-preview .modal-copy em {
+  display: none;
+}
+
+.modal-nav,
+.close {
+  background: rgba(7, 9, 20, .72) !important;
+  border-color: rgba(158, 184, 255, .48) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .42);
+}
+
+@media (max-width: 700px) {
+  .contact-stage {
+    max-width: 90vw !important;
+    padding-inline: 8px !important;
+  }
+
+  .contact-detail {
+    gap: 10px !important;
+    grid-template-columns: 1fr;
+    padding-block: 22px;
+    text-align: center;
+  }
+
+  .contact-detail a { font-size: clamp(23px, 7.4vw, 38px) !important; }
+
+  .work-modal {
+    max-height: 94svh !important;
+    max-width: 96vw !important;
+    width: 96vw !important;
+  }
+
+  .modal-art {
+    height: min(63svh, 650px) !important;
+  }
+
+  .modal-copy {
+    max-height: 28svh;
+    padding: 18px 22px !important;
+  }
+
+  .work-modal.portrait-preview .modal-art {
+    height: min(73svh, 720px) !important;
+  }
+
+  .work-modal.portrait-preview .modal-copy {
+    max-height: 16svh;
+  }
+}

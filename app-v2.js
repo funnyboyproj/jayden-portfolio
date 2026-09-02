@@ -292,12 +292,16 @@ function applyContentOverrides(overrides) {
 }
 
 async function loadContentOverrides() {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 3500);
   try {
-    const response = await fetch("./content-overrides.json", { cache: "no-store" });
+    const response = await fetch("./content-overrides.json", { cache: "no-store", signal: controller.signal });
     if (!response.ok) return;
     applyContentOverrides(await response.json());
   } catch {
     // The portfolio keeps its original content if the local content file is unavailable.
+  } finally {
+    window.clearTimeout(timeout);
   }
 }
 
@@ -392,7 +396,7 @@ function setupDepthInteractions() {
 }
 
 function setupPanelGlow() {
-  document.querySelectorAll(".depth-surface, .work-modal").forEach((panel) => {
+  document.querySelectorAll(".card, .portrait, .bio, .contact-stage, .work-modal").forEach((panel) => {
     panel.classList.add("edge-glow-panel");
 
     if (!panel.querySelector(":scope > .panel-edge-glow")) {
@@ -812,15 +816,21 @@ function showModalCard(index) {
   if (item.source) {
     const media = document.createElement(item.mediaType === "video" ? "video" : "img");
     media.className = "modal-media-item";
+    const setPreviewRatio = () => {
+      const width = media.tagName === "VIDEO" ? media.videoWidth : media.naturalWidth;
+      const height = media.tagName === "VIDEO" ? media.videoHeight : media.naturalHeight;
+      if (media.isConnected && width && height) {
+        modal.classList.toggle("portrait-preview", height > width);
+      }
+    };
     if (media.tagName === "VIDEO") {
       media.controls = true;
       media.playsInline = true;
       media.preload = "metadata";
+      media.addEventListener("loadedmetadata", setPreviewRatio, { once: true });
     } else {
       media.alt = modalTitle.textContent;
-      media.addEventListener("load", () => {
-        if (media.isConnected) modal.classList.toggle("portrait-preview", media.naturalHeight > media.naturalWidth);
-      }, { once: true });
+      media.addEventListener("load", setPreviewRatio, { once: true });
     }
     media.src = item.source;
     modalMedia.append(media);
@@ -1136,6 +1146,7 @@ async function bootstrapPortfolio() {
   prepareDeferredArtwork();
   initialiseInteractions();
   startClickRipples();
+  setupPanelGlow();
   setupProfilePreviews();
   setupNavigationScroll();
   setNext(current);
