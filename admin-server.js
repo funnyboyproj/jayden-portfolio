@@ -18,9 +18,13 @@ const ffmpeg = "Q:\\Codex\\tools\\ffmpeg\\ffmpeg-9.0.1-essentials_build\\bin\\ff
 const portableGitRoot = "C:\\Users\\guany\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\git";
 const portableGit = path.join(portableGitRoot, "cmd", "git.exe");
 const port = 4184;
+const githubOwner = "funnyboyproj";
+const githubRepo = "jayden-portfolio";
+const githubApiBase = `/repos/${githubOwner}/${githubRepo}`;
+const activeSessions = new Set();
 
-const types = { ".css": "text/css; charset=utf-8", ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8" };
-const defaultContent = { version: 1, translations: {}, cards: {}, customModules: [], hiddenModules: [] };
+const types = { ".css": "text/css; charset=utf-8", ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8", ".webmanifest": "application/manifest+json; charset=utf-8", ".png": "image/png", ".ico": "image/x-icon", ".webp": "image/webp" };
+const defaultContent = { version: 1, translations: {}, profile: {}, cards: {}, customModules: [], hiddenModules: [] };
 
 function decode(value = "") {
   return value.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
@@ -44,6 +48,43 @@ async function writeJson(file, data) {
   await fsp.rename(temp, file);
 }
 
+async function ensurePrivateSettings() {
+  const settings = await readJson(privatePath, {});
+  if (!/^\d{6}$/.test(settings.mobilePin || "")) {
+    settings.mobilePin = String(crypto.randomInt(100000, 1000000));
+    await writeJson(privatePath, settings);
+  }
+  return settings;
+}
+
+function isLoopback(request) {
+  const address = request.socket.remoteAddress || "";
+  return address === "127.0.0.1" || address === "::1" || address === "::ffff:127.0.0.1";
+}
+
+function cookieValue(request, name) {
+  const cookies = String(request.headers.cookie || "").split(";");
+  for (const cookie of cookies) {
+    const [key, ...parts] = cookie.trim().split("=");
+    if (key === name) return decodeURIComponent(parts.join("="));
+  }
+  return "";
+}
+
+function isAuthenticated(request) {
+  return isLoopback(request) || activeSessions.has(cookieValue(request, "port_session"));
+}
+
+function localAddresses() {
+  const addresses = [];
+  for (const interfaces of Object.values(os.networkInterfaces())) {
+    for (const item of interfaces || []) {
+      if (item.family === "IPv4" && !item.internal) addresses.push(`http://${item.address}:${port}/admin/`);
+    }
+  }
+  return [...new Set(addresses)];
+}
+
 async function extractBaseContent() {
   const [html, app, overrides] = await Promise.all([fsp.readFile(indexPath, "utf8"), fsp.readFile(appPath, "utf8"), readJson(contentPath, defaultContent)]);
   const translations = {};
@@ -51,6 +92,12 @@ async function extractBaseContent() {
     translations[match[1]] = { zh: decode(match[2]), en: decode(match[3]) };
   }
   Object.assign(translations, overrides.translations || {});
+  const portraitMatch = html.match(/class="[^"]*asset-portrait[^"]*"[\s\S]*?<img[^>]+src="([^"]+)"/);
+  const profile = {
+    photo: overrides.profile?.photo || portraitMatch?.[1] || "./web-images/image-064.webp",
+    phone: overrides.profile?.phone || "13121425198",
+    email: overrides.profile?.email || "guanyue0413@gmail.com"
+  };
 
   const modules = [];
   for (const section of html.matchAll(/<section\b([^>]*data-screen="([^"]+)"[^>]*)>([\s\S]*?)<\/section>/g)) {
@@ -96,7 +143,7 @@ async function extractBaseContent() {
   const customModules = (overrides.customModules || []).map((module) => ({ ...module, isCustom: true, hidden: (overrides.hiddenModules || []).includes(module.id), cards: (module.cards || []).map((card) => ({ ...card })) }));
   const contactIndex = modules.findIndex((module) => module.id === "contact");
   modules.splice(contactIndex >= 0 ? contactIndex : modules.length, 0, ...customModules);
-  return { version: 1, translations, modules, customModules, hiddenModules: overrides.hiddenModules || [] };
+  return { version: 1, translations, profile, modules, customModules, hiddenModules: overrides.hiddenModules || [] };
 }
 
 function json(response, status, data) {
@@ -104,12 +151,11 @@ function json(response, status, data) {
   response.end(JSON.stringify(data));
 }
 
-function command(args) {
+function runProcess(executable, args, options = {}) {
   return new Promise((resolve, reject) => {
-    const executable = fs.existsSync(portableGit) ? portableGit : "git";
     const child = spawn(executable, args, {
-      cwd: root,
-      env: { ...process.env, GIT_EXEC_PATH: path.join(portableGitRoot, "mingw64", "bin"), PATH: `${path.join(portableGitRoot, "mingw64", "bin")};${path.join(portableGitRoot, "usr", "bin")};${process.env.PATH || ""}` },
+      cwd: options.cwd || root,
+      env: options.env || process.env,
       windowsHide: true
     });
     let output = "";
@@ -117,11 +163,116 @@ function command(args) {
     child.stderr.on("data", (chunk) => { output += chunk; });
     child.on("error", reject);
     child.on("close", (code) => code === 0 ? resolve(output.trim()) : reject(new Error(output.trim() || `Git 操作失败（${code}）`)));
+    if (options.input) child.stdin.end(options.input); else child.stdin.end();
   });
 }
 
+function command(args, options = {}) {
+  const executable = fs.existsSync(portableGit) ? portableGit : "git";
+  return runProcess(executable, args, {
+    ...options,
+    cwd: root,
+    env: { ...process.env, GIT_EXEC_PATH: path.join(portableGitRoot, "mingw64", "bin"), PATH: `${path.join(portableGitRoot, "mingw64", "bin")};${path.join(portableGitRoot, "usr", "bin")};${process.env.PATH || ""}` }
+  });
+}
+
+async function githubCredential() {
+  const output = await command(["credential", "fill"], { input: "protocol=https\nhost=github.com\n\n" });
+  const values = {};
+  output.split(/\r?\n/).forEach((line) => {
+    const position = line.indexOf("=");
+    if (position > 0) values[line.slice(0, position)] = line.slice(position + 1);
+  });
+  if (!values.password) throw new Error("GitHub 尚未登录，请先在这台电脑登录 GitHub Desktop 或 GitHub。 ");
+  return values.password;
+}
+
+function githubRequest(method, endpoint, token, body) {
+  return new Promise((resolve, reject) => {
+    const data = body === undefined ? null : Buffer.from(JSON.stringify(body), "utf8");
+    const headers = {
+      accept: "application/vnd.github+json",
+      authorization: `Bearer ${token}`,
+      "user-agent": "Port-Portfolio-Studio",
+      "x-github-api-version": "2022-11-28"
+    };
+    if (data) {
+      headers["content-type"] = "application/json; charset=utf-8";
+      headers["content-length"] = data.length;
+    }
+    const request = https.request({ hostname: "api.github.com", method, path: `${githubApiBase}${endpoint}`, headers }, (response) => {
+      const chunks = [];
+      response.on("data", (chunk) => chunks.push(chunk));
+      response.on("end", () => {
+        const raw = Buffer.concat(chunks).toString("utf8");
+        let payload = {};
+        try { payload = raw ? JSON.parse(raw) : {}; } catch { payload = { message: raw }; }
+        if (response.statusCode >= 200 && response.statusCode < 300) resolve(payload);
+        else reject(new Error(`GitHub 连接失败：${payload.message || response.statusCode}`));
+      });
+    });
+    request.setTimeout(30000, () => request.destroy(new Error("GitHub 连接超时，请稍后再试。")));
+    request.on("error", reject);
+    if (data) request.end(data); else request.end();
+  });
+}
+
+function gitBlobSha(buffer) {
+  return crypto.createHash("sha1").update(Buffer.from(`blob ${buffer.length}\0`, "utf8")).update(buffer).digest("hex");
+}
+
+async function syncContentFromGithub() {
+  const token = await githubCredential();
+  const content = await githubRequest("GET", "/contents/content-overrides.json?ref=main", token);
+  const contentBuffer = Buffer.from(String(content.content || "").replace(/\s/g, ""), "base64");
+  JSON.parse(contentBuffer.toString("utf8"));
+  await fsp.writeFile(contentPath, contentBuffer);
+
+  const tree = await githubRequest("GET", "/git/trees/main?recursive=1", token);
+  let downloaded = 0;
+  for (const item of tree.tree || []) {
+    if (item.type !== "blob" || !item.path.startsWith("web-images/admin-")) continue;
+    const localFile = path.join(root, ...item.path.split("/"));
+    let matches = false;
+    try { matches = gitBlobSha(await fsp.readFile(localFile)) === item.sha; } catch { matches = false; }
+    if (matches) continue;
+    const blob = await githubRequest("GET", `/git/blobs/${item.sha}`, token);
+    await fsp.mkdir(path.dirname(localFile), { recursive: true });
+    await fsp.writeFile(localFile, Buffer.from(String(blob.content || "").replace(/\s/g, ""), "base64"));
+    downloaded += 1;
+  }
+  return { commit: String(tree.sha || "").slice(0, 7), downloaded };
+}
+
+async function publishContentToGithub() {
+  const token = await githubCredential();
+  const reference = await githubRequest("GET", "/git/ref/heads/main", token);
+  const baseCommit = reference.object.sha;
+  const commit = await githubRequest("GET", `/git/commits/${baseCommit}`, token);
+  const remoteTree = await githubRequest("GET", "/git/trees/main?recursive=1", token);
+  const remoteByPath = new Map((remoteTree.tree || []).filter((item) => item.type === "blob").map((item) => [item.path, item.sha]));
+  const files = [{ repoPath: "content-overrides.json", file: contentPath }];
+  for (const name of await fsp.readdir(imageRoot)) {
+    if (name.startsWith("admin-")) files.push({ repoPath: `web-images/${name}`, file: path.join(imageRoot, name) });
+  }
+
+  const entries = [];
+  for (const item of files) {
+    const buffer = await fsp.readFile(item.file);
+    const localSha = gitBlobSha(buffer);
+    if (remoteByPath.get(item.repoPath) === localSha) continue;
+    const blob = await githubRequest("POST", "/git/blobs", token, { content: buffer.toString("base64"), encoding: "base64" });
+    entries.push({ path: item.repoPath, mode: "100644", type: "blob", sha: blob.sha });
+  }
+  if (!entries.length) return null;
+  const newTree = await githubRequest("POST", "/git/trees", token, { base_tree: commit.tree.sha, tree: entries });
+  const newCommit = await githubRequest("POST", "/git/commits", token, { message: "Update portfolio content from Port", tree: newTree.sha, parents: [baseCommit] });
+  await githubRequest("PATCH", "/git/refs/heads/main", token, { sha: newCommit.sha, force: false });
+  return String(newCommit.sha).slice(0, 7);
+}
+
 async function gitStatus() {
-  try { return { short: (await command(["-c", "safe.directory=Q:/Codex/Portfolio webv.01", "-C", root, "log", "-1", "--oneline"])) || "尚未提交" }; } catch { return { short: "Git 状态不可用" }; }
+  try { await githubCredential(); return { short: "GitHub 已连接" }; } catch { return { short: "GitHub 尚未连接" }; }
 }
 
 function safeFilename(value) { return decodeURIComponent(value || "file").replace(/[^\w.()-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 96) || "file"; }
@@ -179,8 +330,37 @@ async function serveFile(response, file) {
 async function handler(request, response) {
   const url = new URL(request.url, "http://127.0.0.1");
   try {
-    if (request.method === "GET" && url.pathname === "/api/content") return json(response, 200, { ...(await extractBaseContent()), r2: await readJson(privatePath, {}), git: await gitStatus() });
-    if (request.method === "POST" && url.pathname === "/api/settings") { await writeJson(privatePath, JSON.parse((await readRequest(request, 1024 * 1024)).toString("utf8"))); return json(response, 200, { ok: true }); }
+    const localClient = isLoopback(request);
+    if (request.method === "GET" && url.pathname === "/api/session") return json(response, 200, { authenticated: isAuthenticated(request), local: localClient });
+    if (request.method === "POST" && url.pathname === "/api/login") {
+      const submitted = String(JSON.parse((await readRequest(request, 64 * 1024)).toString("utf8")).pin || "");
+      const settings = await ensurePrivateSettings();
+      const expected = Buffer.from(settings.mobilePin, "utf8");
+      const actual = Buffer.from(submitted, "utf8");
+      if (expected.length !== actual.length || !crypto.timingSafeEqual(expected, actual)) return json(response, 401, { error: "连接码不正确" });
+      const token = crypto.randomBytes(24).toString("base64url");
+      activeSessions.add(token);
+      response.setHeader("set-cookie", `port_session=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000`);
+      return json(response, 200, { ok: true });
+    }
+    if (url.pathname.startsWith("/api/") && !isAuthenticated(request)) return json(response, 401, { error: "请先输入 Port 手机连接码" });
+    if (request.method === "GET" && url.pathname === "/api/content") {
+      const privateSettings = await ensurePrivateSettings();
+      const r2 = localClient ? privateSettings : {
+        accountId: privateSettings.accountId || "",
+        bucket: privateSettings.bucket || "jayden-portfolio-media",
+        publicBaseUrl: privateSettings.publicBaseUrl || "",
+        configured: Boolean(privateSettings.accountId && privateSettings.accessKeyId && privateSettings.secretAccessKey)
+      };
+      return json(response, 200, { ...(await extractBaseContent()), r2, client: { local: localClient }, mobile: { addresses: localAddresses(), pin: localClient ? privateSettings.mobilePin : "" }, git: await gitStatus() });
+    }
+    if (request.method === "POST" && url.pathname === "/api/settings") {
+      if (!localClient) return json(response, 403, { error: "视频密钥只能在电脑端修改" });
+      const current = await ensurePrivateSettings();
+      const received = JSON.parse((await readRequest(request, 1024 * 1024)).toString("utf8"));
+      await writeJson(privatePath, { ...current, ...received, mobilePin: current.mobilePin });
+      return json(response, 200, { ok: true });
+    }
     if (request.method === "POST" && url.pathname === "/api/upload/image") {
       const buffer = await readRequest(request, 45 * 1024 * 1024); const extension = path.extname(safeFilename(request.headers["x-file-name"])).toLowerCase() || ".png"; const name = `admin-${Date.now()}-${crypto.randomBytes(3).toString("hex")}`; const temp = path.join(os.tmpdir(), `${name}${extension}`); const output = path.join(imageRoot, `${name}.webp`);
       await fsp.writeFile(temp, buffer); try { await runFfmpeg(temp, output); } finally { await fsp.rm(temp, { force: true }); }
@@ -191,17 +371,14 @@ async function handler(request, response) {
       try { const key = `portfolio/${Date.now()}-${filename}`; const urlValue = await uploadR2(temp, key, request.headers["content-type"]); return json(response, 200, { url: urlValue }); } finally { await fsp.rm(temp, { force: true }); }
     }
     if (request.method === "POST" && url.pathname === "/api/sync") {
-      const output = await command(["-c", "safe.directory=Q:/Codex/Portfolio webv.01", "-C", root, "pull", "--ff-only", "origin", "main"]); return json(response, 200, { status: "已同步", message: output || "本机已经是最新版本。" });
+      const result = await syncContentFromGithub();
+      return json(response, 200, { status: `已同步 · ${result.commit || "main"}`, message: result.downloaded ? `已更新网站内容，并下载 ${result.downloaded} 张新增图片。` : "GitHub 上的网站内容已同步到 Port。" });
     }
     if (request.method === "POST" && url.pathname === "/api/publish") {
       const payload = JSON.parse((await readRequest(request, 8 * 1024 * 1024)).toString("utf8"));
       await writeJson(contentPath, payload);
-      const common = ["-c", "safe.directory=Q:/Codex/Portfolio webv.01", "-C", root];
-      await command([...common, "add", "--", "content-overrides.json", "web-images"]);
-      let committed = false;
-      try { await command([...common, "diff", "--cached", "--quiet"]); } catch { await command([...common, "commit", "-m", "Update portfolio content from local studio"]); committed = true; }
-      if (committed) await command([...common, "push", "origin", "main"]);
-      return json(response, 200, { ok: true, commit: committed ? (await gitStatus()).short : "没有新的内容需要提交" });
+      const commit = await publishContentToGithub();
+      return json(response, 200, { ok: true, commit: commit || "没有新的内容需要提交" });
     }
     if (request.method === "GET" && (url.pathname === "/" || url.pathname === "/admin" || url.pathname === "/admin/")) return serveFile(response, path.join(adminRoot, "index.html"));
     if (request.method === "GET" && url.pathname.startsWith("/admin/")) {
@@ -215,4 +392,12 @@ async function handler(request, response) {
   } catch (error) { json(response, 500, { error: error.message || "服务器错误" }); }
 }
 
-http.createServer(handler).listen(port, "127.0.0.1", () => console.log(`Portfolio Studio is ready at http://127.0.0.1:${port}/admin/`));
+ensurePrivateSettings().then(() => {
+  http.createServer(handler).listen(port, "0.0.0.0", () => {
+    console.log(`Portfolio Studio is ready at http://127.0.0.1:${port}/admin/`);
+    localAddresses().forEach((address) => console.log(`Mobile: ${address}`));
+  });
+}).catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

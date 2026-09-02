@@ -1,6 +1,16 @@
 Set shell = CreateObject("WScript.Shell")
 Set files = CreateObject("Scripting.FileSystemObject")
 
+' Always replace an older Port server so software updates take effect immediately.
+On Error Resume Next
+Set processes = GetObject("winmgmts:\\.\root\cimv2").ExecQuery("Select ProcessId, CommandLine from Win32_Process where Name='node.exe'")
+For Each process In processes
+  commandLine = LCase("" & process.CommandLine)
+  If InStr(commandLine, "admin-server.js") > 0 Then process.Terminate
+Next
+On Error GoTo 0
+WScript.Sleep 450
+
 project = "Q:\Codex\Portfolio webv.01"
 node = "C:\Users\guany\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe"
 

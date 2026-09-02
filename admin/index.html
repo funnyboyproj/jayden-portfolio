@@ -3,8 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a0a19" />
     <title>Port · 内容后台</title>
     <link rel="icon" type="image/png" href="./port-logo.png" />
+    <link rel="apple-touch-icon" href="./port-logo-192.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="./admin.css" />
   </head>
   <body>
@@ -20,8 +23,10 @@
         <button class="side-button add-module" id="addModule">＋ 新增模块</button>
         <button class="side-button" data-view="settings">视频上传设置</button>
         <div class="sidebar-bottom">
-          <a href="http://127.0.0.1:4184/site/" target="_blank" rel="noreferrer">预览本机网页 ↗</a>
-          <a href="https://jayden-portfolio-5tv.pages.dev" target="_blank" rel="noreferrer">打开线上网页 ↗</a>
+          <button class="install-app" id="installApp" type="button">安装 Port 到此设备</button>
+          <a id="localPreviewLink" href="/site/" target="_blank" rel="noreferrer">预览本机网页 ↗</a>
+          <a id="onlineWebsiteLink" href="https://jayden-portfolio-5tv.pages.dev" target="_blank" rel="noreferrer">打开线上网页 ↗</a>
+          <a href="https://github.com/funnyboyproj/jayden-portfolio" target="_blank" rel="noreferrer">查看 GitHub 版本 ↗</a>
         </div>
       </aside>
 
@@ -33,8 +38,8 @@
           </div>
           <div class="top-actions">
             <span id="syncStatus" class="status">正在读取内容…</span>
-            <button class="secondary" id="syncButton" type="button">同步 GitHub</button>
-            <button class="primary" id="publishButton" type="button">保存并发布</button>
+            <button class="secondary" id="syncButton" type="button">从 GitHub 更新</button>
+            <button class="primary" id="publishButton" type="button">保存并发布网站</button>
           </div>
         </header>
 
@@ -73,6 +78,17 @@
         </div>
       </article>
     </template>
+    <dialog class="login-dialog" id="loginDialog">
+      <form id="loginForm">
+        <img src="./port-logo-192.png" alt="Port" />
+        <small>PORT MOBILE</small>
+        <h2>连接电脑上的 Port</h2>
+        <p>请输入电脑端“总览”页面显示的 6 位手机连接码。</p>
+        <label>手机连接码<input id="mobilePinInput" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" /></label>
+        <button class="primary" type="submit">连接并进入</button>
+        <span id="loginError" class="login-error" role="alert"></span>
+      </form>
+    </dialog>
     <script src="./admin.js"></script>
   </body>
 </html>

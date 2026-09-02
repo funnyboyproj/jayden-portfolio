@@ -5,6 +5,12 @@ const flash = document.querySelector("#flash");
 const moduleNav = document.querySelector("#moduleNav");
 const cardTemplate = document.querySelector("#cardTemplate");
 const syncStatus = document.querySelector("#syncStatus");
+const loginDialog = document.querySelector("#loginDialog");
+const loginForm = document.querySelector("#loginForm");
+const loginError = document.querySelector("#loginError");
+const installApp = document.querySelector("#installApp");
+const localPreviewLink = document.querySelector("#localPreviewLink");
+let installPrompt = null;
 
 const request = async (url, options = {}) => {
   const response = await fetch(url, options);
@@ -52,12 +58,15 @@ function showOverview() {
   state.activeView = "overview"; state.activeModule = null; pageTitle.textContent = "内容总览"; selectedNav("overview");
   const cardCount = state.data.modules.reduce((sum, module) => sum + module.cards.filter((card) => !card.hidden).length, 0);
   const customCount = state.data.customModules.length;
+  const mobileAddress = state.data.mobile?.addresses?.[0] || "请确认电脑与手机连接同一个 Wi-Fi";
+  const mobilePin = state.data.mobile?.pin || "已连接";
   editor.innerHTML = `<div class="overview-grid">
     <article class="overview-card"><span>现有内容模块</span><b>${state.data.modules.filter((module) => !module.hidden).length}</b><span>可在左侧分类进入编辑</span></article>
     <article class="overview-card"><span>作品与项目卡片</span><b>${cardCount}</b><span>可直接替换图片、视频与中英文文案</span></article>
     <article class="overview-card"><span>自定义模块</span><b>${customCount}</b><span>新增模块会沿用现有的作品展示排版</span></article>
   </div>
-  <section class="panel"><div class="panel-head"><div><h2>使用方式</h2><p>选择左侧模块编辑内容。图片上传后会自动压缩为适合网页的格式；视频通过 R2 直接上传。完成后只需点击右上角“保存并发布”。</p></div></div></section>`;
+  <section class="panel"><div class="panel-head"><div><h2>使用方式</h2><p>选择左侧模块编辑内容。图片上传后会自动压缩为适合网页的格式；视频通过 R2 直接上传。完成后只需点击右上角“保存并发布网站”。</p></div></div></section>
+  <section class="panel mobile-connect"><div class="panel-head"><div><h2>手机连接</h2><p>电脑与手机连接同一个 Wi-Fi，并保持 Port 开启。在手机浏览器输入下面的地址，再选择“添加到主屏幕”。</p></div></div><div class="mobile-connect-grid"><label>手机访问地址<input readonly value="${escapeAttr(mobileAddress)}" /></label><label>6 位连接码<input readonly value="${escapeAttr(mobilePin)}" /></label></div><p class="security-note">GitHub 与 R2 密钥只保留在这台电脑；手机通过 Port 安全代为发布。</p></section>`;
 }
 
 function showCopy() {
@@ -67,9 +76,69 @@ function showCopy() {
   bindCopyFields();
 }
 
+function profileCopyFields() {
+  return [
+    ["姓名、出生年月与年龄", "bio.identity", false],
+    ["学校与专业", "bio.school", false],
+    ["国籍／身份", "bio.nationality", false],
+    ["语言能力", "bio.language", false],
+    ["履历栏目标题", "bio.experience", false],
+    ["项目经历 1", "bio.exp1", true],
+    ["项目经历 2", "bio.exp2", true],
+    ["项目经历 3", "bio.exp3", true],
+    ["项目经历 4", "bio.exp4", true],
+    ["后续内容介绍", "bio.intro", true]
+  ];
+}
+
+function profilePair(label, key, multiline) {
+  const copy = state.data.translations[key] || { zh: "", en: "" };
+  const tag = multiline ? "textarea" : "input";
+  const zh = tag === "textarea" ? `<textarea data-profile-copy="${key}" data-locale="zh" rows="3">${escapeHtml(copy.zh || "")}</textarea>` : `<input data-profile-copy="${key}" data-locale="zh" value="${escapeAttr(copy.zh || "")}" />`;
+  const en = tag === "textarea" ? `<textarea data-profile-copy="${key}" data-locale="en" rows="3">${escapeHtml(copy.en || "")}</textarea>` : `<input data-profile-copy="${key}" data-locale="en" value="${escapeAttr(copy.en || "")}" />`;
+  return `<div class="profile-copy-row"><strong>${escapeHtml(label)}</strong><div class="field-grid"><label>中文${zh}</label><label>English${en}</label></div></div>`;
+}
+
+function showProfileEditor(module) {
+  state.activeView = "module"; state.activeModule = "profile"; pageTitle.textContent = "个人简介"; selectedNav("module", "profile");
+  state.data.profile ||= { photo: "./web-images/image-064.webp", phone: "13121425198", email: "guanyue0413@gmail.com" };
+  editor.innerHTML = `<section class="panel profile-editor"><div class="panel-head"><div><h2>个人照片与基本资料</h2><p>这里的修改会同时更新个人简介卡片与点击后的完整资料。</p></div><button class="secondary module-visibility" type="button">${module.hidden ? "重新显示模块" : "隐藏整个模块"}</button></div>
+    <div class="profile-photo-editor"><div class="profile-photo-preview"><img src="${escapeAttr(state.data.profile.photo)}" alt="个人简介照片预览" /></div><div><label>照片网址<input data-profile-value="photo" value="${escapeAttr(state.data.profile.photo)}" /></label><label class="upload-button profile-upload">上传并压缩新照片<input id="profilePhotoUpload" type="file" accept="image/*" /></label><p>上传后会自动压缩，并保留适合竖图展示的完整比例。</p></div></div>
+    <div class="field-grid profile-contact-fields"><label>微信手机号<input data-profile-value="phone" value="${escapeAttr(state.data.profile.phone || "")}" inputmode="tel" /></label><label>邮箱<input data-profile-value="email" value="${escapeAttr(state.data.profile.email || "")}" inputmode="email" /></label></div>
+    <div class="profile-copy-list">${profileCopyFields().map(([label, key, multiline]) => profilePair(label, key, multiline)).join("")}</div>
+  </section>`;
+  editor.querySelector(".module-visibility").addEventListener("click", () => { module.hidden = !module.hidden; markDirty(); buildModuleNav(); showProfileEditor(module); });
+  editor.querySelectorAll("[data-profile-value]").forEach((input) => input.addEventListener("input", () => {
+    state.data.profile[input.dataset.profileValue] = input.value.trim();
+    if (input.dataset.profileValue === "photo") editor.querySelector(".profile-photo-preview img").src = input.value.trim();
+    markDirty();
+  }));
+  editor.querySelectorAll("[data-profile-copy]").forEach((input) => input.addEventListener("input", () => {
+    const key = input.dataset.profileCopy;
+    state.data.translations[key] ||= { zh: "", en: "" };
+    state.data.translations[key][input.dataset.locale] = input.value;
+    markDirty();
+  }));
+  editor.querySelector("#profilePhotoUpload").addEventListener("change", async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+      say("正在压缩并保存个人照片…");
+      const response = await fetch("/api/upload/image", { method: "POST", headers: { "x-file-name": encodeURIComponent(file.name), "content-type": "application/octet-stream" }, body: file });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "照片上传失败");
+      state.data.profile.photo = result.url;
+      editor.querySelector("[data-profile-value='photo']").value = result.url;
+      editor.querySelector(".profile-photo-preview img").src = result.url;
+      markDirty(); say("个人照片已压缩，点击“保存并发布网站”后上线。");
+    } catch (error) { say(error.message, true); }
+  });
+}
+
 function showModule(id) {
   const module = state.data.modules.find((item) => item.id === id);
   if (!module) return;
+  if (id === "profile") return showProfileEditor(module);
   state.activeView = "module"; state.activeModule = id; pageTitle.textContent = titleFor(module); selectedNav("module", id);
   editor.replaceChildren();
   const panel = document.createElement("section"); panel.className = "panel";
@@ -120,6 +189,10 @@ async function uploadMedia(kind, file, card, element) {
 
 function showSettings() {
   state.activeView = "settings"; state.activeModule = null; pageTitle.textContent = "视频上传设置"; selectedNav("settings");
+  if (!state.data.client?.local) {
+    editor.innerHTML = `<section class="panel"><div class="panel-head"><div><h2>视频上传设置</h2><p>为保护 Cloudflare 密钥，这一页只能在电脑端修改。手机端仍然可以直接选择视频，由电脑上的 Port 代为上传。</p></div></div></section>`;
+    return;
+  }
   const setup = state.data.r2 || {};
   editor.innerHTML = `<section class="panel"><div class="panel-head"><div><h2>连接 Cloudflare R2</h2><p>这组信息只保存在这台电脑，不会上传 GitHub。完成后，视频卡片里的“上传视频到 R2”可以直接使用。</p></div></div><div class="field-grid">${field("Cloudflare Account ID", "accountId", setup.accountId || "")}${field("R2 Bucket", "bucket", setup.bucket || "jayden-portfolio-media")}</div><div class="field-grid">${field("公开媒体地址", "publicBaseUrl", setup.publicBaseUrl || "https://pub-4ccac1ee9e26469e80d086bf24ae96d7.r2.dev")}${field("R2 Access Key ID", "accessKeyId", setup.accessKeyId || "")}</div><label>R2 Secret Access Key<input type="password" data-copy-key="secretAccessKey" value="${escapeAttr(setup.secretAccessKey || "")}" autocomplete="new-password" /></label><div style="margin-top:18px"><button class="primary" id="saveR2" type="button">保存本机视频上传设置</button></div></section>`;
   editor.querySelector("#saveR2").addEventListener("click", async () => {
@@ -146,17 +219,17 @@ function showCustomModuleForm() {
 }
 
 async function publish() {
-  try { syncStatus.textContent = "正在提交 GitHub…"; const result = await request("/api/publish", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(toPayload()) }); state.dirty = false; syncStatus.textContent = `已发布 · ${result.commit || "同步完成"}`; say("已提交 GitHub，Cloudflare Pages 正在自动发布新版。"); } catch (error) { syncStatus.textContent = "发布未完成"; say(error.message, true); }
+  try { syncStatus.textContent = "正在安全提交 GitHub…"; const result = await request("/api/publish", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(toPayload()) }); state.dirty = false; syncStatus.textContent = `已发布 · ${result.commit || "同步完成"}`; say("内容已提交 GitHub，Cloudflare 正在自动更新线上网页。"); } catch (error) { syncStatus.textContent = "发布未完成"; say(error.message, true); }
 }
 
 function toPayload() {
   const cards = {};
   state.data.modules.forEach((module) => module.cards.forEach((card) => { cards[card.id] = { ...card, moduleId: module.id }; }));
-  return { version: 1, translations: state.data.translations, cards, customModules: state.data.modules.filter((module) => module.isCustom), hiddenModules: state.data.modules.filter((module) => module.hidden).map((module) => module.id) };
+  return { version: 1, translations: state.data.translations, profile: state.data.profile, cards, customModules: state.data.modules.filter((module) => module.isCustom), hiddenModules: state.data.modules.filter((module) => module.hidden).map((module) => module.id) };
 }
 
 async function syncRepository() {
-  try { syncStatus.textContent = "正在同步 GitHub…"; const result = await request("/api/sync", { method: "POST" }); syncStatus.textContent = result.status || "已同步"; say(result.message || "GitHub 同步完成。"); if (!state.dirty) await load(); } catch (error) { say(error.message, true); }
+  try { syncStatus.textContent = "正在从 GitHub 更新…"; const result = await request("/api/sync", { method: "POST" }); syncStatus.textContent = result.status || "已同步"; say(result.message || "GitHub 内容同步完成。"); if (!state.dirty) await load(); } catch (error) { syncStatus.textContent = "同步未完成"; say(error.message, true); }
 }
 
 async function load() {
@@ -168,4 +241,48 @@ document.querySelector("#addModule").addEventListener("click", showCustomModuleF
 document.querySelector("#publishButton").addEventListener("click", publish);
 document.querySelector("#syncButton").addEventListener("click", syncRepository);
 window.addEventListener("beforeunload", (event) => { if (state.dirty) { event.preventDefault(); event.returnValue = ""; } });
-load();
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  installPrompt = event;
+  installApp.classList.add("ready");
+});
+
+installApp.addEventListener("click", async () => {
+  if (installPrompt) {
+    await installPrompt.prompt();
+    installPrompt = null;
+    installApp.classList.remove("ready");
+    return;
+  }
+  say(/iPhone|iPad|iPod/i.test(navigator.userAgent) ? "请点浏览器的分享按钮，再选择“添加到主屏幕”。" : "请打开浏览器菜单，选择“安装应用”或“添加到主屏幕”。");
+});
+
+loginForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  loginError.textContent = "正在连接…";
+  try {
+    await request("/api/login", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ pin: document.querySelector("#mobilePinInput").value.trim() }) });
+    loginDialog.close();
+    await load();
+  } catch (error) { loginError.textContent = error.message; }
+});
+
+async function start() {
+  localPreviewLink.href = `${location.origin}/site/`;
+  if ("serviceWorker" in navigator && window.isSecureContext) navigator.serviceWorker.register("./admin-sw.js").catch(() => {});
+  try {
+    const session = await request("/api/session");
+    if (!session.authenticated) {
+      loginDialog.showModal();
+      document.querySelector("#mobilePinInput").focus();
+      return;
+    }
+    await load();
+  } catch (error) {
+    say(error.message, true);
+    syncStatus.textContent = "无法连接 Port";
+  }
+}
+
+start();

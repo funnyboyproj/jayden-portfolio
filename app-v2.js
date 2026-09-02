@@ -18,6 +18,7 @@ const movingLines = document.querySelector(".asset-lines");
 const clickRipples = document.querySelector("#clickRipples");
 
 let triggerNavigationRipple = () => {};
+let profileContent = { photo: "./web-images/image-064.webp", phone: "13121425198", email: "guanyue0413@gmail.com" };
 
 const order = ["home", "profile", "collab", "projects", "niko", "hours", "ip", "bobb", "works", "contact"];
 const labels = {
@@ -269,6 +270,21 @@ function applyContentOverrides(overrides) {
   Object.entries(overrides.translations || {}).forEach(([key, value]) => {
     if (!value || typeof value !== "object") return;
     translations[key] = { ...(translations[key] || {}), ...value };
+  });
+  profileContent = { ...profileContent, ...(overrides.profile || {}) };
+  const profilePhoto = document.querySelector(".asset-portrait img");
+  if (profilePhoto && profileContent.photo) profilePhoto.src = profileContent.photo;
+  document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
+    link.href = `tel:${profileContent.phone}`;
+    const value = link.querySelector("strong");
+    if (value) value.textContent = profileContent.phone;
+    else link.textContent = profileContent.phone;
+  });
+  document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
+    link.href = `mailto:${profileContent.email}`;
+    const value = link.querySelector("strong");
+    if (value) value.textContent = profileContent.email;
+    else link.textContent = profileContent.email;
   });
   const hiddenModules = new Set(overrides.hiddenModules || []);
   document.querySelectorAll("[data-screen]").forEach((section) => {
@@ -884,7 +900,7 @@ function openProfilePreview(type) {
     image.className = "modal-media-item";
     image.alt = language === "zh" ? "陈冠宇个人照片" : "Portrait of Chin Guan Yue";
     image.decoding = "async";
-    image.src = "./web-images/image-064.webp";
+    image.src = profileContent.photo;
     image.addEventListener("load", () => {
       if (image.isConnected && image.naturalHeight > image.naturalWidth) modal.classList.add("portrait-preview");
     }, { once: true });
@@ -910,8 +926,8 @@ function openProfilePreview(type) {
       "• " + text("bio.exp3"),
       "• " + text("bio.exp4"),
       "",
-      text("bio.phone") + "：13121425198",
-      text("bio.email") + "：guanyue0413@gmail.com",
+      text("bio.phone") + "：" + profileContent.phone,
+      text("bio.email") + "：" + profileContent.email,
       "",
       text("bio.intro")
     ].join("\n");

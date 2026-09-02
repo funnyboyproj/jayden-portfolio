@@ -59,3 +59,54 @@ input:focus, textarea:focus, select:focus { border-color: #7bcdf6; box-shadow: 0
 .empty { color: #8a96b8; padding: 36px 0; }
 .custom-module-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; margin-top: 16px; }
 @media (max-width: 1040px) { body { min-width: 760px; } .shell { grid-template-columns: 205px 1fr; } .workspace { padding-left: 25px; padding-right: 25px; } .overview-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.install-app { border: 1px solid rgba(111, 196, 255, .42); background: rgba(18, 24, 48, .72); color: #a9e8ff; border-radius: 10px; padding: 9px 11px; cursor: pointer; text-align: left; font-size: 12px; font-weight: 800; }
+.install-app.ready { background: linear-gradient(100deg, rgba(126, 78, 245, .42), rgba(66, 192, 236, .24)); color: #fff; }
+.mobile-connect-grid { display: grid; grid-template-columns: 1.4fr .6fr; gap: 14px; }
+.security-note { color: #7fcde9 !important; font-size: 12px; }
+.profile-photo-editor { display: grid; grid-template-columns: minmax(180px, 280px) 1fr; gap: 22px; align-items: center; margin-bottom: 22px; }
+.profile-photo-preview { aspect-ratio: 3 / 4; border-radius: 16px; overflow: hidden; border: 1px solid rgba(138, 145, 255, .38); background: rgba(2, 5, 14, .7); }
+.profile-photo-preview img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.profile-photo-editor > div:last-child { display: grid; gap: 14px; }
+.profile-upload { justify-self: start; }
+.profile-copy-list { display: grid; gap: 14px; margin-top: 22px; }
+.profile-copy-row { padding: 16px; border-radius: 14px; background: rgba(5, 8, 22, .42); border: 1px solid rgba(137, 146, 255, .16); }
+.profile-copy-row > strong { display: block; margin-bottom: 12px; color: #9fdfff; font-size: 13px; }
+.profile-copy-row .field-grid { margin-bottom: 0; }
+.login-dialog { width: min(430px, calc(100vw - 30px)); border: 1px solid rgba(130, 150, 255, .36); border-radius: 22px; color: #f6f8ff; background: linear-gradient(145deg, #17153a, #080914 72%); box-shadow: 0 30px 100px rgba(0, 0, 0, .65); padding: 0; }
+.login-dialog::backdrop { background: rgba(0, 0, 0, .82); backdrop-filter: blur(12px); }
+.login-dialog form { display: grid; gap: 15px; padding: 28px; }
+.login-dialog img { width: 72px; height: 72px; border-radius: 18px; object-fit: cover; }
+.login-dialog small { color: #84d8ff; font-weight: 900; letter-spacing: .18em; }
+.login-dialog h2, .login-dialog p { margin: 0; }
+.login-dialog p { color: #aab6d5; line-height: 1.6; }
+.login-error { min-height: 18px; color: #ffadbc; font-size: 12px; }
+
+@media (max-width: 760px) {
+  body { min-width: 0; }
+  .shell { display: block; min-height: 100svh; }
+  .sidebar { position: relative; height: auto; padding: 15px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; border-right: 0; border-bottom: 1px solid rgba(145, 140, 255, .2); }
+  .brand { grid-column: 1 / -1; padding: 3px 8px 13px; }
+  .brand strong { font-size: 20px; }
+  .side-button { padding: 10px 11px; text-align: center; }
+  .module-nav { grid-column: 1 / -1; display: flex; overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: thin; padding: 7px 0; margin: 0; }
+  .module-nav .side-button { min-width: max-content; flex: 0 0 auto; }
+  .sidebar-bottom { grid-column: 1 / -1; margin-top: 5px; padding: 12px 5px 0; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sidebar-bottom .install-app { grid-column: 1 / -1; text-align: center; }
+  .workspace { padding: 22px 16px 48px; }
+  .topbar { display: grid; gap: 17px; padding-bottom: 20px; }
+  .top-actions { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+  .top-actions .status { grid-column: 1 / -1; white-space: normal; }
+  .top-actions button { width: 100%; padding-left: 8px; padding-right: 8px; }
+  .editor { padding-top: 10px; }
+  .overview-grid, .field-grid, .field-grid.compact, .mobile-connect-grid, .profile-photo-editor, .custom-module-row { grid-template-columns: 1fr; }
+  .overview-card { min-height: 132px; }
+  .panel { padding: 18px; border-radius: 16px; }
+  .panel-head { align-items: flex-start; flex-direction: column; gap: 13px; }
+  .profile-photo-preview { width: min(72vw, 280px); justify-self: center; }
+  .media-actions { flex-wrap: wrap; align-items: flex-start; }
+  .upload-help { width: 100%; line-height: 1.5; }
+  .work-card { padding: 15px; }
+  .work-card-heading { align-items: flex-start; flex-wrap: wrap; }
+  .work-card-heading .danger { margin-left: auto; }
+}
