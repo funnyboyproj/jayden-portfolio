@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Funnyboy Portfolio · 内容后台</title>
+    <link rel="stylesheet" href="./admin.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span>FUNNYBOY</span>
+          <strong>内容后台</strong>
+        </div>
+        <button class="side-button active" data-view="overview">总览</button>
+        <button class="side-button" data-view="copy">全站文案</button>
+        <div id="moduleNav" class="module-nav"></div>
+        <button class="side-button add-module" id="addModule">＋ 新增模块</button>
+        <button class="side-button" data-view="settings">视频上传设置</button>
+        <div class="sidebar-bottom">
+          <a href="http://127.0.0.1:4174/site/" target="_blank" rel="noreferrer">预览本机网页 ↗</a>
+          <a href="https://jayden-portfolio-5tv.pages.dev" target="_blank" rel="noreferrer">打开线上网页 ↗</a>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p id="eyebrow">PORTFOLIO STUDIO</p>
+            <h1 id="pageTitle">内容总览</h1>
+          </div>
+          <div class="top-actions">
+            <span id="syncStatus" class="status">正在读取内容…</span>
+            <button class="secondary" id="syncButton" type="button">同步 GitHub</button>
+            <button class="primary" id="publishButton" type="button">保存并发布</button>
+          </div>
+        </header>
+
+        <div id="flash" class="flash" role="status" aria-live="polite"></div>
+        <section id="editor" class="editor" aria-live="polite"></section>
+      </main>
+    </div>
+    <template id="cardTemplate">
+      <article class="work-card">
+        <div class="work-card-heading">
+          <span class="work-number"></span>
+          <div>
+            <strong class="work-name"></strong>
+            <small class="work-kind"></small>
+          </div>
+          <button class="danger remove-card" type="button">移除</button>
+        </div>
+        <div class="field-grid">
+          <label>中文标题<input data-field="titleZh" /></label>
+          <label>英文标题<input data-field="titleEn" /></label>
+        </div>
+        <div class="field-grid">
+          <label>中文说明<textarea data-field="descriptionZh" rows="3"></textarea></label>
+          <label>英文说明<textarea data-field="descriptionEn" rows="3"></textarea></label>
+        </div>
+        <div class="field-grid compact">
+          <label>封面图片网址<input data-field="artwork" placeholder="./web-images/... 或 https://..." /></label>
+          <label>素材类别<select data-field="mediaType"><option value="image">图片</option><option value="video">视频</option></select></label>
+          <label>卡片配色<select data-field="tone"><option value="blue">蓝色</option><option value="violet">紫色</option><option value="warm">暖色</option><option value="mint">青色</option></select></label>
+        </div>
+        <label>高清素材网址（每行一个；图片或 R2 视频链接）<textarea data-field="mediaSources" rows="3" placeholder="https://... 或 ./web-images/..."></textarea></label>
+        <div class="media-actions">
+          <label class="upload-button">上传并压缩图片<input class="image-upload" type="file" accept="image/*" /></label>
+          <label class="upload-button video-upload-button">上传视频到 R2<input class="video-upload" type="file" accept="video/*,.mov,.mkv" /></label>
+          <span class="upload-help">图片会自动压缩；视频需先在“视频上传设置”完成一次连接。</span>
+        </div>
+      </article>
+    </template>
+    <script src="./admin.js"></script>
+  </body>
+</html>

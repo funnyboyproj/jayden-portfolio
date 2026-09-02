@@ -1,5 +1,5 @@
-const screens = Array.from(document.querySelectorAll("[data-screen]"));
-const navButtons = Array.from(document.querySelectorAll("[data-target]"));
+let screens = Array.from(document.querySelectorAll("[data-screen]"));
+let navButtons = Array.from(document.querySelectorAll("[data-target]"));
 const navControl = document.querySelector("#navControl");
 const menuToggle = document.querySelector("#menuToggle");
 const nextButton = document.querySelector("#nextButton");
@@ -166,6 +166,139 @@ const publicMediaFiles = new Map([
 function publicMediaSource(source) {
   const filename = publicMediaFiles.get(source);
   return filename ? `${publicMediaBase}/${encodeURIComponent(filename)}` : source;
+}
+
+function setCardMedia(card, sources, mediaTypes) {
+  const cleanSources = (sources || []).filter(Boolean);
+  const cleanTypes = (mediaTypes || []).filter(Boolean);
+  if (cleanSources.length > 1) {
+    card.dataset.mediaSrcs = cleanSources.join("|");
+    delete card.dataset.mediaSrc;
+  } else {
+    card.dataset.mediaSrc = cleanSources[0] || "";
+    delete card.dataset.mediaSrcs;
+  }
+  if (cleanTypes.length > 1) {
+    card.dataset.mediaTypes = cleanTypes.join("|");
+    delete card.dataset.mediaType;
+  } else {
+    card.dataset.mediaType = cleanTypes[0] || "image";
+    delete card.dataset.mediaTypes;
+  }
+}
+
+function updateCardLabel(card) {
+  const label = card.querySelector("b");
+  if (label) label.textContent = cardValue(card, "title") || "未命名作品";
+}
+
+function applyCardContent(card, content) {
+  if (!content) return;
+  card.dataset.titleZh = content.titleZh || card.dataset.titleZh || "";
+  card.dataset.titleEn = content.titleEn || card.dataset.titleEn || card.dataset.titleZh || "";
+  card.dataset.descriptionZh = content.descriptionZh || "";
+  card.dataset.descriptionEn = content.descriptionEn || content.descriptionZh || "";
+  if (content.artwork) card.style.setProperty("--art", `url("${content.artwork.replace(/"/g, "\\\"")}")`);
+  if (content.tone) {
+    card.dataset.tone = content.tone;
+    card.classList.remove("blue", "violet", "warm", "mint");
+    card.classList.add(content.tone);
+  }
+  if (content.route !== undefined) card.dataset.route = content.route || "";
+  if (content.mediaSources) setCardMedia(card, content.mediaSources, content.mediaTypes || content.mediaSources.map(() => content.mediaType || "image"));
+  card.hidden = Boolean(content.hidden);
+  const label = card.querySelector("b");
+  if (label && content.titleZh) label.removeAttribute("data-i18n");
+  updateCardLabel(card);
+}
+
+function createContentCard(content, position) {
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = `card ${content.tone || "blue"} media-card`;
+  card.dataset.adminCardId = content.id;
+  card.dataset.tone = content.tone || "blue";
+  card.innerHTML = `<i>${String(position).padStart(2, "0")}</i><b></b><small data-i18n="card.hint">悬停 / 点击</small>`;
+  applyCardContent(card, content);
+  return card;
+}
+
+function addCustomModules(modules) {
+  const main = document.querySelector("main");
+  const contact = main.querySelector('[data-screen="contact"]');
+  modules.forEach((module, index) => {
+    if (!module?.id || document.querySelector(`[data-screen="${CSS.escape(module.id)}"]`)) return;
+    labels.zh[module.id] = module.label?.zh || module.id;
+    labels.en[module.id] = module.label?.en || module.label?.zh || module.id;
+    const section = document.createElement("section");
+    section.className = "screen gallery-screen";
+    section.dataset.screen = module.id;
+    section.setAttribute("aria-hidden", "true");
+    const titleId = `customTitle-${module.id}`;
+    const textId = `customText-${module.id}`;
+    section.innerHTML = `<div class="page-title reveal"><span>＋${String(index + 1).padStart(2, "0")}</span><h2 id="${titleId}"></h2></div><div class="gallery-heading reveal"><p></p><small id="${textId}"></small></div><div class="gallery reveal" data-description-target="${textId}"></div>`;
+    section._customModule = module;
+    section.hidden = Boolean(module.hidden);
+    const gallery = section.querySelector(".gallery");
+    (module.cards || []).forEach((card, cardIndex) => gallery.append(createContentCard(card, cardIndex + 1)));
+    if (contact) main.insertBefore(section, contact); else main.append(section);
+    const nav = document.querySelector("#primaryNav");
+    const navButton = document.createElement("button");
+    navButton.type = "button";
+    navButton.dataset.target = module.id;
+    navButton.innerHTML = `<span></span>`;
+    nav.insertBefore(navButton, nav.querySelector('[data-target="contact"]') || null);
+    const contactIndex = order.indexOf("contact");
+    order.splice(contactIndex >= 0 ? contactIndex : order.length, 0, module.id);
+  });
+}
+
+function applyCustomModuleLanguage() {
+  document.querySelectorAll("[data-screen]" ).forEach((section) => {
+    const module = section._customModule;
+    if (!module) return;
+    const copy = language === "zh" ? module.label?.zh : module.label?.en;
+    section.querySelector("h2").textContent = copy || module.id;
+    section.querySelector(".gallery-heading p").textContent = (language === "zh" ? module.headline?.zh : module.headline?.en) || copy || module.id;
+    section.querySelector(".gallery-heading small").textContent = (language === "zh" ? module.hint?.zh : module.hint?.en) || "";
+  });
+}
+
+function applyContentOverrides(overrides) {
+  if (!overrides || typeof overrides !== "object") return;
+  Object.entries(overrides.translations || {}).forEach(([key, value]) => {
+    if (!value || typeof value !== "object") return;
+    translations[key] = { ...(translations[key] || {}), ...value };
+  });
+  const hiddenModules = new Set(overrides.hiddenModules || []);
+  document.querySelectorAll("[data-screen]").forEach((section) => {
+    const moduleId = section.dataset.screen;
+    section.hidden = hiddenModules.has(moduleId);
+    const gallery = section.querySelector(".gallery");
+    if (!gallery) return;
+    const existingCards = Array.from(gallery.querySelectorAll(":scope > .card"));
+    existingCards.forEach((card, index) => {
+      const cardId = `${moduleId}-${String(index + 1).padStart(2, "0")}`;
+      card.dataset.adminCardId = cardId;
+      applyCardContent(card, overrides.cards?.[cardId]);
+    });
+    Object.values(overrides.cards || {}).filter((card) => card?.isAdded && card.moduleId === moduleId).forEach((card, index) => {
+      if (!gallery.querySelector(`[data-admin-card-id="${CSS.escape(card.id)}"]`)) gallery.append(createContentCard(card, existingCards.length + index + 1));
+    });
+  });
+  addCustomModules(overrides.customModules || []);
+  screens = Array.from(document.querySelectorAll("[data-screen]"));
+  navButtons = Array.from(document.querySelectorAll("[data-target]"));
+}
+
+async function loadContentOverrides() {
+  try {
+    const response = await fetch("./content-overrides.json", { cache: "no-store" });
+    if (!response.ok) return;
+    applyContentOverrides(await response.json());
+  } catch {
+    // The portfolio keeps its original content if the local content file is unavailable.
+  }
 }
 
 function cardValue(card, key) {
@@ -872,6 +1005,8 @@ function updateLanguage() {
     document.querySelector("#" + gallery.dataset.descriptionTarget).textContent = cardValue(currentCard, "description");
   }
   document.querySelectorAll(".gallery[data-title-target]").forEach(updateGalleryTitle);
+  document.querySelectorAll(".card[data-admin-card-id]").forEach(updateCardLabel);
+  applyCustomModuleLanguage();
   if (modal.open) {
     if (modal.dataset.profilePreview) openProfilePreview(modal.dataset.profilePreview);
     else showModalCard(modalCardIndex);
@@ -882,12 +1017,78 @@ function updateLanguage() {
   document.title = "Funnyboy Portfolio";
 }
 
-navButtons.forEach((button) => button.addEventListener("click", () => {
-  const target = button.dataset.target;
-  const direction = order.indexOf(target) < order.indexOf(current) ? "up" : "down";
-  goTo(target, direction, true);
-  closeMenu();
-}));
+function bindNavigationButton(button) {
+  if (button.dataset.navigationBound) return;
+  button.dataset.navigationBound = "true";
+  button.addEventListener("click", () => {
+    const target = button.dataset.target;
+    const direction = order.indexOf(target) < order.indexOf(current) ? "up" : "down";
+    goTo(target, direction, true);
+    closeMenu();
+  });
+}
+
+function bindGallery(gallery) {
+  if (gallery.dataset.galleryBound) return;
+  gallery.dataset.galleryBound = "true";
+  const description = document.querySelector("#" + gallery.dataset.descriptionTarget);
+  const title = gallery.dataset.titleTarget ? document.querySelector("#" + gallery.dataset.titleTarget) : null;
+  const closeCard = () => {
+    gallery.classList.remove("expanded");
+    gallery.querySelectorAll(".card").forEach((card) => card.classList.remove("expanded"));
+  };
+  const expand = (card) => {
+    if (!card || card.hidden) return;
+    ensureCardArtwork(card);
+    const cards = Array.from(gallery.querySelectorAll(".card")).filter((item) => !item.hidden);
+    gallery.classList.add("expanded");
+    cards.forEach((item) => item.classList.toggle("expanded", item === card));
+    if (description) description.textContent = cardValue(card, "description");
+    gallery.dataset.activeCardIndex = String(cards.indexOf(card));
+    if (title) title.textContent = cardValue(card, "title");
+  };
+  gallery.addEventListener("pointerenter", (event) => {
+    const card = event.target.closest(".card");
+    if (card && gallery.contains(card)) expand(card);
+  }, true);
+  gallery.addEventListener("focusin", (event) => {
+    const card = event.target.closest(".card");
+    if (card && gallery.contains(card)) expand(card);
+  });
+  gallery.addEventListener("click", (event) => {
+    const card = event.target.closest(".card");
+    if (!card || !gallery.contains(card) || card.hidden) return;
+    ensureCardArtwork(card);
+    if (card.dataset.route) {
+      goTo(card.dataset.route, "down", true);
+      return;
+    }
+    const cards = Array.from(gallery.querySelectorAll(".card")).filter((item) => !item.hidden && !item.dataset.route);
+    modalCards = cards;
+    modalItems = createModalItems(cards);
+    modalCardIndex = modalItems.findIndex((item) => item.card === card);
+    showModalCard(modalCardIndex);
+    if (!modal.open) modal.showModal();
+  });
+  gallery.addEventListener("pointerleave", closeCard);
+}
+
+function bindProjectDots() {
+  document.querySelectorAll("[data-project-target]").forEach((dot) => {
+    if (dot.dataset.projectBound) return;
+    dot.dataset.projectBound = "true";
+    dot.addEventListener("click", () => {
+      const target = dot.dataset.projectTarget;
+      goTo(target, target === "niko" ? "up" : "down", true);
+    });
+  });
+}
+
+function initialiseInteractions() {
+  navButtons.forEach(bindNavigationButton);
+  document.querySelectorAll(".gallery").forEach(bindGallery);
+  bindProjectDots();
+}
 
 navControl.addEventListener("pointerenter", (event) => { if (event.pointerType === "mouse") openMenu(); });
 navControl.addEventListener("pointerleave", () => closeMenu());
@@ -910,48 +1111,6 @@ languageToggle.addEventListener("click", () => {
   updateLanguage();
 });
 
-document.querySelectorAll(".gallery").forEach((gallery) => {
-  const description = document.querySelector("#" + gallery.dataset.descriptionTarget);
-  const title = gallery.dataset.titleTarget ? document.querySelector("#" + gallery.dataset.titleTarget) : null;
-  const cards = Array.from(gallery.querySelectorAll(".card"));
-  const closeCard = () => {
-    gallery.classList.remove("expanded");
-    cards.forEach((card) => card.classList.remove("expanded"));
-  };
-  cards.forEach((card, index) => {
-    const expand = () => {
-      ensureCardArtwork(card);
-      gallery.classList.add("expanded");
-      cards.forEach((item) => item.classList.toggle("expanded", item === card));
-      description.textContent = cardValue(card, "description");
-      gallery.dataset.activeCardIndex = String(index);
-      if (title) title.textContent = cardValue(card, "title");
-    };
-    card.addEventListener("pointerenter", expand);
-    card.addEventListener("focus", expand);
-    card.addEventListener("click", () => {
-      ensureCardArtwork(card);
-      if (card.dataset.route) {
-        goTo(card.dataset.route, "down", true);
-        return;
-      }
-      modalCards = cards.filter((item) => !item.dataset.route);
-      modalItems = createModalItems(modalCards);
-      modalCardIndex = modalItems.findIndex((item) => item.card === card);
-      showModalCard(modalCardIndex);
-      if (!modal.open) modal.showModal();
-    });
-  });
-  gallery.addEventListener("pointerleave", closeCard);
-});
-
-document.querySelectorAll("[data-project-target]").forEach((dot) => {
-  dot.addEventListener("click", () => {
-    const target = dot.dataset.projectTarget;
-    goTo(target, target === "niko" ? "up" : "down", true);
-  });
-});
-
 window.addEventListener("wheel", (event) => {
   if (modal.open || Math.abs(event.deltaY) < 8) return;
   event.preventDefault();
@@ -972,9 +1131,15 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowLeft") showModalCard(modalCardIndex - 1);
   if (event.key === "ArrowRight") showModalCard(modalCardIndex + 1);
 });
-prepareDeferredArtwork();
-startClickRipples();
-setupProfilePreviews();
-setupNavigationScroll();
-setNext(current);
-updateLanguage();
+async function bootstrapPortfolio() {
+  await loadContentOverrides();
+  prepareDeferredArtwork();
+  initialiseInteractions();
+  startClickRipples();
+  setupProfilePreviews();
+  setupNavigationScroll();
+  setNext(current);
+  updateLanguage();
+}
+
+bootstrapPortfolio();
