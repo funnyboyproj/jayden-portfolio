@@ -5,5 +5,5 @@ set "NODE=C:\Users\guany\.cache\codex-runtimes\codex-primary-runtime\dependencie
 if not exist "%NODE%" set "NODE=node"
 start "Funnyboy Portfolio Studio" /b "%NODE%" "%PROJECT%\admin-server.js" > "%PROJECT%\admin-server.log" 2>&1
 timeout /t 1 /nobreak >nul
-start "" "http://127.0.0.1:4174/admin/"
+start "" "http://127.0.0.1:4184/admin/"
 endlocal

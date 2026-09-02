@@ -88,7 +88,7 @@ function createCardEditor(module, card, index) {
   element.querySelector(".work-name").textContent = card.titleZh || card.titleEn || "未命名作品";
   element.querySelector(".work-kind").textContent = card.isAdded ? "新增加的作品" : "已有作品";
   const values = { ...card, mediaSources: (card.mediaSources || []).join("\n") };
-  element.querySelectorAll("[data-field]").forEach((input) => { input.value = values[input.dataset.field] || ""; input.addEventListener("input", () => { const key = input.dataset.field; card[key] = key === "mediaSources" ? input.value.split(/\n+/).map((value) => value.trim()).filter(Boolean) : input.value; element.querySelector(".work-name").textContent = card.titleZh || card.titleEn || "未命名作品"; markDirty(); }); });
+  element.querySelectorAll("[data-field]").forEach((input) => { input.value = values[input.dataset.field] || ""; input.addEventListener("input", () => { const key = input.dataset.field; card[key] = key === "mediaSources" ? input.value.split(/\n+/).map((value) => value.trim()).filter(Boolean) : input.value; if (key === "mediaType") card.mediaTypes = (card.mediaSources || []).map(() => input.value); if (key === "mediaSources" && !card.mediaTypes?.length) card.mediaTypes = card.mediaSources.map(() => card.mediaType || "image"); element.querySelector(".work-name").textContent = card.titleZh || card.titleEn || "未命名作品"; markDirty(); }); });
   element.querySelector(".remove-card").addEventListener("click", () => { if (card.isAdded) module.cards = module.cards.filter((item) => item !== card); else card.hidden = !card.hidden; markDirty(); showModule(module.id); });
   element.querySelector(".remove-card").textContent = card.hidden ? "恢复展示" : "移除";
   element.querySelector(".image-upload").addEventListener("change", async (event) => {
@@ -109,6 +109,7 @@ async function uploadMedia(kind, file, card, element) {
     const result = await response.json(); if (!response.ok) throw new Error(result.error || "上传失败");
     card.mediaType = kind;
     card.mediaSources = [...(card.mediaSources || []), result.url];
+    card.mediaTypes = [...(card.mediaTypes || []), kind];
     if (!card.artwork && kind === "image") card.artwork = result.url;
     element.querySelector("[data-field='mediaType']").value = card.mediaType;
     element.querySelector("[data-field='mediaSources']").value = card.mediaSources.join("\n");

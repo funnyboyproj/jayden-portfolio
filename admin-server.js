@@ -17,7 +17,7 @@ const appPath = path.join(root, "app-v2.js");
 const ffmpeg = "Q:\\Codex\\tools\\ffmpeg\\ffmpeg-9.0.1-essentials_build\\bin\\ffmpeg.exe";
 const portableGitRoot = "C:\\Users\\guany\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\git";
 const portableGit = path.join(portableGitRoot, "cmd", "git.exe");
-const port = 4174;
+const port = 4184;
 
 const types = { ".css": "text/css; charset=utf-8", ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8" };
 const defaultContent = { version: 1, translations: {}, cards: {}, customModules: [], hiddenModules: [] };
@@ -82,6 +82,7 @@ async function extractBaseContent() {
         descriptionEn: buttonAttrs["data-description-en"] || "",
         artwork: styleImage,
         mediaType: typeValues.includes("video") ? "video" : "image",
+        mediaTypes: typeValues,
         mediaSources,
         tone: buttonAttrs["data-tone"] || "blue",
         route: buttonAttrs["data-route"] || "",
