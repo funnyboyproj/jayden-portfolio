@@ -1,10 +1,7 @@
 let screens = Array.from(document.querySelectorAll("[data-screen]"));
 let navButtons = Array.from(document.querySelectorAll("[data-target]"));
-const navControl = document.querySelector("#navControl");
-const menuToggle = document.querySelector("#menuToggle");
-const nextButton = document.querySelector("#nextButton");
-const nextText = document.querySelector("#nextText");
 const languageToggle = document.querySelector("#languageToggle");
+const themeToggle = document.querySelector("#themeToggle");
 const modal = document.querySelector("#workModal");
 const modalTitle = document.querySelector("#modalTitle");
 const modalDescription = document.querySelector("#modalDescription");
@@ -14,16 +11,13 @@ const modalMedia = document.querySelector("#modalMedia");
 const modalPreviewLabel = modalArt.querySelector("[data-i18n='modal.preview']");
 const modalPrev = document.querySelector("#modalPrev");
 const modalNext = document.querySelector("#modalNext");
-const movingLines = document.querySelector(".asset-lines");
-const clickRipples = document.querySelector("#clickRipples");
 
-let triggerNavigationRipple = () => {};
 let profileContent = { photo: "./web-images/image-064.webp", phone: "13121425198", email: "guanyue0413@gmail.com" };
 
 const order = ["home", "profile", "collab", "projects", "niko", "hours", "ip", "bobb", "works", "contact"];
 const labels = {
-  zh: { home: "首页", profile: "个人简介", collab: "大三联创", projects: "参与项目", niko: "Niko Niko Onigiri", hours: "24小时动画挑战赛", ip: "原创IP", bobb: "BOBB", works: "个人作品&练习", contact: "联系我" },
-  en: { home: "Home", profile: "About Me", collab: "Collaboration", projects: "Projects", niko: "Niko Niko Onigiri", hours: "24 HOURS Animation Contest", ip: "Original IP", bobb: "BOBB", works: "Personal Works & Practice", contact: "Contact Me" }
+  zh: { home: "主页", profile: "个人简介", collab: "大三联创", projects: "参与项目", niko: "Niko Niko Onigiri", hours: "24小时动画挑战赛", ip: "原创IP", bobb: "BOBB", works: "个人作品&练习", contact: "联系我" },
+  en: { home: "Home", profile: "About Me", collab: "Third-Year Collaboration", projects: "Projects", niko: "Niko Niko Onigiri", hours: "24 HOURS Animation Contest", ip: "Original IP", bobb: "BOBB", works: "Personal Works & Practice", contact: "Contact Me" }
 };
 
 const characterCopy = {
@@ -60,7 +54,7 @@ const characterCopy = {
 const translations = {
   "nav.home": { zh: "主页", en: "HOME" },
   "nav.profile": { zh: "个人简介", en: "ABOUT ME" },
-  "nav.collab": { zh: "大三联创", en: "COLLABORATION" },
+  "nav.collab": { zh: "大三联创", en: "THIRD-YEAR COLLABORATION" },
   "nav.projects": { zh: "参与项目", en: "PROJECTS" },
   "nav.ip": { zh: "原创IP", en: "ORIGINAL IP" },
   "nav.works": { zh: "个人作品&练习", en: "PERSONAL WORKS & PRACTICE" },
@@ -134,6 +128,10 @@ const translations = {
 };
 
 let language = "zh";
+try { language = localStorage.getItem("jayden-language") === "en" ? "en" : "zh"; } catch {}
+let theme = "light";
+try { theme = localStorage.getItem("jayden-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); } catch {}
+if (!['light', 'dark'].includes(theme)) theme = 'light';
 let current = "home";
 let navigating = false;
 let modalCards = [];
@@ -164,7 +162,10 @@ const publicMediaFiles = new Map([
   ["./assets/practice/动画练习/pick up things with music.mp4", "pick up things with music.mp4"]
 ]);
 
+const localMediaFiles = new Map();
+
 function publicMediaSource(source) {
+  if (localMediaFiles.has(source)) return localMediaFiles.get(source);
   const filename = publicMediaFiles.get(source);
   return filename ? `${publicMediaBase}/${encodeURIComponent(filename)}` : source;
 }
@@ -234,7 +235,7 @@ function addCustomModules(modules) {
     const section = document.createElement("section");
     section.className = "screen gallery-screen";
     section.dataset.screen = module.id;
-    section.setAttribute("aria-hidden", "true");
+    section.id = module.id;
     const titleId = `customTitle-${module.id}`;
     const textId = `customText-${module.id}`;
     section.innerHTML = `<div class="page-title reveal"><span>＋${String(index + 1).padStart(2, "0")}</span><h2 id="${titleId}"></h2></div><div class="gallery-heading reveal"><p></p><small id="${textId}"></small></div><div class="gallery reveal" data-description-target="${textId}"></div>`;
@@ -340,477 +341,6 @@ function ensureCardArtwork(card) {
   }
 }
 
-function splitContactText() {
-  document.querySelectorAll("[data-split-text]").forEach((element) => {
-    const text = element.textContent.trim();
-    element.setAttribute("aria-label", text);
-    element.replaceChildren();
-    Array.from(text).forEach((character, index) => {
-      const letter = document.createElement("span");
-      letter.className = "split-letter";
-      letter.style.setProperty("--letter-index", index);
-      letter.setAttribute("aria-hidden", "true");
-      letter.textContent = character === " " ? "\u00a0" : character;
-      element.append(letter);
-    });
-  });
-}
-
-function setupDepthInteractions() {
-  document.querySelectorAll(".gallery, .profile-layout").forEach((group) => {
-    group.classList.add("depth-group");
-    const surfaces = group.classList.contains("gallery")
-      ? Array.from(group.querySelectorAll(".card"))
-      : Array.from(group.querySelectorAll(".depth-surface"));
-
-    const reset = () => {
-      group.classList.remove("has-depth-focus");
-      surfaces.forEach((surface) => {
-        surface.classList.remove("depth-active");
-        surface.style.removeProperty("--depth-rotate-x");
-        surface.style.removeProperty("--depth-rotate-y");
-      });
-    };
-
-    surfaces.forEach((surface) => {
-      surface.classList.add("depth-surface");
-      surface.addEventListener("pointerenter", (event) => {
-        if (event.pointerType !== "mouse") return;
-        group.classList.add("has-depth-focus");
-        surfaces.forEach((item) => item.classList.toggle("depth-active", item === surface));
-      });
-      surface.addEventListener("pointermove", (event) => {
-        if (event.pointerType !== "mouse") return;
-        const rect = surface.getBoundingClientRect();
-        const rotateY = ((event.clientX - rect.left) / rect.width - .5) * 8;
-        const rotateX = -((event.clientY - rect.top) / rect.height - .5) * 6;
-        surface.style.setProperty("--depth-rotate-x", rotateX.toFixed(2) + "deg");
-        surface.style.setProperty("--depth-rotate-y", rotateY.toFixed(2) + "deg");
-      });
-    });
-    group.addEventListener("pointerleave", reset);
-  });
-
-  document.querySelectorAll(".depth-single").forEach((surface) => {
-    surface.addEventListener("pointerenter", (event) => {
-      if (event.pointerType === "mouse") surface.classList.add("depth-active");
-    });
-    surface.addEventListener("pointerleave", () => {
-      surface.classList.remove("depth-active");
-      surface.style.removeProperty("--depth-rotate-x");
-      surface.style.removeProperty("--depth-rotate-y");
-    });
-    surface.addEventListener("pointermove", (event) => {
-      if (event.pointerType !== "mouse") return;
-      const rect = surface.getBoundingClientRect();
-      const rotateY = ((event.clientX - rect.left) / rect.width - .5) * 5;
-      const rotateX = -((event.clientY - rect.top) / rect.height - .5) * 4;
-      surface.style.setProperty("--depth-rotate-x", rotateX.toFixed(2) + "deg");
-      surface.style.setProperty("--depth-rotate-y", rotateY.toFixed(2) + "deg");
-    });
-  });
-}
-
-function setupPanelGlow() {
-  document.querySelectorAll(".card, .portrait, .bio, .contact-stage, .work-modal").forEach((panel) => {
-    panel.classList.add("edge-glow-panel");
-
-    if (!panel.querySelector(":scope > .panel-edge-glow")) {
-      const glow = document.createElement("span");
-      glow.className = "panel-edge-glow";
-      glow.setAttribute("aria-hidden", "true");
-      panel.prepend(glow);
-    }
-
-    panel.addEventListener("pointermove", (event) => {
-      if (event.pointerType && event.pointerType !== "mouse") return;
-      const bounds = panel.getBoundingClientRect();
-      const x = Math.max(0, Math.min(100, ((event.clientX - bounds.left) / bounds.width) * 100));
-      const y = Math.max(0, Math.min(100, ((event.clientY - bounds.top) / bounds.height) * 100));
-      const edgeDistance = Math.min(x, 100 - x, y, 100 - y);
-      const strength = Math.max(0, 1 - edgeDistance / 26);
-
-      panel.style.setProperty("--glow-x", `${x}%`);
-      panel.style.setProperty("--glow-y", `${y}%`);
-      panel.style.setProperty("--glow-strength", strength.toFixed(3));
-    });
-
-    panel.addEventListener("pointerleave", () => {
-      panel.style.setProperty("--glow-strength", "0");
-    });
-  });
-}
-
-function startMetaBalls() {
-  if (!metaBalls || window.matchMedia("(pointer: coarse)").matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  const context = metaBalls.getContext("2d");
-  if (!context) return;
-
-  const palette = ["94, 87, 255", "72, 132, 255", "130, 72, 255", "62, 186, 255"];
-  const pointer = { x: window.innerWidth * .52, y: window.innerHeight * .5, targetX: window.innerWidth * .52, targetY: window.innerHeight * .5 };
-  let width = 0;
-  let height = 0;
-  let dpr = 1;
-  let balls = [];
-
-  const resize = () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    metaBalls.width = Math.round(width * dpr);
-    metaBalls.height = Math.round(height * dpr);
-    context.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const count = width > 900 ? 12 : 8;
-    balls = Array.from({ length: count }, (_, index) => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      radius: 58 + Math.random() * 96,
-      driftX: .18 + Math.random() * .34,
-      driftY: .13 + Math.random() * .3,
-      phase: Math.random() * Math.PI * 2,
-      colour: palette[index % palette.length]
-    }));
-  };
-
-  const paintBlob = (x, y, radius, colour, alpha) => {
-    const glow = context.createRadialGradient(x, y, radius * .08, x, y, radius);
-    glow.addColorStop(0, `rgba(${colour}, ${alpha})`);
-    glow.addColorStop(.4, `rgba(${colour}, ${alpha * .48})`);
-    glow.addColorStop(1, `rgba(${colour}, 0)`);
-    context.fillStyle = glow;
-    context.beginPath();
-    context.arc(x, y, radius, 0, Math.PI * 2);
-    context.fill();
-  };
-
-  const draw = (time) => {
-    context.clearRect(0, 0, width, height);
-    context.globalCompositeOperation = "lighter";
-    balls.forEach((ball) => {
-      const x = ball.x + Math.sin(time / 3100 * ball.driftX + ball.phase) * 74;
-      const y = ball.y + Math.cos(time / 3700 * ball.driftY + ball.phase) * 64;
-      paintBlob(x, y, ball.radius, ball.colour, .09);
-    });
-    pointer.x += (pointer.targetX - pointer.x) * .055;
-    pointer.y += (pointer.targetY - pointer.y) * .055;
-    paintBlob(pointer.x, pointer.y, 168, "102, 103, 255", .15);
-    paintBlob(pointer.x - 38, pointer.y + 24, 116, "66, 184, 255", .1);
-    context.globalCompositeOperation = "source-over";
-    requestAnimationFrame(draw);
-  };
-
-  window.addEventListener("pointermove", (event) => {
-    if (event.pointerType && event.pointerType !== "mouse") return;
-    pointer.targetX = event.clientX;
-    pointer.targetY = event.clientY;
-  }, { passive: true });
-  window.addEventListener("resize", resize, { passive: true });
-  resize();
-  requestAnimationFrame(draw);
-}
-
-function startClickRipples() {
-  if (!clickRipples || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  const context = clickRipples.getContext("2d");
-  if (!context) return;
-
-  const ripples = [];
-  let width = 0;
-  let height = 0;
-  let dpr = 1;
-  let frame = 0;
-
-  const resize = () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    clickRipples.width = Math.round(width * dpr);
-    clickRipples.height = Math.round(height * dpr);
-    context.setTransform(dpr, 0, 0, dpr, 0, 0);
-  };
-
-  const draw = (time) => {
-    context.clearRect(0, 0, width, height);
-    const distance = Math.hypot(width, height);
-    for (let index = ripples.length - 1; index >= 0; index -= 1) {
-      const ripple = ripples[index];
-      const progress = Math.min(1, (time - ripple.start) / 1120);
-      const radius = 16 + distance * .48 * progress;
-      const fade = (1 - progress) * .72;
-      const wash = context.createRadialGradient(ripple.x, ripple.y, radius * .44, ripple.x, ripple.y, radius);
-      wash.addColorStop(0, "rgba(92, 114, 255, 0)");
-      wash.addColorStop(.7, `rgba(84, 142, 255, ${fade * .06})`);
-      wash.addColorStop(.86, `rgba(148, 78, 255, ${fade * .24})`);
-      wash.addColorStop(1, "rgba(96, 202, 255, 0)");
-      context.fillStyle = wash;
-      context.fillRect(ripple.x - radius, ripple.y - radius, radius * 2, radius * 2);
-      context.lineWidth = 1.1 + (1 - progress) * 1.8;
-      context.strokeStyle = `rgba(109, 208, 255, ${fade * .66})`;
-      context.beginPath();
-      context.arc(ripple.x, ripple.y, radius, 0, Math.PI * 2);
-      context.stroke();
-      context.lineWidth = 1;
-      context.strokeStyle = `rgba(143, 88, 255, ${fade * .48})`;
-      context.beginPath();
-      context.arc(ripple.x, ripple.y, radius * .78, 0, Math.PI * 2);
-      context.stroke();
-      if (progress >= 1) ripples.splice(index, 1);
-    }
-    if (ripples.length) frame = requestAnimationFrame(draw);
-    else frame = 0;
-  };
-
-  const createRipple = (x = window.innerWidth * .5, y = window.innerHeight * .5) => {
-    const start = performance.now();
-    const previous = ripples[ripples.length - 1];
-    if (previous && start - previous.start < 70 && Math.hypot(previous.x - x, previous.y - y) < 30) return;
-
-    ripples.push({ x, y, start });
-    if (ripples.length > 3) ripples.shift();
-    if (!frame) frame = requestAnimationFrame(draw);
-  };
-
-  document.addEventListener("click", (event) => {
-    if (event.detail === 0) return;
-    createRipple(event.clientX, event.clientY);
-  }, { capture: true });
-  window.addEventListener("resize", resize, { passive: true });
-  resize();
-}
-
-function startHomeTitleDepth() {
-  const title = document.querySelector(".title-art-window");
-  if (!title || !window.matchMedia("(pointer: fine)").matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  const currentTilt = { x: 0, y: 0 };
-  const targetTilt = { x: 0, y: 0 };
-  let frame = 0;
-
-  const render = () => {
-    currentTilt.x += (targetTilt.x - currentTilt.x) * .1;
-    currentTilt.y += (targetTilt.y - currentTilt.y) * .1;
-    title.style.setProperty("--title-rotate-x", `${currentTilt.x.toFixed(2)}deg`);
-    title.style.setProperty("--title-rotate-y", `${currentTilt.y.toFixed(2)}deg`);
-    if (Math.abs(targetTilt.x - currentTilt.x) > .015 || Math.abs(targetTilt.y - currentTilt.y) > .015) frame = requestAnimationFrame(render);
-    else frame = 0;
-  };
-
-  const wake = () => {
-    if (!frame) frame = requestAnimationFrame(render);
-  };
-
-  window.addEventListener("pointermove", (event) => {
-    if (current !== "home") return;
-    const bounds = title.getBoundingClientRect();
-    const x = Math.max(-1, Math.min(1, (event.clientX - (bounds.left + bounds.width / 2)) / (bounds.width * .55)));
-    const y = Math.max(-1, Math.min(1, (event.clientY - (bounds.top + bounds.height / 2)) / (bounds.height * .55)));
-    targetTilt.x = -y * 4.4;
-    targetTilt.y = x * 6.2;
-    wake();
-  }, { passive: true });
-
-  window.addEventListener("blur", () => {
-    targetTilt.x = 0;
-    targetTilt.y = 0;
-    wake();
-  });
-}
-
-function startParticleFog() {
-  if (!particleFog || !window.matchMedia("(pointer: fine)").matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  const context = particleFog.getContext("2d");
-  const colours = ["66, 53, 190", "42, 89, 202", "109, 69, 201", "49, 127, 212"];
-  let width = 0;
-  let height = 0;
-  let dpr = 1;
-  let particles = [];
-  let mouse = { x: -1000, y: -1000 };
-  let frame = 0;
-  let active = false;
-
-  const makeParticles = () => {
-    const count = Math.min(260, Math.max(90, Math.round((width * height) / 7000)));
-    particles = Array.from({ length: count }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      size: 1.5 + Math.random() * 4.5,
-      colour: colours[Math.floor(Math.random() * colours.length)],
-      energy: 0,
-      drift: Math.random() * Math.PI * 2,
-    }));
-  };
-
-  const resize = () => {
-    const rect = particleFog.getBoundingClientRect();
-    width = rect.width;
-    height = rect.height;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    particleFog.width = Math.round(width * dpr);
-    particleFog.height = Math.round(height * dpr);
-    context.setTransform(dpr, 0, 0, dpr, 0, 0);
-    makeParticles();
-  };
-
-  const draw = (time) => {
-    context.clearRect(0, 0, width, height);
-    let isVisible = false;
-
-    particles.forEach((particle) => {
-      particle.energy *= 0.93;
-      particle.x += Math.sin(time / 1700 + particle.drift) * 0.08;
-      particle.y += Math.cos(time / 1900 + particle.drift) * 0.06;
-
-      if (particle.x < -12) particle.x = width + 12;
-      if (particle.x > width + 12) particle.x = -12;
-      if (particle.y < -12) particle.y = height + 12;
-      if (particle.y > height + 12) particle.y = -12;
-
-      if (particle.energy < 0.012) return;
-      isVisible = true;
-      const radius = particle.size + particle.energy * 17;
-      const gradient = context.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, radius);
-      gradient.addColorStop(0, `rgba(${particle.colour}, ${0.1 + particle.energy * 0.34})`);
-      gradient.addColorStop(0.38, `rgba(${particle.colour}, ${particle.energy * 0.15})`);
-      gradient.addColorStop(1, `rgba(${particle.colour}, 0)`);
-      context.fillStyle = gradient;
-      context.beginPath();
-      context.arc(particle.x, particle.y, radius, 0, Math.PI * 2);
-      context.fill();
-    });
-
-    if (isVisible) {
-      frame = requestAnimationFrame(draw);
-    } else {
-      active = false;
-      frame = 0;
-    }
-  };
-
-  const wake = () => {
-    if (!active) {
-      active = true;
-      frame = requestAnimationFrame(draw);
-    }
-  };
-
-  const energise = (x, y, amount = 1) => {
-    mouse = { x, y };
-    particles.forEach((particle) => {
-      const distance = Math.hypot(particle.x - mouse.x, particle.y - mouse.y);
-      const radius = 138 + particle.size * 2;
-      if (distance < radius) {
-        const strength = Math.pow(1 - distance / radius, 1.8) * amount;
-        particle.energy = Math.max(particle.energy, strength);
-      }
-    });
-    wake();
-  };
-
-  window.addEventListener("pointermove", (event) => {
-    if (event.pointerType && event.pointerType !== "mouse") return;
-    energise(event.clientX, event.clientY);
-  }, { passive: true });
-
-  window.addEventListener("pointerdown", (event) => {
-    if (event.pointerType && event.pointerType !== "mouse") return;
-    energise(event.clientX, event.clientY, 1.7);
-  }, { passive: true });
-
-  window.addEventListener("resize", resize, { passive: true });
-  resize();
-}
-
-function startCursorRibbons() {
-  if (!cursorRibbons || !window.matchMedia("(pointer: fine)").matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const context = cursorRibbons.getContext("2d");
-  if (!context) return;
-
-  const cursor = { x: window.innerWidth / 2, y: window.innerHeight / 2, active: false, opacity: 0 };
-  const ribbons = [
-    { colors: ["#3d249d", "#2d5fbb"], width: 10, offsetX: -5, offsetY: 6, points: [] },
-    { colors: ["#5b338f", "#2550a2"], width: 7, offsetX: 8, offsetY: -4, points: [] },
-    { colors: ["#294b98", "#533196"], width: 4, offsetX: 1, offsetY: 1, points: [] }
-  ];
-  let width = 0;
-  let height = 0;
-  let dpr = 1;
-
-  const resetPoints = () => ribbons.forEach((ribbon) => {
-    ribbon.points = Array.from({ length: 28 }, () => ({ x: cursor.x + ribbon.offsetX, y: cursor.y + ribbon.offsetY }));
-  });
-  const resize = () => {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    width = window.innerWidth;
-    height = window.innerHeight;
-    cursorRibbons.width = Math.round(width * dpr);
-    cursorRibbons.height = Math.round(height * dpr);
-    cursorRibbons.style.width = width + "px";
-    cursorRibbons.style.height = height + "px";
-    resetPoints();
-  };
-  const moveCursor = (event) => {
-    if (event.pointerType !== "mouse") return;
-    cursor.x = event.clientX;
-    cursor.y = event.clientY;
-    cursor.active = true;
-  };
-  const draw = () => {
-    context.setTransform(dpr, 0, 0, dpr, 0, 0);
-    context.clearRect(0, 0, width, height);
-    cursor.opacity += ((cursor.active ? 1 : 0) - cursor.opacity) * .08;
-    context.globalCompositeOperation = "lighter";
-    ribbons.forEach((ribbon, ribbonIndex) => {
-      const head = ribbon.points[0];
-      head.x += (cursor.x + ribbon.offsetX - head.x) * .38;
-      head.y += (cursor.y + ribbon.offsetY - head.y) * .38;
-      for (let index = 1; index < ribbon.points.length; index += 1) {
-        const previous = ribbon.points[index - 1];
-        const point = ribbon.points[index];
-        const follow = .31 - ribbonIndex * .035;
-        point.x += (previous.x - point.x) * follow;
-        point.y += (previous.y - point.y) * follow;
-      }
-      const tail = ribbon.points[ribbon.points.length - 1];
-      const gradient = context.createLinearGradient(head.x, head.y, tail.x, tail.y);
-      gradient.addColorStop(0, ribbon.colors[0]);
-      gradient.addColorStop(.55, ribbon.colors[1]);
-      gradient.addColorStop(1, "#5e6fff00");
-      context.beginPath();
-      context.moveTo(head.x, head.y);
-      ribbon.points.slice(1).forEach((point) => context.lineTo(point.x, point.y));
-        context.globalAlpha = cursor.opacity * (ribbonIndex === 0 ? .52 : .34);
-        context.lineCap = "round";
-        context.lineJoin = "round";
-        context.lineWidth = ribbon.width;
-        context.strokeStyle = gradient;
-        context.shadowBlur = ribbonIndex === 0 ? 14 : 10;
-        context.shadowColor = ribbon.colors[0];
-        context.stroke();
-
-        const headGradient = context.createRadialGradient(head.x, head.y, 0, head.x, head.y, ribbon.width * 1.3);
-        headGradient.addColorStop(0, ribbon.colors[1]);
-        headGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-        context.globalAlpha = cursor.opacity * (ribbonIndex === 0 ? .32 : .2);
-        context.fillStyle = headGradient;
-        context.beginPath();
-        context.arc(head.x, head.y, ribbon.width * 1.3, 0, Math.PI * 2);
-        context.fill();
-        context.shadowBlur = 0;
-    });
-    context.globalAlpha = 1;
-    requestAnimationFrame(draw);
-  };
-
-  window.addEventListener("resize", resize);
-  window.addEventListener("pointermove", moveCursor, { passive: true });
-  window.addEventListener("blur", () => { cursor.active = false; });
-  resize();
-  draw();
-}
-
 function showModalCard(index) {
   if (!modalItems.length) return;
   modalCardIndex = (index + modalItems.length) % modalItems.length;
@@ -818,7 +348,7 @@ function showModalCard(index) {
   const card = item.card;
   const seriesSources = (card.dataset.mediaSrcs || card.dataset.mediaSrc || "").split("|").filter(Boolean);
   const seriesIndex = modalCards.indexOf(card);
-  const imageIndex = seriesSources.indexOf(item.source);
+  const imageIndex = item.sourceIndex;
   modalTitle.textContent = modalItemValue(item, "title");
   modalDescription.textContent = modalItemValue(item, "description");
   const seriesLabel = (language === "zh" ? "系列 " : "SERIES ") + String(seriesIndex + 1).padStart(2, "0") + " / " + String(modalCards.length).padStart(2, "0");
@@ -828,7 +358,8 @@ function showModalCard(index) {
   modal.classList.remove("portrait-preview", "profile-info-preview", "profile-photo-preview");
   delete modal.dataset.profilePreview;
   if (modalPreviewLabel) modalPreviewLabel.textContent = translations["modal.preview"][language];
-  modalMedia.replaceChildren();
+  releaseModalMedia();
+  document.querySelector('.modal-copy').scrollTop = 0;
   if (item.source) {
     const media = document.createElement(item.mediaType === "video" ? "video" : "img");
     media.className = "modal-media-item";
@@ -843,11 +374,26 @@ function showModalCard(index) {
       media.controls = true;
       media.playsInline = true;
       media.preload = "metadata";
+      media.poster = card.style.getPropertyValue('--art').match(/url\(["']?(.*?)["']?\)/)?.[1] || '';
       media.addEventListener("loadedmetadata", setPreviewRatio, { once: true });
     } else {
       media.alt = modalTitle.textContent;
+      media.decoding = "async";
       media.addEventListener("load", setPreviewRatio, { once: true });
     }
+    media.addEventListener("error", () => {
+      if (!media.isConnected) return;
+      const message = document.createElement("p");
+      message.className = "media-error";
+      message.textContent = language === "zh" ? "暂时无法载入此素材。请检查网络，或直接打开原文件。" : "This media could not load. Check your connection or open the original file.";
+      const link = document.createElement("a");
+      link.href = item.source;
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.textContent = language === "zh" ? "打开素材" : "Open media";
+      message.append(link);
+      modalMedia.append(message);
+    }, { once: true });
     media.src = item.source;
     modalMedia.append(media);
     modalArt.classList.add("has-media");
@@ -862,8 +408,17 @@ function modalItemValue(item, key) {
   return values[item.sourceIndex] || character?.[key] || cardValue(card, key);
 }
 
-function clearModalMedia() {
+function releaseModalMedia() {
+  modalMedia.querySelectorAll("video").forEach((video) => {
+    video.pause();
+    video.removeAttribute("src");
+    video.load();
+  });
   modalMedia.replaceChildren();
+}
+
+function clearModalMedia() {
+  releaseModalMedia();
   modalArt.classList.remove("has-media");
   modal.classList.remove("portrait-preview", "profile-info-preview", "profile-photo-preview");
   delete modal.dataset.profilePreview;
@@ -892,7 +447,6 @@ function openProfilePreview(type) {
   clearModalMedia();
   modal.dataset.profilePreview = type;
   modalArt.className = "modal-art violet";
-  modalMedia.replaceChildren();
 
   if (type === "portrait") {
     modal.classList.add("profile-photo-preview");
@@ -934,7 +488,7 @@ function openProfilePreview(type) {
     if (modalPreviewLabel) modalPreviewLabel.textContent = language === "zh" ? "完整资料" : "FULL PROFILE";
   }
 
-  if (!modal.open) modal.showModal();
+  openWorkModal();
 }
 
 function setupProfilePreviews() {
@@ -952,221 +506,286 @@ function setupProfilePreviews() {
   });
 }
 
-function setupNavigationScroll() {
-  const nav = document.querySelector("#primaryNav");
-  if (!nav) return;
-  nav.addEventListener("wheel", (event) => {
-    if (nav.scrollWidth <= nav.clientWidth) return;
-    const distance = Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
-    if (!distance) return;
-    nav.scrollLeft += distance;
-    event.preventDefault();
-  }, { passive: false });
-}
 
-function setNext(name) {
-  const next = order[(order.indexOf(name) + 1) % order.length];
-  nextButton.dataset.next = next;
-  nextText.textContent = next === "home" ? (language === "zh" ? "点击此处回到首页" : "Return to home") : (language === "zh" ? "点击此处前往" : "Go to ") + labels[language][next];
+// V2 keeps the authored media/content model; navigation is native vertical reading.
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const v2Copy = {
+  'v2.wordmark': { zh: '作品集', en: 'portfolio' },
+  'v2.index': { zh: '章节目录', en: 'CHAPTERS' },
+  'v2.chapters': { zh: '章节目录', en: 'CHAPTERS' },
+  'v2.railNote': { zh: '一个小小的男孩，\n拥有更大的宇宙。', en: 'A SMALL\nBOY.\nA BIGGER\nUNIVERSE.' },
+  'v2.homeTitle': { zh: '你好，我是\n陈冠宇', en: 'HI, IM\nJAYDEN' },
+  'v2.homeCraft': { zh: '三维角色设计与动画', en: '3D CHARACTER DESIGN & ANIMATION' },
+  'v2.bobbLabel': { zh: 'BOBB · 原创 IP', en: 'BOBB · ORIGINAL IP' },
+  'v2.cutcraftHome': { zh: '剪纸\n惊魂', en: 'CUTCRAFT\nPHANTASM' },
+  'v2.scrollTitle': { zh: '向下滑动\n继续探索', en: 'SCROLL\nTO EXPLORE' },
+  'v2.footerNote': { zh: '这一章结束，故事仍在继续。', en: 'END OF THIS CHAPTER. NOT THE STORY.' },
+  'v2.about': { zh: '关于我', en: 'ABOUT' },
+  'v2.contact': { zh: '联系', en: 'CONTACT' },
+  'v2.prologue': { zh: '主页', en: 'HOME' },
+  'v2.cutcraftTitle': { zh: '《剪纸惊魂》', en: 'CUTCRAFT PHANTASM' },
+  'v2.cutcraftRole': { zh: '担任导演、分镜、建模、绑定、动画、后期剪辑', en: 'Director, storyboarding, modeling, rigging, animation and editing.' },
+  'v2.browse': { zh: '浏览作品', en: 'VIEW WORKS' },
+  'v2.meet': { zh: '遇见', en: 'MEET' },
+  'v2.enter': { zh: '进入这一话', en: 'EXPLORE CHAPTER' },
+  'v2.quote': { zh: '故事，从一个角色开始。', en: 'Every story starts with a character.' },
+  'v2.nextEpisode': { zh: '下一话', en: 'UP NEXT' },
+  'v2.scrollHint': { zh: '向下滚动，继续阅读我的创作故事', en: 'SCROLL DOWN. THE STORY CONTINUES.' },
+  'v2.backTop': { zh: '回到顶部', en: 'BACK TO TOP' },
+  'v2.nextModule': { zh: '继续阅读', en: 'KEEP READING' },
+  'v2.view': { zh: '点击查看完整作品', en: 'VIEW FULL WORK' },
+  'v2.play': { zh: '播放影片', en: 'PLAY FILM' }
+  ,'v2.darkMode': { zh: '夜间', en: 'DARK' }
+  ,'v2.lightMode': { zh: '日间', en: 'LIGHT' }
+};
+Object.assign(translations, v2Copy);
+let previousModalFocus = null;
+const galleryPages = [];
+const $ = (selector) => document.querySelector(selector);
+const icon = (name) => { const img = document.createElement('img'); img.className = 'icon'; img.src = `./web-images/v2-${name}.svg`; img.alt = ''; return img; };
+function visibleScreens() { return screens.filter((screen) => !screen.hidden); }
+function chapterName(name) { return labels[language][name] || name; }
+function updateTheme() {
+  document.documentElement.dataset.theme = theme;
+  const isDark = theme === 'dark';
+  themeToggle.setAttribute('aria-pressed', String(isDark));
+  themeToggle.setAttribute('aria-label', isDark ? (language === 'zh' ? '切换到日间模式' : 'Switch to light mode') : (language === 'zh' ? '切换到夜间模式' : 'Switch to dark mode'));
+  themeToggle.querySelector('span').textContent = isDark ? '☀' : '☾';
+  themeToggle.querySelector('b').textContent = translations[isDark ? 'v2.lightMode' : 'v2.darkMode'][language];
+  document.querySelector('meta[name="theme-color"]').content = isDark ? '#111225' : '#ffffff';
 }
-
-function updateGalleryTitle(gallery) {
-  if (!gallery.dataset.titleTarget) return;
-  const title = document.querySelector("#" + gallery.dataset.titleTarget);
-  const cards = Array.from(gallery.querySelectorAll(".card"));
-  const activeIndex = Number(gallery.dataset.activeCardIndex || 0);
-  const card = cards[activeIndex] || cards[0];
-  if (title && card) title.textContent = cardValue(card, "title");
+function goTo(name) {
+  const screen = screens.find((item) => item.dataset.screen === name);
+  if (!screen || screen.hidden) return;
+  const target = name === 'home' ? $('#home') : screen;
+  target.scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
+  if (location.hash !== '#' + name) history.pushState(null, '', '#' + name);
+  setCurrentChapter(name);
 }
-
-function closeMenu() {
-  navControl.classList.remove("menu-open");
-  menuToggle.setAttribute("aria-expanded", "false");
-}
-
-function openMenu() {
-  navControl.classList.add("menu-open");
-  menuToggle.setAttribute("aria-expanded", "true");
-}
-
-function replayLines() {
-  movingLines.classList.remove("reveal-lines");
-  void movingLines.offsetWidth;
-  movingLines.classList.add("reveal-lines");
-}
-
-function goTo(name, direction, withRipple = false) {
-  if (!labels.zh[name] || name === current || navigating) return;
-  navigating = true;
-  if (withRipple) triggerNavigationRipple();
-  const selected = screens.find((screen) => screen.dataset.screen === name);
-  screens.forEach((screen) => {
-    const active = screen === selected;
-    screen.classList.toggle("active", active);
-    screen.classList.toggle("enter-up", active && direction === "up");
-    screen.setAttribute("aria-hidden", String(!active));
-  });
-  navButtons.forEach((button) => button.classList.toggle("current", button.dataset.target === name));
+function setCurrentChapter(name) {
   current = name;
-  setNext(name);
-  document.querySelectorAll("[data-project-target]").forEach((dot) => {
-    dot.classList.toggle("active", dot.dataset.projectTarget === name);
+  const parent = { niko: 'projects', hours: 'projects', bobb: 'ip' }[name] || name;
+  navButtons.forEach((button) => {
+    const selected = button.dataset.target === parent;
+    button.classList.toggle('current', selected);
+    if (selected) button.setAttribute('aria-current', 'location'); else button.removeAttribute('aria-current');
   });
-  replayLines();
-  document.title = "Funnyboy Portfolio";
-  window.setTimeout(() => { navigating = false; }, 930);
 }
-
+function buildModuleLinks() {
+  const visible = visibleScreens();
+  screens.forEach((screen) => screen.querySelector('.module-next')?.remove());
+  visible.forEach((screen, index) => {
+    const next = visible[(index + 1) % visible.length].dataset.screen;
+    const link = document.createElement('a'); link.className = 'module-next'; link.href = '#' + next;
+    const label = document.createElement('span');
+    const small = document.createElement('small'); small.textContent = language === 'zh' ? (next === 'home' ? '回到开端' : '故事仍在继续') : (next === 'home' ? 'BACK TO THE BEGINNING' : 'THE STORY CONTINUES');
+    const title = document.createElement('strong'); title.textContent = next === 'home' ? translations['v2.backTop'][language] : `${translations['v2.nextModule'][language]} · ${chapterName(next)}`;
+    label.append(small, title); link.append(label, icon('arrow')); screen.append(link);
+  });
+}
+function decorateCards() {
+  document.querySelectorAll('.gallery > .card').forEach((card) => {
+    ensureCardArtwork(card);
+    if (card.querySelector('.card-media')) return;
+    const media = document.createElement('span'); media.className = 'card-media';
+    const artwork = card.style.getPropertyValue('--art').match(/url\(["']?(.*?)["']?\)/)?.[1];
+    if (artwork) {
+      const img = document.createElement('img'); img.src = artwork; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async'; media.append(img);
+    } else {
+      const sources = (card.dataset.mediaSrcs || card.dataset.mediaSrc || '').split('|').filter(Boolean);
+      if (sources[0] && (card.dataset.mediaTypes || card.dataset.mediaType || '').includes('video')) {
+        const video = document.createElement('video'); video.dataset.previewSrc = publicMediaSource(sources[0]); video.preload = 'none'; video.muted = true; video.playsInline = true; video.setAttribute('aria-hidden', 'true'); media.append(video);
+        video.addEventListener('error', () => { video.hidden = true; }, { once: true });
+      }
+    }
+    if ((card.dataset.mediaTypes || card.dataset.mediaType || '').includes('video')) { const play = document.createElement('span'); play.className = 'play-marker'; play.append(icon('play')); media.append(play); }
+    card.prepend(media);
+    const arrow = icon('arrow'); arrow.classList.add('card-arrow'); card.append(arrow);
+    const hint = card.querySelector('small'); if (hint) { hint.dataset.i18n = 'v2.view'; hint.textContent = translations['v2.view'][language]; }
+  });
+}
+function setupGalleryPages() {
+  document.querySelectorAll('.gallery').forEach((gallery) => {
+    const cards = Array.from(gallery.children).filter((item) => item.classList.contains('card') && !item.hidden);
+    cards.forEach((card) => { card.dataset.pageEligible = 'true'; });
+    if (cards.length < 2) { gallery.classList.add('page-one'); return; }
+    const state = { gallery, cards, page: 0, render: null };
+    const pager = document.createElement('div'); pager.className = 'comic-pager';
+    const prev = document.createElement('button'); prev.type = 'button'; prev.className = 'comic-page-button'; prev.append(icon('left'));
+    const status = document.createElement('span'); status.className = 'comic-page-status';
+    const next = document.createElement('button'); next.type = 'button'; next.className = 'comic-page-button'; next.append(icon('right'));
+    pager.append(prev, status, next); gallery.after(pager);
+    state.render = () => {
+      const perPage = innerWidth <= 600 ? 1 : innerWidth <= 900 ? 2 : 3;
+      const total = Math.ceil(cards.length / perPage);
+      state.page = Math.min(state.page, total - 1);
+      cards.forEach((card, index) => {
+        const position = index - state.page * perPage;
+        card.hidden = position < 0 || position >= perPage;
+        card.classList.remove('is-featured', 'is-side-top', 'is-side-bottom');
+        if (!card.hidden) card.classList.add(['is-featured', 'is-side-top', 'is-side-bottom'][position]);
+      });
+      const visibleCount = Math.min(perPage, cards.length - state.page * perPage);
+      gallery.classList.toggle('page-two', visibleCount === 2);
+      gallery.classList.toggle('page-one', visibleCount === 1);
+      status.textContent = `${String(state.page + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+      prev.disabled = state.page === 0; next.disabled = state.page === total - 1;
+      prev.setAttribute('aria-label', language === 'zh' ? '上一组作品' : 'Previous works');
+      next.setAttribute('aria-label', language === 'zh' ? '下一组作品' : 'Next works');
+      pager.hidden = total < 2;
+    };
+    const step = (direction) => { state.page += direction; state.render(); animatePanels(gallery, direction); };
+    prev.addEventListener('click', () => step(-1)); next.addEventListener('click', () => step(1));
+    galleryPages.push(state); state.render();
+  });
+  let resizeFrame = 0;
+  addEventListener('resize', () => { cancelAnimationFrame(resizeFrame); resizeFrame = requestAnimationFrame(() => galleryPages.forEach((state) => state.render())); }, { passive: true });
+}
+function animatePanels(element, direction = 1) {
+  if (reducedMotion.matches || !element?.animate) return;
+  element.animate([{ opacity: .25, filter: 'blur(8px)', transform: `translateX(${direction * 22}px)` }, { opacity: 1, filter: 'blur(0)', transform: 'translateX(0)' }], { duration: 430, easing: 'cubic-bezier(.16,1,.3,1)' });
+}
+function openWorkModal() {
+  if (!modal.open) { previousModalFocus = document.activeElement; modal.showModal(); }
+  document.body.classList.add('modal-open');
+  const hasSeries = !modal.dataset.profilePreview && modalItems.length > 1;
+  modalPrev.hidden = !hasSeries; modalNext.hidden = !hasSeries;
+}
+function closeWorkModal() { clearModalMedia(); modal.close(); }
+function bindGallery(gallery) {
+  const description = document.getElementById(gallery.dataset.descriptionTarget);
+  const heading = document.getElementById(gallery.dataset.titleTarget);
+  const originalDescription = description?.textContent;
+  const update = (card) => {
+    if (!card || card.hidden) return;
+    if (description) description.textContent = cardValue(card, 'description') || originalDescription;
+    if (heading) heading.textContent = cardValue(card, 'title');
+  };
+  gallery.addEventListener('focusin', (event) => update(event.target.closest('.card')));
+  gallery.addEventListener('pointerover', (event) => update(event.target.closest('.card')));
+  gallery.addEventListener('click', (event) => {
+    const card = event.target.closest('.card');
+    if (!card || card.hidden || !gallery.contains(card)) return;
+    if (card.dataset.route) { goTo(card.dataset.route); return; }
+    modalCards = Array.from(gallery.querySelectorAll('.card')).filter((item) => (item.dataset.pageEligible === 'true' || !item.hidden) && !item.dataset.route);
+    modalItems = createModalItems(modalCards);
+    modalCardIndex = modalItems.findIndex((item) => item.card === card);
+    showModalCard(modalCardIndex); openWorkModal();
+  });
+}
 function updateLanguage() {
   document.body.dataset.language = language;
-  document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
-  document.querySelectorAll("[data-i18n]").forEach((element) => {
-    const word = translations[element.dataset.i18n];
-    if (word) element.textContent = word[language];
-  });
-  splitContactText();
-  const currentCard = document.querySelector(".card.expanded");
-  if (currentCard) {
-    const gallery = currentCard.closest(".gallery");
-    document.querySelector("#" + gallery.dataset.descriptionTarget).textContent = cardValue(currentCard, "description");
-  }
-  document.querySelectorAll(".gallery[data-title-target]").forEach(updateGalleryTitle);
-  document.querySelectorAll(".card[data-admin-card-id]").forEach(updateCardLabel);
+  document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
+  document.querySelectorAll('[data-i18n]').forEach((element) => { const copy = translations[element.dataset.i18n]; if (copy) element.textContent = copy[language] || copy.zh; });
+  document.querySelector('.home-intro').setAttribute('aria-label', language === 'zh' ? '了解陈冠宇，前往个人简介' : 'Meet Jayden. Go to About Me.');
+  document.querySelector('.wordmark').setAttribute('aria-label', language === 'zh' ? '作品集 — 返回主页' : 'portfolio — Back to Home');
+  document.querySelector('.home-bobb').setAttribute('aria-label', language === 'zh' ? '查看 BOBB 原创 IP' : 'Explore BOBB original IP');
+  document.querySelector('.home-cutcraft').setAttribute('aria-label', language === 'zh' ? '查看大三联创《剪纸惊魂》' : 'Explore Cutcraft Phantasm collaboration');
+  document.querySelectorAll('.gallery .card').forEach(updateCardLabel);
   applyCustomModuleLanguage();
-  if (modal.open) {
-    if (modal.dataset.profilePreview) openProfilePreview(modal.dataset.profilePreview);
-    else showModalCard(modalCardIndex);
-  }
-  languageToggle.textContent = language === "zh" ? "EN" : "中文";
-  languageToggle.setAttribute("aria-label", language === "zh" ? "Switch to English" : "切换为中文");
-  setNext(current);
-  document.title = "Funnyboy Portfolio";
+  languageToggle.textContent = language === 'zh' ? '中 / EN' : 'EN / 中';
+  languageToggle.setAttribute('aria-label', language === 'zh' ? 'Switch to English' : '切换为中文');
+  const railToggle = $('#railToggle');
+  const railCollapsed = $('#reading').classList.contains('rail-collapsed');
+  railToggle.setAttribute('aria-label', railCollapsed ? (language === 'zh' ? '展开章节目录' : 'Open chapter menu') : (language === 'zh' ? '收起章节目录' : 'Close chapter menu'));
+  updateTheme(); galleryPages.forEach((state) => state.render());
+  $('#closeModal').setAttribute('aria-label', language === 'zh' ? '关闭作品预览' : 'Close preview');
+  modalPrev.setAttribute('aria-label', language === 'zh' ? '查看上一件作品' : 'Previous artwork');
+  modalNext.setAttribute('aria-label', language === 'zh' ? '查看下一件作品' : 'Next artwork');
+  buildModuleLinks();
+  if (modal.open) { if (modal.dataset.profilePreview) openProfilePreview(modal.dataset.profilePreview); else showModalCard(modalCardIndex); }
+  document.title = 'Jayden — Portfolio V2.0';
 }
-
-function bindNavigationButton(button) {
-  if (button.dataset.navigationBound) return;
-  button.dataset.navigationBound = "true";
-  button.addEventListener("click", () => {
-    const target = button.dataset.target;
-    const direction = order.indexOf(target) < order.indexOf(current) ? "up" : "down";
-    goTo(target, direction, true);
-    closeMenu();
-  });
+async function loadLocalMedia() {
+  if (!['localhost', '127.0.0.1', ''].includes(location.hostname)) return;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 3500);
+  try {
+    const response = await fetch('./web-media/manifest.json', { signal: controller.signal });
+    if (!response.ok) return;
+    for (const entry of await response.json()) localMediaFiles.set('./' + entry.Source.replaceAll('\\', '/'), './web-media/' + encodeURIComponent(entry.Output));
+  } catch { /* Existing public media remains the fallback. */ }
+  finally { clearTimeout(timeout); }
 }
-
-function bindGallery(gallery) {
-  if (gallery.dataset.galleryBound) return;
-  gallery.dataset.galleryBound = "true";
-  const description = document.querySelector("#" + gallery.dataset.descriptionTarget);
-  const title = gallery.dataset.titleTarget ? document.querySelector("#" + gallery.dataset.titleTarget) : null;
-  const closeCard = () => {
-    gallery.classList.remove("expanded");
-    gallery.querySelectorAll(".card").forEach((card) => card.classList.remove("expanded"));
+function setupScrollReading() {
+  const chapters = visibleScreens();
+  let frame = false;
+  const update = () => {
+    frame = false;
+    const anchor = Math.min(innerHeight * .35, 280);
+    let selected = chapters[0];
+    for (const section of chapters) { if (section.getBoundingClientRect().top <= anchor) selected = section; }
+    if (selected) setCurrentChapter(selected.dataset.screen);
+    const max = document.documentElement.scrollHeight - innerHeight;
+    $('#readingProgress').style.transform = `scaleX(${max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0})`;
   };
-  const expand = (card) => {
-    if (!card || card.hidden) return;
-    ensureCardArtwork(card);
-    const cards = Array.from(gallery.querySelectorAll(".card")).filter((item) => !item.hidden);
-    gallery.classList.add("expanded");
-    cards.forEach((item) => item.classList.toggle("expanded", item === card));
-    if (description) description.textContent = cardValue(card, "description");
-    gallery.dataset.activeCardIndex = String(cards.indexOf(card));
-    if (title) title.textContent = cardValue(card, "title");
-  };
-  gallery.addEventListener("pointerenter", (event) => {
-    const card = event.target.closest(".card");
-    if (card && gallery.contains(card)) expand(card);
-  }, true);
-  gallery.addEventListener("focusin", (event) => {
-    const card = event.target.closest(".card");
-    if (card && gallery.contains(card)) expand(card);
-  });
-  gallery.addEventListener("click", (event) => {
-    const card = event.target.closest(".card");
-    if (!card || !gallery.contains(card) || card.hidden) return;
-    ensureCardArtwork(card);
-    if (card.dataset.route) {
-      goTo(card.dataset.route, "down", true);
-      return;
-    }
-    const cards = Array.from(gallery.querySelectorAll(".card")).filter((item) => !item.hidden && !item.dataset.route);
-    modalCards = cards;
-    modalItems = createModalItems(cards);
-    modalCardIndex = modalItems.findIndex((item) => item.card === card);
-    showModalCard(modalCardIndex);
-    if (!modal.open) modal.showModal();
-  });
-  gallery.addEventListener("pointerleave", closeCard);
+  window.addEventListener('scroll', () => { if (!frame) { frame = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  // Native scrolling is never prevented; section links are optional shortcuts.
+  const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add('revealed'); observer.unobserve(entry.target);
+  }), { threshold: .06 });
+  document.querySelectorAll('.gallery .card, .profile-layout > *').forEach((element) => { element.classList.add('scroll-reveal'); observer.observe(element); });
+  const moduleObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
+    entry.target.classList.toggle('module-visible', entry.isIntersecting && entry.intersectionRatio >= .35);
+  }), { threshold: [.05, .35, .7], rootMargin: '-4% 0px -4% 0px' });
+  chapters.forEach((section) => { section.classList.add('module-enter'); moduleObserver.observe(section); });
+  const videoObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    const video = entry.target; video.src = video.dataset.previewSrc; video.preload = 'metadata'; videoObserver.unobserve(video);
+  }), { rootMargin: '200px' });
+  document.querySelectorAll('video[data-preview-src]').forEach((video) => videoObserver.observe(video));
+  update();
 }
-
-function bindProjectDots() {
-  document.querySelectorAll("[data-project-target]").forEach((dot) => {
-    if (dot.dataset.projectBound) return;
-    dot.dataset.projectBound = "true";
-    dot.addEventListener("click", () => {
-      const target = dot.dataset.projectTarget;
-      goTo(target, target === "niko" ? "up" : "down", true);
-    });
-  });
-}
-
-function initialiseInteractions() {
-  navButtons.forEach(bindNavigationButton);
-  document.querySelectorAll(".gallery").forEach(bindGallery);
-  bindProjectDots();
-}
-
-navControl.addEventListener("pointerenter", (event) => { if (event.pointerType === "mouse") openMenu(); });
-navControl.addEventListener("pointerleave", () => closeMenu());
-navControl.addEventListener("focusin", openMenu);
-navControl.addEventListener("focusout", () => {
-  window.setTimeout(() => { if (!navControl.contains(document.activeElement)) closeMenu(); }, 0);
-});
-menuToggle.addEventListener("click", () => {
-  if (window.matchMedia("(hover: hover)").matches) {
-    openMenu();
-    return;
-  }
-  if (navControl.classList.contains("menu-open")) closeMenu();
-  else openMenu();
-});
-
-nextButton.addEventListener("click", () => goTo(nextButton.dataset.next, "down", true));
-languageToggle.addEventListener("click", () => {
-  language = language === "zh" ? "en" : "zh";
-  updateLanguage();
-});
-
-window.addEventListener("wheel", (event) => {
-  if (modal.open || Math.abs(event.deltaY) < 8) return;
-  event.preventDefault();
-  if (navigating) return;
-  const index = order.indexOf(current);
-  const direction = event.deltaY > 0 ? "down" : "up";
-  const target = direction === "down" ? order[(index + 1) % order.length] : order[(index - 1 + order.length) % order.length];
-  goTo(target, direction);
-}, { passive: false });
-
-document.querySelector("#closeModal").addEventListener("click", () => { clearModalMedia(); modal.close(); });
-modal.addEventListener("click", (event) => { if (event.target === modal) { clearModalMedia(); modal.close(); } });
-modal.addEventListener("cancel", clearModalMedia);
-modalPrev.addEventListener("click", () => showModalCard(modalCardIndex - 1));
-modalNext.addEventListener("click", () => showModalCard(modalCardIndex + 1));
-document.addEventListener("keydown", (event) => {
-  if (!modal.open) return;
-  if (event.key === "ArrowLeft") showModalCard(modalCardIndex - 1);
-  if (event.key === "ArrowRight") showModalCard(modalCardIndex + 1);
-});
 async function bootstrapPortfolio() {
-  await loadContentOverrides();
-  prepareDeferredArtwork();
-  initialiseInteractions();
-  startClickRipples();
-  setupPanelGlow();
+  await Promise.all([loadContentOverrides(), loadLocalMedia()]);
+  Object.assign(translations, v2Copy);
+  // The editable legacy hover hints are replaced by accurate V2 click instructions.
+  for (const key of ['card.hint', 'collab.hint', 'niko.hint', 'bobb.hint']) translations[key] = { zh: '点击作品格，查看完整图片或视频。', en: 'Select a panel to view the full image or film.' };
+  screens.forEach((screen) => { screen.removeAttribute('aria-hidden'); if (screen.dataset.screen !== 'home') screen.id = screen.dataset.screen; });
+  navButtons = Array.from(document.querySelectorAll('[data-target]'));
+  navButtons.forEach((button) => {
+    const screen = screens.find((item) => item.dataset.screen === button.dataset.target);
+    button.hidden = !screen || screen.hidden;
+    button.addEventListener('click', () => goTo(button.dataset.target));
+  });
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[href^="#"]');
+    if (!link || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    const name = link.getAttribute('href').slice(1);
+    if (!screens.some((screen) => screen.dataset.screen === name)) return;
+    event.preventDefault(); goTo(name);
+  });
+  document.querySelectorAll('[data-project-target]').forEach((button) => button.addEventListener('click', () => goTo(button.dataset.projectTarget)));
+  const homeIntro = document.querySelector('.home-intro');
+  homeIntro.addEventListener('click', (event) => { if (!event.target.closest('a, button')) goTo('profile'); });
+  homeIntro.addEventListener('keydown', (event) => {
+    if ((event.key === 'Enter' || event.key === ' ') && event.target === homeIntro) { event.preventDefault(); goTo('profile'); }
+  });
+  decorateCards();
+  setupGalleryPages();
+  document.querySelectorAll('.gallery').forEach(bindGallery);
   setupProfilePreviews();
-  setupNavigationScroll();
-  setNext(current);
-  updateLanguage();
+  const railToggle = $('#railToggle');
+  const readingLayout = $('#reading');
+  railToggle.addEventListener('click', () => {
+    const collapsed = readingLayout.classList.toggle('rail-collapsed');
+    railToggle.setAttribute('aria-expanded', String(!collapsed));
+    railToggle.setAttribute('aria-label', collapsed ? (language === 'zh' ? '展开章节目录' : 'Open chapter menu') : (language === 'zh' ? '收起章节目录' : 'Close chapter menu'));
+    railToggle.querySelector('img').src = `./web-images/v2-${collapsed ? 'right' : 'left'}.svg`;
+  });
+  languageToggle.addEventListener('click', () => { language = language === 'zh' ? 'en' : 'zh'; try { localStorage.setItem('jayden-language', language); } catch {} updateLanguage(); });
+  themeToggle.addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; try { localStorage.setItem('jayden-theme', theme); } catch {} updateTheme(); });
+  $('#closeModal').addEventListener('click', closeWorkModal);
+  modal.addEventListener('click', (event) => { if (event.target === modal) { const box = modal.getBoundingClientRect(); if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) closeWorkModal(); } });
+  modal.addEventListener('cancel', clearModalMedia);
+  modal.addEventListener('close', () => { document.body.classList.remove('modal-open'); clearModalMedia(); previousModalFocus?.focus({ preventScroll: true }); });
+  modalPrev.addEventListener('click', () => showModalCard(modalCardIndex - 1));
+  modalNext.addEventListener('click', () => showModalCard(modalCardIndex + 1));
+  document.addEventListener('keydown', (event) => { if (!modal.open || modal.dataset.profilePreview || /INPUT|TEXTAREA|VIDEO/.test(event.target.tagName)) return; if (event.key === 'ArrowLeft') { event.preventDefault(); showModalCard(modalCardIndex - 1); } if (event.key === 'ArrowRight') { event.preventDefault(); showModalCard(modalCardIndex + 1); } });
+  window.addEventListener('popstate', () => { const target = document.getElementById(location.hash.slice(1) || 'home'); target?.scrollIntoView({ behavior: 'instant' }); });
+  updateTheme(); updateLanguage(); setupScrollReading();
+  if (location.hash) { const target = document.getElementById(decodeURIComponent(location.hash.slice(1))); if (target && !target.hidden) target.scrollIntoView({ behavior: 'instant' }); }
 }
-
 bootstrapPortfolio();

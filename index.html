@@ -3,55 +3,79 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="陈冠宇｜三维角色设计、三维动画个人作品集" />
-    <title>Funnyboy Portfolio</title>
+    <meta name="description" content="Jayden 陈冠宇｜三维角色设计与三维动画作品集" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Jayden — Portfolio V2.0</title>
+    <link rel="preconnect" href="https://pub-4ccac1ee9e26469e80d086bf24ae96d7.r2.dev" />
+    <link rel="preload" href="./web-images/v2-display.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="./web-images/v2-bangers.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="stylesheet" href="./site.css" />
   </head>
   <body data-language="zh">
+    <a class="skip-link" href="#reading">跳到作品内容</a>
     <div class="site-shell">
-      <div class="motion-lines asset-lines reveal-lines" aria-hidden="true">
-        <img class="line-art line-1" src="./web-images/image-002.webp" alt="" />
-        <img class="line-art line-2" src="./web-images/image-003.webp" alt="" />
-        <img class="line-art line-3" src="./web-images/image-004.webp" alt="" />
-        <img class="line-art line-4" src="./web-images/image-005.webp" alt="" />
-      </div>
-      <canvas class="click-ripples" id="clickRipples" aria-hidden="true"></canvas>
-
       <header class="site-header">
-        <div class="nav-control" id="navControl">
-          <button class="gear asset-gear" id="menuToggle" type="button" aria-label="展开或收起模块入口" aria-expanded="false" aria-controls="primaryNav">
-            <img src="./web-images/image-007.webp" alt="" />
-          </button>
-          <nav class="primary-nav hover-nav" id="primaryNav" aria-label="作品集模块">
-            <button type="button" data-target="home"><span data-i18n="nav.home">主页</span></button>
-            <button type="button" data-target="profile"><span data-i18n="nav.profile">个人简介</span></button>
-            <button type="button" data-target="collab"><span data-i18n="nav.collab">大三联创</span></button>
-            <button type="button" data-target="projects"><span data-i18n="nav.projects">参与项目</span></button>
-            <button type="button" data-target="ip"><span data-i18n="nav.ip">原创IP</span></button>
-            <button type="button" data-target="works"><span data-i18n="nav.works">个人作品</span></button>
-            <button type="button" data-target="contact"><span data-i18n="nav.contact">联系我</span></button>
-          </nav>
-        </div>
-        <button class="language-toggle" id="languageToggle" type="button" aria-label="切换中文和英文">EN</button>
+        <div class="brand-lockup"><a class="wordmark gradient-text" href="#home" aria-label="作品集 — 返回主页" data-i18n="v2.wordmark">作品集</a><span class="version-badge">V2.0</span></div>
+        <nav class="header-links" aria-label="快捷导航">
+          <a href="#collab" data-i18n="v2.index">章节目录</a>
+          <a href="#profile" data-i18n="v2.about">关于我</a>
+          <a href="#contact" data-i18n="v2.contact">联系</a>
+        </nav>
+        <button id="languageToggle" class="language-toggle" type="button" aria-label="Switch to English">中 / EN</button>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="切换到夜间模式" aria-pressed="false"><span aria-hidden="true">☾</span><b data-i18n="v2.darkMode">夜间</b></button>
+        <a class="owner-name" href="#profile">CHIN GUAN YUE <span>陈冠宇</span></a>
       </header>
 
-      <main>
-        <section class="screen home active" data-screen="home" aria-labelledby="homeTitle">
-          <div class="home-copy home-art-copy">
-            <div id="homeTitle" class="title-art-window" role="img" aria-label="作品集 PORTFOLIO，陈冠宇 CHIN GUAN YUE，三维角色设计 · 三维动画">
-              <img class="home-title-art" src="./web-images/image-001.webp" alt="" />
+      <div class="reading-layout" id="reading">
+        <aside class="chapter-rail comic-panel">
+          <button id="railToggle" class="rail-toggle" type="button" aria-expanded="true" aria-controls="primaryNav" aria-label="收起章节目录">
+            <img class="icon" src="./web-images/v2-left.svg" alt="" />
+          </button>
+          <p class="rail-label" data-i18n="v2.chapters">章节目录</p>
+          <nav id="primaryNav" class="primary-nav" aria-label="作品集章节">
+            <button type="button" data-target="home" class="current"><span data-i18n="v2.prologue">主页</span><img class="icon" src="./web-images/v2-right.svg" alt="" /></button>
+            <button type="button" data-target="profile"><span data-i18n="nav.profile">个人简介</span><img class="icon" src="./web-images/v2-right.svg" alt="" /></button>
+            <button type="button" data-target="collab"><span data-i18n="nav.collab">大三联创</span><img class="icon" src="./web-images/v2-right.svg" alt="" /></button>
+            <button type="button" data-target="projects"><span data-i18n="nav.projects">参与项目</span><img class="icon" src="./web-images/v2-right.svg" alt="" /></button>
+            <button type="button" data-target="ip"><span data-i18n="nav.ip">原创 IP</span><img class="icon" src="./web-images/v2-right.svg" alt="" /></button>
+            <button type="button" data-target="works"><span data-i18n="nav.works">个人作品</span><img class="icon" src="./web-images/v2-right.svg" alt="" /></button>
+            <button type="button" data-target="contact"><span data-i18n="nav.contact">联系我</span><img class="icon" src="./web-images/v2-right.svg" alt="" /></button>
+          </nav>
+          <p class="rail-note" data-i18n="v2.railNote">一个小小的男孩，拥有更大的宇宙。</p>
+          <span class="reading-progress" aria-hidden="true"><span id="readingProgress"></span></span>
+        </aside>
+        <main>
+          <section class="screen home active" data-screen="home" id="home" aria-labelledby="homeTitle">
+            <div class="home-comic-grid">
+              <article class="home-intro comic-panel" role="link" tabindex="0" aria-label="了解 Jayden，前往个人简介">
+                <span class="comic-burst" aria-hidden="true">///</span>
+                <h1 id="homeTitle" class="gradient-text" data-i18n="v2.homeTitle">你好，我是<br />陈冠宇</h1>
+                <a class="comic-button" href="#collab"><span data-i18n="v2.browse">浏览作品</span><img class="icon" src="./web-images/v2-arrow.svg" alt="" /></a>
+                <p data-i18n="v2.homeCraft">三维角色设计与动画</p>
+              </article>
+              <a class="home-art-panel home-bobb comic-panel" href="#bobb" aria-label="查看 BOBB 原创角色项目">
+                <img src="./web-images/image-009.webp" alt="BOBB 原创角色合影" fetchpriority="high" />
+                <span data-i18n="v2.bobbLabel">BOBB · 原创 IP</span>
+              </a>
+              <a class="home-art-panel home-niko home-cutcraft comic-panel" href="#collab" aria-label="CUTCRAFT PHANTASM · 大三联创《剪纸惊魂》">
+                <img src="./web-images/image-025.webp" alt="《剪纸惊魂》电影海报" fetchpriority="high" />
+                <em data-i18n="v2.cutcraftHome">剪纸<br />惊魂</em>
+              </a>
+              <a class="home-scroll-panel comic-panel" href="#profile">
+                <strong class="gradient-text" data-i18n="v2.scrollTitle">向下滑动<br />继续探索</strong>
+                <img class="icon" src="./web-images/v2-arrow.svg" alt="" />
+                <span data-i18n="v2.scrollHint">向下滚动，继续阅读我的创作故事</span>
+              </a>
             </div>
-          </div>
-        </section>
-
-        <section class="screen profile" data-screen="profile" aria-labelledby="profileTitle" aria-hidden="true">
+          </section>
+        <section class="screen profile" data-screen="profile" id="profile" aria-labelledby="profileTitle">
           <div class="page-title reveal"><span>01</span><h2 id="profileTitle" data-i18n="nav.profile">个人简介</h2></div>
           <div class="profile-layout depth-group">
             <div class="portrait reveal asset-portrait depth-surface profile-preview-trigger" data-profile-preview="portrait" tabindex="0" role="button" aria-label="查看完整照片">
               <img src="./web-images/image-064.webp" alt="陈冠宇在夜景前的照片" loading="lazy" decoding="async" />
             </div>
             <article class="bio reveal depth-surface profile-preview-trigger" data-profile-preview="bio" tabindex="0" role="button" aria-label="查看完整基本信息">
-              <i class="bio-line" aria-hidden="true"></i>
+              <i class="bio-line"></i>
               <p data-i18n="bio.identity">陈冠宇　CHIN GUAN YUE　2004年04月　22岁</p>
               <p data-i18n="bio.school">中国传媒大学　23级三维动画设计专业</p>
               <p data-i18n="bio.nationality">马来西亚籍华裔</p>
@@ -73,19 +97,19 @@
           </div>
         </section>
 
-        <section class="screen gallery-screen" data-screen="collab" aria-labelledby="collabTitle" aria-hidden="true">
+        <section class="screen gallery-screen" data-screen="collab" id="collab" aria-labelledby="collabTitle">
           <div class="page-title reveal"><span>02</span><h2 id="collabTitle" data-i18n="nav.collab">大三联创</h2><small class="production-tag" data-i18n="tag.collab">BLENDER &amp; MAYA 制作</small></div>
-          <div class="gallery-heading reveal"><p class="collab-project-title">《剪纸惊魂》</p><small class="collab-project-role" id="collabText">担任导演、分镜、建模、绑定、动画、后期剪辑</small></div>
+          <div class="gallery-heading reveal"><p class="collab-project-title" data-i18n="v2.cutcraftTitle">《剪纸惊魂》</p><small class="collab-project-role" id="collabText" data-i18n="v2.cutcraftRole">担任导演、分镜、建模、绑定、动画、后期剪辑</small></div>
           <div class="gallery reveal" data-description-target="collabText">
-            <button class="card warm media-card" type="button" style="--art:url('./web-images/image-026.webp')" data-media-type="video" data-media-src="./assets/collab/《剪纸惊魂》 成片.mp4" data-title-zh="《剪纸惊魂》成片" data-title-en="《剪纸惊魂》成片" data-description-zh="《剪纸惊魂》成片：傍晚姐弟二人闲来剪纸，不慎触犯民俗禁忌，纸人鬼怪幻化实体将姐姐卷入诡异剪纸异世界。胆小的弟弟鼓足勇气踏入险境救人，冒险途中得到神秘红纸人相助，最终姐弟携手挣脱幻境重回现实。此番奇遇过后，任性的姐姐懂得心存敬畏，怯懦的弟弟也变得勇敢坚毅。" data-description-en="《剪纸惊魂》成片：傍晚姐弟二人闲来剪纸，不慎触犯民俗禁忌，纸人鬼怪幻化实体将姐姐卷入诡异剪纸异世界。胆小的弟弟鼓足勇气踏入险境救人，冒险途中得到神秘红纸人相助，最终姐弟携手挣脱幻境重回现实。此番奇遇过后，任性的姐姐懂得心存敬畏，怯懦的弟弟也变得勇敢坚毅。" data-tone="warm"><i>01</i><b>《剪纸惊魂》成片</b></button>
-            <button class="card violet media-card" type="button" style="--art:url('./web-images/image-025.webp')" data-media-type="image" data-media-src="./web-images/image-025.webp" data-title-zh="海报" data-title-en="海报" data-description-zh="海报：海报。" data-description-en="海报：海报。" data-tone="violet"><i>02</i><b>海报</b></button>
-            <button class="card blue media-card" type="button" style="--art:url('./web-images/image-022.webp')" data-media-type="image" data-media-src="./web-images/image-022.webp" data-title-zh="人物三视图" data-title-en="人物三视图" data-description-zh="人物三视图：从上往下是 弟弟人物建模、姐姐人物建模、红色纸人战士人物建模。" data-description-en="人物三视图：从上往下是 弟弟人物建模、姐姐人物建模、红色纸人战士人物建模。" data-tone="blue"><i>03</i><b>人物三视图</b></button>
-            <button class="card mint media-card" type="button" style="--art:url('./web-images/image-023.webp')" data-media-type="image" data-media-src="./web-images/image-023.webp" data-title-zh="场景图1" data-title-en="场景图1" data-description-zh="场景图1：剪纸世界场景建模1." data-description-en="场景图1：剪纸世界场景建模1." data-tone="mint"><i>04</i><b>场景图1</b></button>
-            <button class="card warm media-card" type="button" style="--art:url('./web-images/image-024.webp')" data-media-type="image" data-media-src="./web-images/image-024.webp" data-title-zh="场景图2" data-title-en="场景图2" data-description-zh="场景图2：剪纸世界场景建模2." data-description-en="场景图2：剪纸世界场景建模2." data-tone="warm"><i>05</i><b>场景图2</b></button>
+            <button class="card warm media-card" type="button" style="--art:url('./web-images/image-026.webp')" data-media-type="video" data-media-src="./assets/collab/《剪纸惊魂》 成片.mp4" data-title-zh="《剪纸惊魂》成片" data-title-en="CUTCRAFT PHANTASM · Final Film" data-description-zh="《剪纸惊魂》成片：傍晚姐弟二人闲来剪纸，不慎触犯民俗禁忌，纸人鬼怪幻化实体将姐姐卷入诡异剪纸异世界。胆小的弟弟鼓足勇气踏入险境救人，冒险途中得到神秘红纸人相助，最终姐弟携手挣脱幻境重回现实。此番奇遇过后，任性的姐姐懂得心存敬畏，怯懦的弟弟也变得勇敢坚毅。" data-description-en="Cutcraft Phantasm: Two siblings accidentally break a folk taboo while making paper cuttings. The sister is pulled into a strange world of living paper figures, and her timid brother must enter it to save her. Helped by a mysterious red paper warrior, they find their way home together." data-tone="warm"><i>01</i><b>《剪纸惊魂》成片</b></button>
+            <button class="card violet media-card" type="button" style="--art:url('./web-images/image-025.webp')" data-media-type="image" data-media-src="./web-images/image-025.webp" data-title-zh="海报" data-title-en="CUTCRAFT PHANTASM · Poster" data-description-zh="《剪纸惊魂》海报。" data-description-en="Poster for Cutcraft Phantasm." data-tone="violet"><i>02</i><b>海报</b></button>
+            <button class="card blue media-card" type="button" style="--art:url('./web-images/image-022.webp')" data-media-type="image" data-media-src="./web-images/image-022.webp" data-title-zh="人物三视图" data-title-en="Character Turnarounds" data-description-zh="人物三视图：从上往下是 弟弟人物建模、姐姐人物建模、红色纸人战士人物建模。" data-description-en="Character turnarounds for the younger brother, older sister, and red paper warrior." data-tone="blue"><i>03</i><b>人物三视图</b></button>
+            <button class="card mint media-card" type="button" style="--art:url('./web-images/image-023.webp')" data-media-type="image" data-media-src="./web-images/image-023.webp" data-title-zh="场景图1" data-title-en="Paper World · Scene 1" data-description-zh="场景图1：剪纸世界场景建模1." data-description-en="First environment model of the paper-cutting world." data-tone="mint"><i>04</i><b>场景图1</b></button>
+            <button class="card warm media-card" type="button" style="--art:url('./web-images/image-024.webp')" data-media-type="image" data-media-src="./web-images/image-024.webp" data-title-zh="场景图2" data-title-en="Paper World · Scene 2" data-description-zh="场景图2：剪纸世界场景建模2." data-description-en="Second environment model of the paper-cutting world." data-tone="warm"><i>05</i><b>场景图2</b></button>
           </div>
         </section>
 
-        <section class="screen gallery-screen" data-screen="projects" aria-labelledby="projectsTitle" aria-hidden="true">
+        <section class="screen gallery-screen" data-screen="projects" id="projects" aria-labelledby="projectsTitle">
           <div class="page-title reveal"><span>03</span><h2 id="projectsTitle" data-i18n="nav.projects">参与项目</h2></div>
           <div class="gallery-heading reveal"><p id="projectsHeadline" data-i18n="projects.headline">Niko Niko Onigiri</p><small id="projectsText" data-i18n="projects.hint">学校作品与甲方模型项目将在这里展开。</small></div>
           <div class="gallery reveal" data-description-target="projectsText" data-title-target="projectsHeadline">
@@ -94,7 +118,7 @@
           </div>
         </section>
 
-        <section class="screen gallery-screen project-detail-screen" data-screen="niko" aria-labelledby="nikoTitle" aria-hidden="true">
+        <section class="screen gallery-screen project-detail-screen" data-screen="niko" id="niko" aria-labelledby="nikoTitle">
           <div class="page-title reveal"><span>03.1</span><h2 id="nikoTitle">Niko Niko Onigiri</h2><small class="production-tag" data-i18n="tag.blender">BLENDER 制作</small></div>
           <div class="gallery-heading reveal"><p data-i18n="niko.headline">Niko Niko Onigiri 餐饮品牌 IP盲盒&amp;门头 模型设计</p><small id="nikoText" data-i18n="niko.hint">停留在任一内容上，展开它的完整画幅。</small></div>
           <div class="gallery reveal" data-description-target="nikoText">
@@ -108,7 +132,7 @@
           <div class="project-pager" aria-label="参与项目分页"><button class="project-dot active" type="button" data-project-target="niko" aria-label="Niko Niko Onigiri"></button><button class="project-dot" type="button" data-project-target="hours" aria-label="24 HOURS Animation Contest for Students"></button></div>
         </section>
 
-        <section class="screen gallery-screen project-detail-screen" data-screen="hours" aria-labelledby="hoursTitle" aria-hidden="true">
+        <section class="screen gallery-screen project-detail-screen" data-screen="hours" id="hours" aria-labelledby="hoursTitle">
           <div class="page-title reveal"><span>03.2</span><h2 id="hoursTitle" data-i18n="hours.pageTitle">24小时动画挑战赛</h2><small class="production-tag" data-i18n="tag.blender">BLENDER 制作</small></div>
           <div class="gallery-heading reveal"><p data-i18n="hours.headline">24小时动画挑战赛</p><small id="hoursText" data-i18n="hours.hint">停留在任一内容上，展开它的完整画幅。</small></div>
           <div class="gallery reveal" data-description-target="hoursText">
@@ -120,7 +144,7 @@
           <div class="project-pager" aria-label="参与项目分页"><button class="project-dot" type="button" data-project-target="niko" aria-label="Niko Niko Onigiri"></button><button class="project-dot active" type="button" data-project-target="hours" aria-label="24 HOURS Animation Contest for Students"></button></div>
         </section>
 
-        <section class="screen gallery-screen" data-screen="ip" aria-labelledby="ipTitle" aria-hidden="true">
+        <section class="screen gallery-screen" data-screen="ip" id="ip" aria-labelledby="ipTitle">
           <div class="page-title reveal"><span>04</span><h2 id="ipTitle" data-i18n="nav.ip">原创IP</h2><small class="production-tag" data-i18n="tag.blender">BLENDER 制作</small></div>
           <div class="gallery-heading reveal"><p data-i18n="ip.headline">BOBB 原创 IP</p><small id="ipText" data-i18n="ip.hint">点击进入完整项目。</small></div>
           <div class="gallery reveal ip-project-gallery" data-description-target="ipText">
@@ -128,7 +152,7 @@
           </div>
         </section>
 
-        <section class="screen gallery-screen project-detail-screen" data-screen="bobb" aria-labelledby="bobbTitle" aria-hidden="true">
+        <section class="screen gallery-screen project-detail-screen" data-screen="bobb" id="bobb" aria-labelledby="bobbTitle">
           <div class="page-title reveal"><span>04.1</span><h2 id="bobbTitle">BOBB</h2></div>
           <div class="gallery-heading reveal"><p data-i18n="bobb.headline">BOBB 原创 IP</p><small id="bobbText" data-i18n="bobb.hint">停留在任一内容上，展开它的完整画幅。</small></div>
           <div class="gallery reveal" data-description-target="bobbText">
@@ -138,7 +162,7 @@
           </div>
         </section>
 
-        <section class="screen gallery-screen" data-screen="works" aria-labelledby="worksTitle" aria-hidden="true">
+        <section class="screen gallery-screen" data-screen="works" id="works" aria-labelledby="worksTitle">
           <div class="page-title reveal"><span>05</span><h2 id="worksTitle" data-i18n="nav.works">个人作品</h2><small class="production-tag" data-i18n="tag.works">大部分 BLENDER，部分 MAYA 和 AI</small></div>
           <div class="gallery-heading reveal"><p data-i18n="works.headline">把练习、热爱与成长，整理成可以被看见的作品。</p><small id="worksText" data-i18n="works.hint">点击展开后，将以全屏查看高清图片或视频。</small></div>
           <div class="gallery reveal" data-description-target="worksText">
@@ -155,25 +179,23 @@
           </div>
         </section>
 
-        <section class="screen contact-screen" data-screen="contact" aria-label="联系我" aria-hidden="true">
-          <div class="contact-stage reveal depth-single depth-surface">
+        <section class="screen contact-screen" data-screen="contact" id="contact" aria-label="联系我">
+          <div class="page-title"><span>06</span><h2 data-i18n="nav.contact">联系我</h2></div><div class="contact-stage reveal depth-single depth-surface">
             <div class="contact-detail"><span data-i18n="contact.phone" data-split-text>微信手机号</span><a href="tel:13121425198" data-split-text>13121425198</a></div>
             <div class="contact-detail"><span data-i18n="contact.email" data-split-text>邮箱</span><a href="mailto:guanyue0413@gmail.com" data-split-text>guanyue0413@gmail.com</a></div>
           </div>
+          <footer class="site-footer"><a href="#home" data-i18n="v2.wordmark">作品集</a><p>CHIN GUAN YUE 陈冠宇</p><span data-i18n="v2.footerNote">这一章结束，故事仍在继续。</span><a href="#home" data-i18n="v2.backTop">回到顶部</a></footer>
         </section>
-      </main>
-
-      <button class="next-button" id="nextButton" type="button"><small>NEXT MODULE</small><span id="nextText">点击此处前往个人简介</span><b>↗</b></button>
-      <p class="site-signature" data-i18n="signature">PERSONAL PORTFOLIO　个人作品集网站</p>
+        </main>
+      </div>
     </div>
-
     <dialog id="workModal" class="work-modal" aria-labelledby="modalTitle">
-      <button class="close" type="button" id="closeModal" aria-label="关闭作品预览">×</button>
+      <button class="close" type="button" id="closeModal" aria-label="关闭作品预览"><img class="icon" src="./web-images/v2-close.svg" alt="" /></button>
       <div class="modal-art" id="modalArt">
         <div class="modal-media" id="modalMedia"></div>
-        <button class="modal-nav modal-prev" id="modalPrev" type="button" aria-label="查看上一件作品">‹</button>
+        <button class="modal-nav modal-prev" id="modalPrev" type="button" aria-label="查看上一件作品"><img class="icon" src="./web-images/v2-left.svg" alt="" /></button>
         <span data-i18n="modal.preview">高清预览</span>
-        <button class="modal-nav modal-next" id="modalNext" type="button" aria-label="查看下一件作品">›</button>
+        <button class="modal-nav modal-next" id="modalNext" type="button" aria-label="查看下一件作品"><img class="icon" src="./web-images/v2-right.svg" alt="" /></button>
       </div>
       <div class="modal-copy" tabindex="0" aria-label="作品说明"><small id="modalIndex">作品 / 01</small><h2 id="modalTitle">项目标题</h2><p id="modalDescription">这里将显示作品说明。</p><em data-i18n="modal.note">素材加入后，此区域将播放高清图片或视频。</em></div>
     </dialog>

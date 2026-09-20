@@ -11,7 +11,7 @@
     },
     "nav.collab": {
       "zh": "大三联创",
-      "en": "COLLABORATION"
+      "en": "THIRD-YEAR COLLABORATION"
     },
     "nav.projects": {
       "zh": "参与项目",
@@ -303,9 +303,9 @@
     "collab-01": {
       "id": "collab-01",
       "titleZh": "《剪纸惊魂》成片",
-      "titleEn": "《剪纸惊魂》成片",
+      "titleEn": "CUTCRAFT PHANTASM · Final Film",
       "descriptionZh": "《剪纸惊魂》成片：傍晚姐弟二人闲来剪纸，不慎触犯民俗禁忌，纸人鬼怪幻化实体将姐姐卷入诡异剪纸异世界。胆小的弟弟鼓足勇气踏入险境救人，冒险途中得到神秘红纸人相助，最终姐弟携手挣脱幻境重回现实。此番奇遇过后，任性的姐姐懂得心存敬畏，怯懦的弟弟也变得勇敢坚毅。",
-      "descriptionEn": "《剪纸惊魂》成片：傍晚姐弟二人闲来剪纸，不慎触犯民俗禁忌，纸人鬼怪幻化实体将姐姐卷入诡异剪纸异世界。胆小的弟弟鼓足勇气踏入险境救人，冒险途中得到神秘红纸人相助，最终姐弟携手挣脱幻境重回现实。此番奇遇过后，任性的姐姐懂得心存敬畏，怯懦的弟弟也变得勇敢坚毅。",
+      "descriptionEn": "Cutcraft Phantasm: Two siblings accidentally break a folk taboo while making paper cuttings. The sister is pulled into a strange world of living paper figures, and her timid brother must enter it to save her. Helped by a mysterious red paper warrior, they find their way home together.",
       "artwork": "./web-images/image-026.webp",
       "mediaType": "video",
       "mediaTypes": [
@@ -322,9 +322,9 @@
     "collab-02": {
       "id": "collab-02",
       "titleZh": "海报",
-      "titleEn": "海报",
-      "descriptionZh": "海报：海报。",
-      "descriptionEn": "海报：海报。",
+      "titleEn": "CUTCRAFT PHANTASM · Poster",
+      "descriptionZh": "《剪纸惊魂》海报。",
+      "descriptionEn": "Poster for Cutcraft Phantasm.",
       "artwork": "./web-images/image-025.webp",
       "mediaType": "image",
       "mediaTypes": [
@@ -341,9 +341,9 @@
     "collab-03": {
       "id": "collab-03",
       "titleZh": "人物三视图",
-      "titleEn": "人物三视图",
+      "titleEn": "Character Turnarounds",
       "descriptionZh": "人物三视图：从上往下是 弟弟人物建模、姐姐人物建模、红色纸人战士人物建模。",
-      "descriptionEn": "人物三视图：从上往下是 弟弟人物建模、姐姐人物建模、红色纸人战士人物建模。",
+      "descriptionEn": "Character turnarounds for the younger brother, older sister, and red paper warrior.",
       "artwork": "./web-images/image-022.webp",
       "mediaType": "image",
       "mediaTypes": [
@@ -360,9 +360,9 @@
     "collab-04": {
       "id": "collab-04",
       "titleZh": "场景图1",
-      "titleEn": "场景图1",
+      "titleEn": "Paper World · Scene 1",
       "descriptionZh": "场景图1：剪纸世界场景建模1.",
-      "descriptionEn": "场景图1：剪纸世界场景建模1.",
+      "descriptionEn": "First environment model of the paper-cutting world.",
       "artwork": "./web-images/image-023.webp",
       "mediaType": "image",
       "mediaTypes": [
@@ -379,9 +379,9 @@
     "collab-05": {
       "id": "collab-05",
       "titleZh": "场景图2",
-      "titleEn": "场景图2",
+      "titleEn": "Paper World · Scene 2",
       "descriptionZh": "场景图2：剪纸世界场景建模2.",
-      "descriptionEn": "场景图2：剪纸世界场景建模2.",
+      "descriptionEn": "Second environment model of the paper-cutting world.",
       "artwork": "./web-images/image-024.webp",
       "mediaType": "image",
       "mediaTypes": [
