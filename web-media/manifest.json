@@ -1,0 +1,102 @@
+[
+  {
+    "Source": "assets\\collab\\《剪纸惊魂》 成片.mp4",
+    "Output": "video-01.mp4",
+    "SizeMB": 102.4
+  },
+  {
+    "Source": "assets\\hours\\比赛成片.mp4",
+    "Output": "video-02.mp4",
+    "SizeMB": 6.5
+  },
+  {
+    "Source": "assets\\hours\\比赛幕后影片.mp4",
+    "Output": "video-03.mp4",
+    "SizeMB": 65.6
+  },
+  {
+    "Source": "assets\\bobb\\第一集 《陌生星球》 成片\\BOBB《陌生星球》成片.mp4",
+    "Output": "video-04.mp4",
+    "SizeMB": 27.5
+  },
+  {
+    "Source": "assets\\practice\\第11届世界渲染大赛 RAMPAGE RALLY 成片.mp4",
+    "Output": "video-05.mp4",
+    "SizeMB": 13.8
+  },
+  {
+    "Source": "assets\\practice\\11 Second Club比赛\\2025年6月 11SecClub_Competition 对白动画短片.mp4",
+    "Output": "video-06.mp4",
+    "SizeMB": 4.4
+  },
+  {
+    "Source": "assets\\practice\\预告片练习.mp4",
+    "Output": "video-07.mp4",
+    "SizeMB": 21.4
+  },
+  {
+    "Source": "assets\\practice\\MAYA 动画练习\\异兽动画练习.mov",
+    "Output": "video-08.mp4",
+    "SizeMB": 1.4
+  },
+  {
+    "Source": "assets\\practice\\MAYA 动画练习\\漂浮生物动画练习.mp4",
+    "Output": "video-09.mp4",
+    "SizeMB": 2.1
+  },
+  {
+    "Source": "assets\\practice\\MAYA 动画练习\\立定跳远动画练习.mp4",
+    "Output": "video-10.mp4",
+    "SizeMB": 0.9
+  },
+  {
+    "Source": "assets\\practice\\一分钟故事短片《心动一分钟》\\《心动一分钟》 故事短片.mp4",
+    "Output": "video-11.mp4",
+    "SizeMB": 26.2
+  },
+  {
+    "Source": "assets\\practice\\人物绑定练习\\人物运动练习.mkv",
+    "Output": "video-12.mp4",
+    "SizeMB": 1.0
+  },
+  {
+    "Source": "assets\\practice\\人物绑定练习\\角色介绍视频.mp4",
+    "Output": "video-13.mp4",
+    "SizeMB": 4.5
+  },
+  {
+    "Source": "assets\\practice\\动画作业\\《消失的BOBB》（vanishing of BOBB）.mkv",
+    "Output": "video-14.mp4",
+    "SizeMB": 1.8
+  },
+  {
+    "Source": "assets\\practice\\动画练习\\bobby cat.mkv",
+    "Output": "video-15.mp4",
+    "SizeMB": 0.9
+  },
+  {
+    "Source": "assets\\practice\\动画练习\\Bobby kick something.mp4",
+    "Output": "video-16.mp4",
+    "SizeMB": 1.6
+  },
+  {
+    "Source": "assets\\practice\\动画练习\\bobby sword music.mp4",
+    "Output": "video-17.mp4",
+    "SizeMB": 2.6
+  },
+  {
+    "Source": "assets\\practice\\动画练习\\bounce ball with music.mp4",
+    "Output": "video-18.mp4",
+    "SizeMB": 0.8
+  },
+  {
+    "Source": "assets\\practice\\动画练习\\clockwise with music.mp4",
+    "Output": "video-19.mp4",
+    "SizeMB": 1.7
+  },
+  {
+    "Source": "assets\\practice\\动画练习\\pick up things with music.mp4",
+    "Output": "video-20.mp4",
+    "SizeMB": 1.3
+  }
+]

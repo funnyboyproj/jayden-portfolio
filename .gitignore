@@ -16,4 +16,4 @@ assets/**/*.jpeg
 assets/**/*.webp
 admin-private.json
 admin-server.log
-web-media/
+# V3 publishes the compressed web-media renditions with the static site.
